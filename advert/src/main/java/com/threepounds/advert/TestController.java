@@ -39,6 +39,15 @@ public class TestController {
     users.add(new User("Ahmet", 28, Gender.MALE));
     users.add(new User("Ayse", 24, Gender.FEMALE));
     System.out.println(searchText);
-    return null;
+
+    List<User> getUsers = new ArrayList<>();
+
+    for (User user : users) {
+      if (user.getName().contains(searchText)) {
+        System.out.println(user);
+        getUsers.add(user);
+      }
+    }
+    return getUsers;
   }
 }
