@@ -40,14 +40,12 @@ public class TestController {
     users.add(new User("Ayse", 24, Gender.FEMALE));
     System.out.println(searchText);
 
-    List<User> getUsers = new ArrayList<>();
-
+    List<User> nameSearch = new ArrayList<>();
     for (User user : users) {
-      if (user.getName().contains(searchText)) {
-        System.out.println(user);
-        getUsers.add(user);
+      if (user.getName().toLowerCase().contains(searchText.toLowerCase())) {
+        nameSearch.add(user);
       }
     }
-    return getUsers;
+    return nameSearch;
   }
 }
