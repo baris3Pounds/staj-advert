@@ -13,11 +13,16 @@ public class UserService {
 
 
   public User save(User user){
+
     return userRepository.save(user);
   }
 
   public List<User> list(){
     return userRepository.findAll();
+  }
+
+  public List<User> listByName(String name){
+    return userRepository.findByName(name);
   }
 
 
