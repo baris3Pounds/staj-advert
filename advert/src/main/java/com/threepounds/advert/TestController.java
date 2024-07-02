@@ -3,11 +3,8 @@ package com.threepounds.advert;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class TestController {
@@ -49,5 +46,16 @@ public class TestController {
       }
     }
     return nameSearch;
+  }
+  @DeleteMapping("/delete-user/{name}")
+  public List<User> deleteUser(@PathVariable("name") String name) {
+    List<User> users =
+            Arrays.asList(
+                    new User("Baris", 33, Gender.MALE),
+                    new User("Ahmet", 28, Gender.MALE),
+                    new User("Ayse", 24, Gender.FEMALE));
+
+    users.removeIf(user -> user.getName().equalsIgnoreCase(name));
+    return users;
   }
 }
