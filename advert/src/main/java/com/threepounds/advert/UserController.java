@@ -4,6 +4,7 @@ package com.threepounds.advert;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +21,8 @@ public class UserController {
 
   @Autowired
   private UserService userService;
+    @Autowired
+    private UserRepository userRepository;
 
 
   @GetMapping
@@ -44,7 +47,9 @@ public class UserController {
     //
     User existingUser = userService.getById(userId)
         .orElseThrow(() -> new RuntimeException("User not found"));
-
+        existingUser.setAge(user.getAge());
+        existingUser.setName(user.getName());
+        User updateUser = userRepository.save(existingUser);
     return null;
   }
 
@@ -53,8 +58,7 @@ public class UserController {
   public User delete(@PathVariable UUID userId){
     User existingUser = userService.getById(userId)
         .orElseThrow(() -> new RuntimeException("User not found"));
-
-
+        userRepository.delete(existingUser);
       return null;
   }
 
