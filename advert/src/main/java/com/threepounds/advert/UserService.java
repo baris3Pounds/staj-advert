@@ -2,6 +2,8 @@ package com.threepounds.advert;
 
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +25,10 @@ public class UserService {
 
   public List<User> listByName(String name){
     return userRepository.findByName(name);
+  }
+
+  public Optional<User> getById(UUID userId){
+    return userRepository.findById(userId);
   }
 
 
