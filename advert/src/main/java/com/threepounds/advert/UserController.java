@@ -1,6 +1,5 @@
 package com.threepounds.advert;
 
-
 import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,47 +18,45 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class UserController {
 
-  @Autowired
-  private UserService userService;
-    @Autowired
-    private UserRepository userRepository;
+  private final UserService userService;
 
-
-  @GetMapping
-  public List<User> getUsers(){
-     return userService.list();
+  public UserController(UserService userService) {
+    this.userService = userService;
   }
 
+  @GetMapping
+  public List<User> getUsers() {
+    return userService.list();
+  }
 
   @PostMapping
-  public User save(@RequestBody User user){
+  public User save(@RequestBody User user) {
     return userService.save(user);
   }
 
   @GetMapping("/by-name")
-  public List<User> getUsersByName(@RequestParam String name){
+  public List<User> getUsersByName(@RequestParam String name) {
     return userService.listByName(name);
   }
 
   // PutMapping
   @PutMapping("/{userId}")
-  public User update(@PathVariable UUID userId,@RequestBody User user){
-    //
-    User existingUser = userService.getById(userId)
-        .orElseThrow(() -> new RuntimeException("User not found"));
-        existingUser.setAge(user.getAge());
-        existingUser.setName(user.getName());
-        User updateUser = userRepository.save(existingUser);
-    return null;
+  public ResponseEntity<User> update(@PathVariable UUID userId, @RequestBody User user) {
+    User existingUser =
+        userService.getById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+    existingUser.setAge(user.getAge());
+    existingUser.setName(user.getName());
+    existingUser.setGender(user.getGender());
+    User updateUser = userService.save(existingUser);
+    return ResponseEntity.ok().body(updateUser);
   }
 
   // DeleteMapping
   @DeleteMapping("/{userId}")
-  public User delete(@PathVariable UUID userId){
-    User existingUser = userService.getById(userId)
-        .orElseThrow(() -> new RuntimeException("User not found"));
-        userRepository.delete(existingUser);
-      return null;
+  public ResponseEntity delete(@PathVariable UUID userId) {
+    User existingUser =
+        userService.getById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+    userService.deleteUser(existingUser);
+    return ResponseEntity.ok().build();
   }
-
 }

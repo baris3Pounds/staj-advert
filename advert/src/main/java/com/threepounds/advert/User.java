@@ -24,6 +24,8 @@ public class User {
   @Enumerated(EnumType.STRING)
   private Gender gender;
 
+  private boolean active;
+
   public User() {}
 
   public User(String name, int age, Gender gender) {
@@ -62,6 +64,14 @@ public class User {
 
   public void setGender(Gender gender) {
     this.gender = gender;
+  }
+
+  public boolean isActive() {
+    return active;
+  }
+
+  public void setActive(boolean active) {
+    this.active = active;
   }
 }
 

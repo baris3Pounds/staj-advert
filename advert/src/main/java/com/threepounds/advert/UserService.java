@@ -15,7 +15,7 @@ public class UserService {
 
 
   public User save(User user){
-
+    user.setActive(true);
     return userRepository.save(user);
   }
 
@@ -29,6 +29,10 @@ public class UserService {
 
   public Optional<User> getById(UUID userId){
     return userRepository.findById(userId);
+  }
+
+  public void deleteUser(User user){
+    userRepository.delete(user);
   }
 
 
