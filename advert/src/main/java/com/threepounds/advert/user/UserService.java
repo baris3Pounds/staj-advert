@@ -1,4 +1,4 @@
-package com.threepounds.advert;
+package com.threepounds.advert.user;
 
 
 import java.util.List;

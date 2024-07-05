@@ -1,4 +1,4 @@
-package com.threepounds.advert;
+package com.threepounds.advert.user;
 
 public enum Gender {
   MALE,
