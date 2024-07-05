@@ -10,4 +10,6 @@ public interface AdRepository extends JpaRepository<Ad, UUID> {
 
     List<Ad> findByTitle(String title);
     List<Ad> findByTitleAndDescription(String title, String description);
+
+
 }

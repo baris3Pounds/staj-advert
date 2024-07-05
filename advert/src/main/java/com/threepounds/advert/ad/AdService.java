@@ -23,13 +23,12 @@ public class AdService {
         return adRepository.findAll();
     }
 
-    public List<Ad> listByTitle(String title){
-        return adRepository.findByTitle(title);
-    }
+    public List<Ad> listByTitle(String title){return adRepository.findByTitle(title);}
 
     public Optional<Ad> getById(UUID AdId){
         return adRepository.findById(AdId);
     }
+
 
     public void deleteAd(Ad ad){
         adRepository.delete(ad);

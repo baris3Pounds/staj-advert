@@ -27,10 +27,10 @@ public class AdController {
     @PostMapping
     public void addAd(@RequestBody Ad ad) {adService.save(ad);}
 
-   /* @GetMapping(path = "/{title}")
-    public List<Ad> getUsersByName(@RequestParam String title) {return adService.listByTitle(title);}
+    @GetMapping(path = "/by-title")
+    public List<Ad> getAdsByTitle(@RequestParam String name) {return adService.listByTitle(name);}
 
-    @PutMapping
+   /* @PutMapping
     public void updateAdPrice(@RequestBody Ad ad) {
         public ResponseEntity<Ad> update(@PathVariable UUID adId, @RequestBody Ad ad);
         Ad existingAd = AdService.getId(adId).orElseThrow(() -> new RuntimeException("User not found"));
