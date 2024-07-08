@@ -36,5 +36,6 @@ public class AdController {
         Ad updatedAds = adService.save(existingAd);
         return ResponseEntity.ok().body(updatedAds);
     }
+    
 
 }
