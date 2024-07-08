@@ -11,8 +11,11 @@ import java.util.UUID;
 @Service
 public class AdService {
 
-    @Autowired
     private  AdRepository adRepository;
+
+    public AdService(AdRepository adRepository) {
+        this.adRepository = adRepository;
+    }
 
     public Ad save(Ad ad) {
         ad.setActive(true);
