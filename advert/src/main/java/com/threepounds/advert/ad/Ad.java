@@ -60,7 +60,4 @@ public class Ad {
 
   public void setActive(boolean active) {this.active = active;}
 
-
-
-
 }

@@ -28,10 +28,7 @@ public class AdService {
 
     public List<Ad> listByTitle(String title){return adRepository.findByTitle(title);}
 
-    public Optional<Ad> getById(UUID AdId){return adRepository.findById(AdId);}
+    public Optional<Ad> getById(UUID adId){return adRepository.findById(adId);}
 
-
-    public void deleteAd(Ad ad){
-        adRepository.delete(ad);
-    }
+    public void deleteAd(Ad ad){adRepository.delete(ad);}
 }
