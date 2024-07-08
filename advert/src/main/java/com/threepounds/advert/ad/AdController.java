@@ -15,11 +15,9 @@ public class AdController {
 
 
     private final AdService adService;
-    private final AdRepository adsRepository;
 
-    public  AdController(AdService adService, AdRepository adRepository) {this.adService = adService;
-        this.adsRepository = adRepository;
-    }
+
+    public  AdController(AdService adService) {this.adService = adService;}
 
     @GetMapping
     public List<Ad> getAds() {return adService.list();}
