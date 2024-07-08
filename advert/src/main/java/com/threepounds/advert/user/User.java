@@ -1,4 +1,4 @@
-package com.threepounds.advert;
+package com.threepounds.advert.user;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -23,6 +23,8 @@ public class User {
   @Column
   @Enumerated(EnumType.STRING)
   private Gender gender;
+
+  private boolean active;
 
   public User() {}
 
@@ -63,4 +65,15 @@ public class User {
   public void setGender(Gender gender) {
     this.gender = gender;
   }
+
+  public boolean isActive() {
+    return active;
+  }
+
+  public void setActive(boolean active) {
+    this.active = active;
+  }
 }
+
+
+
