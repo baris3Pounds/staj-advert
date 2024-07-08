@@ -15,29 +15,28 @@ public class AdController {
 
 
     private final AdService adService;
+    private final AdRepository adsRepository;
 
-    public  AdController(AdService adService) {this.adService = adService;
+    public  AdController(AdService adService, AdRepository adRepository) {this.adService = adService;
+        this.adsRepository = adRepository;
     }
 
     @GetMapping
     public List<Ad> getAds() {return adService.list();}
 
-    @GetMapping("/{adId}")
-    public Ad getById(@PathVariable UUID adId){
-    return adService.getById(adId).orElseThrow(() -> new RuntimeException("Ad not found"));
-    }
-
     @PostMapping
     public void addAd(@RequestBody Ad ad) {adService.save(ad);}
 
+    @GetMapping(path = "/by-title")
+    public List<Ad> getAdsByTitle(@RequestParam String name) {return adService.listByTitle(name);}
 
-   /* @PutMapping()
-    public void updateAdPrice(@RequestBody Ad ad) {
-        public ResponseEntity<Ad> update(@PathVariable UUID adId, @RequestBody Ad ad);
-        Ad existingAd = AdService.getId(adId).orElseThrow(() -> new RuntimeException("User not found"));
+    @PutMapping(path = "/{adId}")
+    public ResponseEntity<Ad> update(@PathVariable UUID adId, @RequestBody Ad ad) {
+        Ad existingAd = adService.getById(adId).orElseThrow(() -> new RuntimeException("User not found"));
         existingAd.setTitle(ad.getTitle());
         existingAd.setPrice(ad.getPrice());
-        Ad updatedAds = adService.save(existingAd);}
-*/
+        Ad updatedAds = adService.save(existingAd);
+        return ResponseEntity.ok().body(updatedAds);
+    }
 
 }
