@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
+import java.util.UUID;
 
 
 public interface CategoryService {
@@ -11,7 +12,7 @@ public interface CategoryService {
 
     public List<Category> findAll();
 
-    public Category findById();
+    public ResponseEntity<CategoryDto> findById(UUID id);
 
-    public void deleteById();
+    public ResponseEntity deleteById(UUID id);
 }
