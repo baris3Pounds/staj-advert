@@ -11,7 +11,7 @@ import java.util.UUID;
 public class CategoryServiceImpl implements CategoryService{
 
     private final CategoryRepository categoryRepository;
-    private final CategoryMapper categoryMapper = CategoryMapper.instance;
+    private final CategoryMapper categoryMapper = CategoryMapper.INSTANCE;
 
     public CategoryServiceImpl(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
@@ -31,8 +31,8 @@ public class CategoryServiceImpl implements CategoryService{
     @Override
     public ResponseEntity<CategoryDto> findById(UUID id) {
         Optional<Category> result = categoryRepository.findById(id);
-        return ResponseEntity.ok(result.map(categoryMapper::CategoryToCategoryDTO).orElse(null)
-        );
+        return result.map(category -> ResponseEntity.ok(categoryMapper.CategoryToCategoryDTO(category)))
+                .orElseGet(()->ResponseEntity.notFound().build());
     }
 
     @Override
