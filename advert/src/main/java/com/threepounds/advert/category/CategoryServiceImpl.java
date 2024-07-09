@@ -32,7 +32,7 @@ public class CategoryServiceImpl implements CategoryService{
     public ResponseEntity<CategoryDto> findById(UUID id) {
         Optional<Category> result = categoryRepository.findById(id);
         return result.map(category -> ResponseEntity.ok(categoryMapper.CategoryToCategoryDTO(category)))
-                .orElseGet(()->ResponseEntity.notFound().build());
+                .orElseThrow(()-> new RuntimeException("The category not found !"));
     }
 
     @Override
@@ -42,7 +42,24 @@ public class CategoryServiceImpl implements CategoryService{
             categoryRepository.delete(result.get());
             return ResponseEntity.ok().build();
         } else {
-            return ResponseEntity.notFound().build();
+            throw new RuntimeException("The category not found !");
         }
+    }
+
+    @Override
+    public ResponseEntity<CategoryDto> updateById(Category category, UUID id) {
+        // soru
+       // Category result = categoryRepository.findById(id).orElseThrow(()-> new RuntimeException("The category not found"));
+        Optional<Category> result = categoryRepository.findById(id);
+        if(result.isPresent()){
+            result.get().setName(category.name);
+            result.get().setActive(category.active);
+            categoryRepository.save(category);
+
+            return result.map(category2 -> ResponseEntity.ok(categoryMapper.CategoryToCategoryDTO(category2))).orElseThrow( ()-> new RuntimeException("the category couldn't update") );
+        }
+
+
+        return ResponseEntity.internalServerError().build();
     }
 }

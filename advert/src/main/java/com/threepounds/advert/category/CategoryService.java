@@ -15,4 +15,6 @@ public interface CategoryService {
     public ResponseEntity<CategoryDto> findById(UUID id);
 
     public ResponseEntity deleteById(UUID id);
+
+    public ResponseEntity<CategoryDto> updateById(Category category , UUID id);
 }
