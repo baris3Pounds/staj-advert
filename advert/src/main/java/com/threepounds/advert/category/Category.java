@@ -1,3 +1,10 @@
 package com.threepounds.advert.category;
 
-public class Category {}
+public class Category {
+
+
+  // id
+  // name
+  // active
+
+}

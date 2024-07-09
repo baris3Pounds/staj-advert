@@ -23,7 +23,7 @@ public class CountryController {
     return countryService.save(country);
   }
 
-  @GetMapping("/byName")
+  @GetMapping("/by-name")
   public List<Country> getCountriesByName(@RequestParam String name) {
     return countryService.listByName(name);
   }
