@@ -18,6 +18,7 @@ public class Category {
     // id
     @Id
     @GeneratedValue
+    @Column(name = "id")
     private UUID id;
 
     // name
