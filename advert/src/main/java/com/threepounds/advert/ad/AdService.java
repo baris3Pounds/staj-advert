@@ -11,24 +11,30 @@ import java.util.UUID;
 @Service
 public class AdService {
 
-    private  AdRepository adRepository;
+  private AdRepository adRepository;
 
-    public AdService(AdRepository adRepository) {
-        this.adRepository = adRepository;
-    }
+  public AdService(AdRepository adRepository) {
+    this.adRepository = adRepository;
+  }
 
-    public Ad save(Ad ad) {
-        ad.setActive(true);
-        return adRepository.save(ad);
-    }
+  public Ad save(Ad ad) {
+    ad.setActive(true);
+    return adRepository.save(ad);
+  }
 
-    public List<Ad> list(){
-        return adRepository.findAll();
-    }
+  public List<Ad> list() {
+    return adRepository.findAll();
+  }
 
-    public List<Ad> listByTitle(String title){return adRepository.findByTitle(title);}
+  public List<Ad> listByTitle(String title) {
+    return adRepository.findByTitle(title);
+  }
 
-    public Optional<Ad> getById(UUID adId){return adRepository.findById(adId);}
+  public Optional<Ad> getById(UUID adId) {
+    return adRepository.findById(adId);
+  }
 
-    public void deleteAd(Ad ad){adRepository.delete(ad);}
+  public void deleteAd(Ad ad) {
+    adRepository.delete(ad);
+  }
 }

@@ -17,14 +17,10 @@ import lombok.Setter;
 @Entity(name = "users")
 public class User {
 
-  @Id
-  @GeneratedValue
-  private UUID id;
+  @Id @GeneratedValue private UUID id;
 
-  @Column
-  private String name;
-  @Column
-  private int age;
+  @Column private String name;
+  @Column private int age;
 
   @Column
   @Enumerated(EnumType.STRING)
@@ -37,8 +33,4 @@ public class User {
     this.age = age;
     this.gender = gender;
   }
-
 }
-
-
-
