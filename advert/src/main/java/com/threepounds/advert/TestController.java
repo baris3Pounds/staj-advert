@@ -1,8 +1,7 @@
 package com.threepounds.advert;
 
-import com.threepounds.advert.user.Gender;
-import com.threepounds.advert.user.User;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.*;
