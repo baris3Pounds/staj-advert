@@ -8,7 +8,12 @@ import jakarta.persistence.Id;
 
 import java.math.BigDecimal;
 import java.util.UUID;
+import lombok.Getter;
+import lombok.Setter;
 
+
+@Getter
+@Setter
 @Entity(name = "ads")
 public class Ad {
 
@@ -40,25 +45,6 @@ public class Ad {
     this.price =price;
   }
 
-  public UUID getId() {return id;}
-
-  public void setId(UUID id) {this.id = id;}
-
-  public String getTitle() {return title;}
-
-  public void setTitle(String title) {this.title = title;}
-
-  public String getDescription() {return description;}
-
-  public  void setDescription(String description) {this.description = description;}
-
-  public BigDecimal getPrice() {return price;}
-
-  public void setPrice(BigDecimal price) {this.price = price;}
-
-  public boolean isActive() {return active;}
-
-  public void setActive(boolean active) {this.active = active;}
 
 
 
