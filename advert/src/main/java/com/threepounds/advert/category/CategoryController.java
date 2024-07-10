@@ -1,10 +1,9 @@
 package com.threepounds.advert.category;
 
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.UUID;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -12,33 +11,47 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
-    public CategoryController(CategoryService categoryService) {
+    private final CategoryMapper categoryMapper;
+
+    public CategoryController(CategoryService categoryService, CategoryMapper categoryMapper) {
         this.categoryService = categoryService;
+        this.categoryMapper = categoryMapper;
     }
 
     @GetMapping("/category")
-    public List<Category> getCategories(){
-        return categoryService.findAll();
+    public ResponseEntity<List<CategoryDto>> getCategories(){
+        List<Category> categories = categoryService.findAll();
+        List<CategoryDto> categoryDtoList = categoryMapper.categoryToCategoryDTO(categories);
+        return ResponseEntity.ok().body(categoryDtoList);
     }
 
     @GetMapping("/category/{id}")
     public ResponseEntity<CategoryDto> getCategoryById(UUID id){
-       return categoryService.findById(id);
+        Category category = categoryService.findById(id);
+        CategoryDto categoryDto = categoryMapper.categoryToCategoryDTO(category);
+        return ResponseEntity.ok().body(categoryDto);
     }
 
     @PostMapping("/category")
-    public ResponseEntity createCategory(@RequestBody Category category){
-        return categoryService.save(category);
+    public ResponseEntity createCategory(@RequestBody CategoryDto categoryDto){
+        Category category = categoryMapper.categoryDTOToCategory(categoryDto);
+        Category savedCategory = categoryService.save(category);
+        return ResponseEntity.ok().body(savedCategory);
     }
 
     @PutMapping("/category/{id}")
-    public ResponseEntity updateCategory(@RequestBody Category category , @PathVariable UUID id){
+    public ResponseEntity updateCategory(@RequestBody CategoryDto categoryDto , @PathVariable UUID id){
+
+        Category category = categoryMapper.categoryDTOToCategory(categoryDto);
         categoryService.updateById(category , id);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/category/{id}")
     public ResponseEntity deleteCategory(UUID id){
-      return  categoryService.deleteById(id);
+        Category existingCategory = categoryService.findById(id);
+        categoryService.deleteById(existingCategory);
+        return ResponseEntity.ok().build();
     }
 
 }

@@ -8,13 +8,13 @@ import java.util.UUID;
 
 
 public interface CategoryService {
-    public ResponseEntity save(Category category);
+    public Category save(Category category);
 
     public List<Category> findAll();
 
-    public ResponseEntity<CategoryDto> findById(UUID id);
+    public Category findById(UUID id);
 
-    public ResponseEntity deleteById(UUID id);
+    public void deleteById(Category category);
 
-    public ResponseEntity<CategoryDto> updateById(Category category , UUID id);
+    public Category updateById(Category category , UUID id);
 }
