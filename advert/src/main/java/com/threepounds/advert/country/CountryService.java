@@ -1,11 +1,15 @@
 package com.threepounds.advert.country;
 
+import com.threepounds.advert.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
-    @Service
+@Service
     public class CountryService {
 
     @Autowired
@@ -28,4 +32,11 @@ import java.util.List;
         return countryRepository.findByIso_code_3(iso_code_3);
     }
 
+    public Optional<Country> getById(UUID countryID ){
+        return countryRepository.findById(countryID);
     }
+
+    public void deleteCountry(Country country){
+        countryRepository.delete(country);
+    }
+}
