@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/categories")
 public class CategoryController {
 
     private final CategoryService categoryService;
@@ -18,28 +18,28 @@ public class CategoryController {
         this.categoryMapper = categoryMapper;
     }
 
-    @GetMapping("/category")
+    @GetMapping("")
     public ResponseEntity<List<CategoryDto>> getCategories(){
         List<Category> categories = categoryService.findAll();
         List<CategoryDto> categoryDtoList = categoryMapper.categoryToCategoryDTO(categories);
         return ResponseEntity.ok().body(categoryDtoList);
     }
 
-    @GetMapping("/category/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<CategoryDto> getCategoryById(UUID id){
         Category category = categoryService.findById(id);
         CategoryDto categoryDto = categoryMapper.categoryToCategoryDTO(category);
         return ResponseEntity.ok().body(categoryDto);
     }
 
-    @PostMapping("/category")
+    @PostMapping("")
     public ResponseEntity createCategory(@RequestBody CategoryDto categoryDto){
         Category category = categoryMapper.categoryDTOToCategory(categoryDto);
         Category savedCategory = categoryService.save(category);
         return ResponseEntity.ok().body(savedCategory);
     }
 
-    @PutMapping("/category/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity updateCategory(@RequestBody CategoryDto categoryDto , @PathVariable UUID id){
 
         Category category = categoryMapper.categoryDTOToCategory(categoryDto);
@@ -47,7 +47,7 @@ public class CategoryController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/category/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity deleteCategory(UUID id){
         Category existingCategory = categoryService.findById(id);
         categoryService.deleteById(existingCategory);
