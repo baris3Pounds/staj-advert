@@ -1,9 +1,8 @@
 package com.threepounds.advert.country;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class CountryService {
@@ -23,7 +22,7 @@ public class CountryService {
     return countryRepository.findByName(name);
   }
 
-  public List<Country> listByIso_code_3(String iso_code_3) {
-    return countryRepository.findByIso_code_3(iso_code_3);
+  public List<Country> listByIsoCode3(String isoCode3) {
+    return countryRepository.findByIsoCode3(isoCode3);
   }
 }
