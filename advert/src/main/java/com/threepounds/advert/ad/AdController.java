@@ -5,7 +5,7 @@ import java.util.UUID;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping(path = "/ads")
+@RequestMapping(path = "/api/v1/ads")
 @RestController
 public class AdController {
 

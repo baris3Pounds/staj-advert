@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public interface CountryRepository extends JpaRepository<Country, UUID> {
 
-  List<Country> findByIso_code_3(String iso_code_3);
+  List<Country> findByIsoCode3(String isoCode3);
 
   List<Country> findByName(String name);
 }
