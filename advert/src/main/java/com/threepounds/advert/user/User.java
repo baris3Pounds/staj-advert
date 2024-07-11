@@ -7,18 +7,22 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import java.util.UUID;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+
+@NoArgsConstructor
+@Getter
+@Setter
 @Entity(name = "users")
 public class User {
 
-  @Id
-  @GeneratedValue
-  private UUID id;
+  @Id @GeneratedValue private UUID id;
 
-  @Column
-  private String name;
-  @Column
-  private int age;
+  @Column private String name;
+  @Column private int age;
 
   @Column
   @Enumerated(EnumType.STRING)
@@ -26,54 +30,9 @@ public class User {
 
   private boolean active;
 
-  public User() {}
-
   public User(String name, int age, Gender gender) {
     this.name = name;
     this.age = age;
     this.gender = gender;
   }
-
-  public UUID getId() {
-    return id;
-  }
-
-  public void setId(UUID id) {
-    this.id = id;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public int getAge() {
-    return age;
-  }
-
-  public void setAge(int age) {
-    this.age = age;
-  }
-
-  public Gender getGender() {
-    return gender;
-  }
-
-  public void setGender(Gender gender) {
-    this.gender = gender;
-  }
-
-  public boolean isActive() {
-    return active;
-  }
-
-  public void setActive(boolean active) {
-    this.active = active;
-  }
 }
-
-
-

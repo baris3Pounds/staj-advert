@@ -1,6 +1,5 @@
 package com.threepounds.advert.country;
 
-
 import com.threepounds.advert.user.Gender;
 import jakarta.persistence.*;
 
@@ -9,23 +8,16 @@ import java.util.UUID;
 @Entity(name = "countries")
 public class Country {
 
-  @Id
-  @GeneratedValue
-  private UUID id;
+  @Id @GeneratedValue private UUID id;
 
-  @Column
-  private String name;
-  @Column
-  private int phone_code;
-  @Column
-  private String iso_code_3;
-  @Column
-  private boolean active;
+  @Column private String name;
+  @Column private int phone_code;
+  @Column private String iso_code_3;
+  @Column private boolean active;
 
   public Country() {}
 
-  public Country(String name, int phone_code,String iso_code_3 , boolean active
-                 ) {
+  public Country(String name, int phone_code, String iso_code_3, boolean active) {
     this.name = name;
     this.phone_code = phone_code;
     this.iso_code_3 = iso_code_3;
@@ -72,4 +64,3 @@ public class Country {
     this.active = active;
   }
 }
-
