@@ -1,5 +1,6 @@
 package com.threepounds.advert.country;
 
+import com.threepounds.advert.category.Category;
 import com.threepounds.advert.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +11,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-    public class CountryService {
+    public abstract class CountryService {
 
     @Autowired
     private CountryRepository countryRepository;
@@ -28,15 +29,22 @@ import java.util.UUID;
         return countryRepository.findByName(name);
     }
 
-    public List<Country> listByIso_code_3(String iso_code_3) {
-        return countryRepository.findByIso_code_3(iso_code_3);
+    public List<Country> listByIsoCode3(String isocode3) {
+        return countryRepository.findByIsoCode3(isocode3);
     }
 
     public Optional<Country> getById(UUID countryID ){
         return countryRepository.findById(countryID);
     }
 
-    public void deleteCountry(Country country){
-        countryRepository.delete(country);
+
+    public Country findById(UUID id) {
+        return countryRepository.findById(id).get();
     }
+
+    public List<Country> findAll() {
+        return countryRepository.findAll();
+    }
+
+    public abstract void deleteById(Country country);
 }

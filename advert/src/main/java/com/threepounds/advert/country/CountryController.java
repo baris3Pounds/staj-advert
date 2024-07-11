@@ -1,7 +1,8 @@
 package com.threepounds.advert.country;
 
 
-import com.threepounds.advert.user.User;
+import com.threepounds.advert.category.Category;
+import com.threepounds.advert.category.CategoryDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -13,43 +14,55 @@ import java.util.UUID;
 public class CountryController {
 
         private final CountryService countryService;
+        private final CountryMapper countryMapper;
 
-        public CountryController(CountryService countryService) {
+        public CountryController(CountryService countryService, CountryMapper countryMapper) {
             this.countryService = countryService;
-        }
-
-        @GetMapping
-        public List<Country> getCountries() {
-            return countryService.list();
-        }
-
-        @PostMapping
-        public Country save(@RequestBody Country country) {
-            return countryService.save(country);
-        }
-
-        @GetMapping("/by-name")
-        public List<Country> getCountriesByName(@RequestParam String name) {
-            return countryService.listByName(name);
-        }
-
-    @PutMapping("/{countyrId}")
-    public <id> ResponseEntity<Country> update(@PathVariable UUID countyrId, @RequestBody Country country) {
-        Country existingCountry =
-                countryService.getById(countyrId).orElseThrow(() -> new RuntimeException("Country not found"));
-        existingCountry.setPhone_code(country.getPhone_code());
-        existingCountry.setName(country.getName());
-        existingCountry.setIso_code_3(country.getIso_code_3());
-        Country updateCountry = countryService.save(existingCountry);
-        return ResponseEntity.ok().body(updateCountry);
+        this.countryMapper = countryMapper;
     }
 
-    // DeleteMapping
-    @DeleteMapping("/{countryId}")
-    public ResponseEntity delete(@PathVariable UUID countryId) {
-        Country existingUser =
-                countryService.getById(countryId).orElseThrow(() -> new RuntimeException("Country not found"));
-        countryService.deleteCountry(existingUser);
-        return ResponseEntity.ok().build();
+    @GetMapping("")
+    public ResponseEntity<List<CountryDTO>>getCountries(){
+            List<Country> countries = countryService.findAll();
+            List<CountryDTO> countryDTOList = countryMapper.countryListToCountryDTOList(countries);
+            return ResponseEntity.ok(countryDTOList);
+
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CountryDTO> getCountryById(UUID id){
+        Country country = countryService.findById(id);
+        CountryDTO countryDTO = countryMapper.countryToCountryDTO(country);
+        return ResponseEntity.ok().body(countryDTO);
+    }
+
+    @PostMapping("")
+    public ResponseEntity<CountryDTO> createCountry(@RequestBody CountryDTO countryDTO){
+            Country country = countryMapper.countryDTOToCountry(countryDTO);
+            Country savedCountry = countryService.save(country);
+            return ResponseEntity.ok().body(countryMapper.countryToCountryDTO(savedCountry));
+
+    }
+////////////////
+    @GetMapping("/by-name")
+    public List<Country> getCountriesByName(String name) {
+        return countryService.listByName(name);
+    }
+/////////////////
+
+   @PutMapping("/{id}")
+   public ResponseEntity<CountryDTO> updateCountry(@PathVariable UUID id, @RequestBody CountryDTO countryDTO){
+       Country country = countryMapper.countryDTOToCountry(countryDTO);
+       country.setId(id);
+       Country savedCountry = countryService.save(country);
+       return ResponseEntity.ok().body(countryMapper.countryToCountryDTO(savedCountry));
+   }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<CountryDTO> deleteCountry(@PathVariable UUID id){
+        Country existingCountry = countryService.getById(id).orElseThrow(() -> new RuntimeException("Country not found"));
+        countryService.deleteById(existingCountry);
+        return ResponseEntity.ok().body(countryMapper.countryToCountryDTO(existingCountry));
+    }
+
     }
