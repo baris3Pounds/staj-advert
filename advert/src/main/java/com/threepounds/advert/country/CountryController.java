@@ -43,12 +43,12 @@ public class CountryController {
             return ResponseEntity.ok().body(countryMapper.countryToCountryDTO(savedCountry));
 
     }
-////////////////
+
     @GetMapping("/by-name")
-    public List<Country> getCountriesByName(String name) {
-        return countryService.listByName(name);
+    public List<CountryDTO> getCountriesByName(String name) {
+      List<Country> countries = countryService.listByName(name);
+      return countryMapper.countryListToCountryDTOList(countries);
     }
-/////////////////
 
    @PutMapping("/{id}")
    public ResponseEntity<CountryDTO> updateCountry(@PathVariable UUID id, @RequestBody CountryDTO countryDTO){
