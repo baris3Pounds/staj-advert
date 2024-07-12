@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
-@RequestMapping("/countries")
+@RequestMapping("/api/v1/countries")
 @RestController
 
 public class CountryController {
@@ -33,13 +33,13 @@ public class CountryController {
             return countryService.listByName(name);
         }
 
-    @PutMapping("/{countyrId}")
-    public <id> ResponseEntity<Country> update(@PathVariable UUID countyrId, @RequestBody Country country) {
+    @PutMapping("/{countryId}")
+    public ResponseEntity<Country> update(@PathVariable UUID countryId, @RequestBody Country country) {
         Country existingCountry =
-                countryService.getById(countyrId).orElseThrow(() -> new RuntimeException("Country not found"));
-        existingCountry.setPhone_code(country.getPhone_code());
+                countryService.getById(countryId).orElseThrow(() -> new RuntimeException("Country not found"));
+        existingCountry.setPhoneCode(country.getPhoneCode());
         existingCountry.setName(country.getName());
-        existingCountry.setIso_code_3(country.getIso_code_3());
+        existingCountry.setIsoCode3(country.getIsoCode3());
         Country updateCountry = countryService.save(existingCountry);
         return ResponseEntity.ok().body(updateCountry);
     }
