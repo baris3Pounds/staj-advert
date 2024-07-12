@@ -18,6 +18,7 @@ import java.util.UUID;
 @ToString
 public class Role {
     // Karısıklık olmasın diye ayrı pakete yazdım
+    //Testing
 
     @Id
     @GeneratedValue
