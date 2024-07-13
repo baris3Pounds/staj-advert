@@ -1,6 +1,6 @@
 package com.threepounds.advert.user;
 
-import com.threepounds.advert.rolePermision.Role;
+import com.threepounds.advert.rolePermision.entity.Role;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;

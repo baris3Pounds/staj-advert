@@ -1,4 +1,4 @@
-package com.threepounds.advert.rolePermision;
+package com.threepounds.advert.rolePermision.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
