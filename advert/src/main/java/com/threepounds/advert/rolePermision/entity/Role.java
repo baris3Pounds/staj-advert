@@ -17,8 +17,6 @@ import java.util.UUID;
 @NoArgsConstructor
 @ToString
 public class Role {
-    // Karısıklık olmasın diye ayrı pakete yazdım
-    //Testing
 
     @Id
     @GeneratedValue

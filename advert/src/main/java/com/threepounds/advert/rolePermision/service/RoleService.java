@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public interface RoleService {
     Role save(Role role);
-    Role findByName(UUID id);
+    Role findById(UUID id);
     List<Role> findAll();
     void deleteById(UUID id);
 }

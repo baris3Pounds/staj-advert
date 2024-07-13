@@ -1,24 +1,32 @@
 package com.threepounds.advert.rolePermision.service;
 
 import com.threepounds.advert.rolePermision.entity.Permission;
+import com.threepounds.advert.rolePermision.entity.Role;
+import com.threepounds.advert.rolePermision.repository.RoleRepository;
 
 import java.util.List;
 import java.util.UUID;
 
-public class RoleServiceImpl implements PermissionService{
-    @Override
-    public Permission save(Permission permission) {
-        return null;
+public class RoleServiceImpl implements RoleService{
+    private final RoleRepository roleRepository;
+
+    public RoleServiceImpl(RoleRepository roleRepository) {
+        this.roleRepository = roleRepository;
     }
 
     @Override
-    public Permission findByName(UUID id) {
-        return null;
+    public Role save(Role role) {
+        return roleRepository.save(role);
     }
 
     @Override
-    public List<Permission> findAll() {
-        return List.of();
+    public Role findById(UUID id) {
+        return roleRepository.findById(id).orElseThrow(()-> new RuntimeException("The role couldnt find"));
+    }
+
+    @Override
+    public List<Role> findAll() {
+        return roleRepository.findAll();
     }
 
     @Override
