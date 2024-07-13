@@ -1,5 +1,6 @@
 package com.threepounds.advert.rolePermision.service;
 
+import com.threepounds.advert.rolePermision.entity.Permission;
 import com.threepounds.advert.rolePermision.entity.Role;
 
 import java.util.List;
@@ -10,4 +11,5 @@ public interface RoleService {
     Role findById(UUID id);
     List<Role> findAll();
     void deleteById(UUID id);
+    Role addPermissionToRole(UUID id, Permission permission);
 }

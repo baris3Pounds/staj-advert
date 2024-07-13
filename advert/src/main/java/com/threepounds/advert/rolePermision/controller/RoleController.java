@@ -1,7 +1,7 @@
 package com.threepounds.advert.rolePermision.controller;
 
-
 import com.threepounds.advert.rolePermision.dto.RoleDto;
+import com.threepounds.advert.rolePermision.entity.Permission;
 import com.threepounds.advert.rolePermision.entity.Role;
 import com.threepounds.advert.rolePermision.service.RoleService;
 import com.threepounds.advert.rolePermision.utils.mapper.RoleMapper;
@@ -28,7 +28,7 @@ public class RoleController {
     }
 
     @GetMapping("/{id}")
-    public Role getrole(@PathVariable UUID id){
+    public Role getRole(@PathVariable UUID id){
         return roleService.findById(id);
     }
 
@@ -39,12 +39,19 @@ public class RoleController {
     }
 
     @PutMapping("/{id}")
-    public Role updateRole(@PathVariable UUID id,@RequestBody RoleDto roleDto){
+    public Role updateRole(@PathVariable UUID id, @RequestBody RoleDto roleDto){
         Role role = roleService.findById(id);
         role.setName(roleDto.getName());
-        roleService.save(role);
-        return role;
+        return roleService.save(role);
     }
 
+    @PostMapping("/{id}/permissions")
+    public void addPermissionToRole(@PathVariable UUID id, @RequestBody Permission permission){
+         roleService.addPermissionToRole(id, permission);
+    }
 
+    @DeleteMapping("/{id}")
+    public void deleteRole(@PathVariable UUID id) {
+        roleService.deleteById(id);
+    }
 }
