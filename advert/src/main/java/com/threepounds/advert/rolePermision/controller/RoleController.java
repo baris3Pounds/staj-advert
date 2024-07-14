@@ -32,6 +32,8 @@ public class RoleController {
         return roleService.findById(id);
     }
 
+
+
     @PostMapping("")
     public Role createRole(@RequestBody RoleDto roleDto){
         Role role = roleMapper.RoleDtoToRole(roleDto);
@@ -45,10 +47,13 @@ public class RoleController {
         return roleService.save(role);
     }
 
-    @PostMapping("/{id}/permissions")
-    public void addPermissionToRole(@PathVariable UUID id, @RequestBody Permission permission){
-         roleService.addPermissionToRole(id, permission);
+    @PostMapping("/{id}/permissions/{id2}")
+    public Role addPermissionToRole(@PathVariable UUID id , @PathVariable UUID id2){
+        return roleService.addPermissionToRole(id, id2);
+
     }
+
+
 
     @DeleteMapping("/{id}")
     public void deleteRole(@PathVariable UUID id) {

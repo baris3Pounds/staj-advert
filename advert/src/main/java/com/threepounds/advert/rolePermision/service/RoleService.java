@@ -11,5 +11,5 @@ public interface RoleService {
     Role findById(UUID id);
     List<Role> findAll();
     void deleteById(UUID id);
-    Role addPermissionToRole(UUID id, Permission permission);
+    Role addPermissionToRole(UUID id, UUID id2);
 }

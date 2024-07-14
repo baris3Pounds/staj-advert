@@ -1,5 +1,6 @@
 package com.threepounds.advert.rolePermision.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.threepounds.advert.user.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -22,11 +23,12 @@ public class Role {
 
     private String name;
 
-    @ManyToMany(mappedBy = "roles")
+    @ManyToMany(mappedBy = "roles" , fetch = FetchType.LAZY)
+    @JsonBackReference
     private List<User> users = new ArrayList<>();
 
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "role_permissions" ,joinColumns = @JoinColumn(name = "role_id") , inverseJoinColumns = @JoinColumn(name = "permission_id"))
     private List<Permission> permissions =  new  ArrayList<>();
 

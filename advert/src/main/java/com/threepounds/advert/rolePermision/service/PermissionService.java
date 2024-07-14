@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public interface PermissionService {
     Permission save(Permission permission);
-    Permission findByName(UUID id);
+    Permission findById(UUID id);
     List<Permission> findAll();
     void deleteById(UUID id);
 }

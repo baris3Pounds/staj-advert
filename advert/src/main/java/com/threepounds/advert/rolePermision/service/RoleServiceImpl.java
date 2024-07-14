@@ -40,8 +40,11 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public void addPermissionToRole(UUID roleId, Permission permission) {
-        Role role = roleRepository.findById(roleId).orElseThrow(() -> new RuntimeException("Role not found"));
+    public Role addPermissionToRole(UUID roleId, UUID permissionId) {
+        Role role = roleRepository.findById(roleId).orElseThrow();
+        Permission permission = permissionRepository.findById(permissionId).orElseThrow();
         role.getPermissions().add(permission);
+        roleRepository.save(role);
+        return role;
     }
 }

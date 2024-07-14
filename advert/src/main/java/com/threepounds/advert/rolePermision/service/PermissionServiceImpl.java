@@ -21,7 +21,7 @@ public class PermissionServiceImpl implements PermissionService{
     }
 
     @Override
-    public Permission findByName(UUID id) {
+    public Permission findById(UUID id) {
         return permissionRepository.findById(id).orElseThrow(()-> new RuntimeException("permission not found"));
     }
 
