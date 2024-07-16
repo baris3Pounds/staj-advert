@@ -11,4 +11,6 @@ public interface PermissionService {
     Permission findById(UUID id);
     List<Permission> findAll();
     void deleteById(UUID id);
+
+    List<Permission> findByIdList(List<UUID> ids);
 }

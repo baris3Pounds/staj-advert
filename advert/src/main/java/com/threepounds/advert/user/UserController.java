@@ -38,6 +38,9 @@ public class UserController {
     return userService.listByName(name);
   }
 
+
+  // CREATE USER USERDTO kulllanılacak içerisinde List<UUID> roleIds
+
   // PutMapping
   @PutMapping("/{userId}")
   public ResponseEntity<User> update(@PathVariable UUID userId, @RequestBody User user) {

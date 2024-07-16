@@ -24,11 +24,10 @@ public class Role {
     private String name;
 
     @ManyToMany(mappedBy = "roles" , fetch = FetchType.LAZY)
-    @JsonBackReference
     private List<User> users = new ArrayList<>();
 
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "role_permissions" ,joinColumns = @JoinColumn(name = "role_id") , inverseJoinColumns = @JoinColumn(name = "permission_id"))
     private List<Permission> permissions =  new  ArrayList<>();
 

@@ -34,4 +34,9 @@ public class PermissionServiceImpl implements PermissionService{
     public void deleteById(UUID id) {
         permissionRepository.deleteById(id);
     }
+
+    @Override
+    public List<Permission> findByIdList(List<UUID> ids) {
+       return permissionRepository.findAllById(ids);
+    }
 }
