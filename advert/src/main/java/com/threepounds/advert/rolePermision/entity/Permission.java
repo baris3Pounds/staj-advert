@@ -22,7 +22,7 @@ public class Permission {
 
     private String name;
 
-    @ManyToMany(mappedBy = "permissions" , fetch = FetchType.LAZY)
-    @JsonBackReference
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "role_permissions" ,joinColumns = @JoinColumn(name = "permission_id") , inverseJoinColumns = @JoinColumn(name = "role_id"))
     private List<Role> roles = new ArrayList<>();
 }

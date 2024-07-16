@@ -9,13 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
-public class RoleResource {
+public class PermissionResource {
     private UUID id;
     private String name;
-    private List<PermissionResource> permissions = new ArrayList<>();
+    private List<RoleResource> roles = new ArrayList<>();
 }
