@@ -1,5 +1,6 @@
 package com.threepounds.advert.user;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.threepounds.advert.rolePermision.entity.Role;
 import jakarta.persistence.*;
 
@@ -30,6 +31,7 @@ public class User {
 
   @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(name = "user_roles" , joinColumns = @JoinColumn(name = "user_id") , inverseJoinColumns = @JoinColumn(name = "role_id"))
+  @JsonBackReference
   private List<Role> roles = new ArrayList<>();
 
   public User(String name, int age, Gender gender) {
