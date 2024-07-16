@@ -29,9 +29,8 @@ public class User {
 
   private boolean active;
 
-  @ManyToMany(fetch = FetchType.EAGER)
+  @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(name = "user_roles" , joinColumns = @JoinColumn(name = "user_id") , inverseJoinColumns = @JoinColumn(name = "role_id"))
-  @JsonBackReference
   private List<Role> roles = new ArrayList<>();
 
   public User(String name, int age, Gender gender) {

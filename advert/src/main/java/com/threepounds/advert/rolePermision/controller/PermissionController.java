@@ -2,6 +2,7 @@ package com.threepounds.advert.rolePermision.controller;
 
 import com.threepounds.advert.rolePermision.dto.PermissionDto;
 import com.threepounds.advert.rolePermision.entity.Permission;
+import com.threepounds.advert.rolePermision.resource.PermissionResource;
 import com.threepounds.advert.rolePermision.service.PermissionService;
 import com.threepounds.advert.rolePermision.utils.mapper.PermissionMapper;
 import org.springframework.web.bind.annotation.*;
@@ -21,8 +22,10 @@ public class PermissionController {
     }
 
     @GetMapping("")
-    public List<Permission> getAllPermission(){
-         return permissionService.findAll();
+    public List<PermissionResource> getAllPermission(){
+        List<Permission> permissions = permissionService.findAll();
+        List<PermissionResource> permissionResourcesList = permissionMapper.PermissionListToPermissionResourceList(permissions);
+        return permissionResourcesList;
     }
 
     @GetMapping("/{id}")
