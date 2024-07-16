@@ -18,4 +18,7 @@ public class Country {
   @Column private boolean active;
 
 
+  // cities one to many
+
+
 }
