@@ -1,8 +1,11 @@
 package com.threepounds.advert.country;
 
-import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class CountryService {
@@ -25,4 +28,13 @@ public class CountryService {
   public List<Country> listByIsoCode3(String isoCode3) {
     return countryRepository.findByIsoCode3(isoCode3);
   }
+
+  public Optional<Country> getById(UUID countryID ){
+    return countryRepository.findById(countryID);
+  }
+
+  public void deleteCountry(Country country){
+    countryRepository.delete(country);
+  }
+
 }

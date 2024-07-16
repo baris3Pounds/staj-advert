@@ -1,5 +1,7 @@
 package com.threepounds.advert.ad;
 
+import com.threepounds.advert.category.Category;
+import com.threepounds.advert.category.CategoryService;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.http.ResponseEntity;
@@ -11,8 +13,14 @@ public class AdController {
 
   private final AdService adService;
 
-  public AdController(AdService adService) {
+  private final AdMapper adMapper;
+
+  private final CategoryService categoryService;
+
+  public AdController(AdService adService, AdMapper adMapper, CategoryService categoryService) {
     this.adService = adService;
+    this.adMapper = adMapper;
+    this.categoryService = categoryService;
   }
 
   @GetMapping
@@ -21,8 +29,13 @@ public class AdController {
   }
 
   @PostMapping
-  public void addAd(@RequestBody Ad ad) {
-    adService.save(ad);
+  public ResponseEntity<AdDto> addAd(@RequestBody AdDto adDto) {
+    Category category = categoryService.findById(adDto.getCategoryId());
+    Ad ad = adMapper.adToAdDto(adDto);
+    ad.setCategory(category);
+    Ad savedAd = adService.save(ad);
+    AdDto resource = adMapper.adToAdDto(savedAd);
+    return ResponseEntity.ok().body(resource);
   }
 
   @GetMapping(path = "/by-title")
