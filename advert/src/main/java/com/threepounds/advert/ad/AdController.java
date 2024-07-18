@@ -38,10 +38,12 @@ public class AdController {
     return ResponseEntity.ok().body(resource);
   }
 
+
   @GetMapping(path = "/by-title")
   public List<Ad> getAdsByTitle(@RequestParam String name) {
     return adService.listByTitle(name);
   }
+
 
   @PutMapping(path = "/{adId}")
   public ResponseEntity<Ad> update(@PathVariable UUID adId, @RequestBody Ad ad) {
@@ -54,6 +56,7 @@ public class AdController {
 
     return ResponseEntity.ok().body(updatedAd);
   }
+
 
   @DeleteMapping("/{adId}")
   public ResponseEntity delete(@PathVariable UUID adId) {

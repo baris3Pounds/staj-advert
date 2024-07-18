@@ -7,6 +7,8 @@ import com.threepounds.advert.rolePermision.resource.RoleResource;
 import com.threepounds.advert.rolePermision.service.PermissionService;
 import com.threepounds.advert.rolePermision.service.RoleService;
 import com.threepounds.advert.rolePermision.utils.mapper.RoleMapper;
+import java.util.Collections;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -55,10 +57,15 @@ public class RoleController {
 
     @PostMapping("")
     public RoleResource createRole(@RequestBody RoleDto roleDto){
+
         Role role = roleMapper.RoleDtoToRole(roleDto);
+        if(!CollectionUtils.isEmpty(roleDto.getPermissionIds())){
+            List<Permission> permissions = permissionService.findByIdList(roleDto.getPermissionIds());
+            role.setPermissions(permissions);
+        }
+
         roleService.save(role);
-        RoleResource roleResource = roleMapper.RoleToRoleResource(role);
-        return roleResource;
+      return roleMapper.RoleToRoleResource(role);
     }
 
     @PutMapping("/{id}")

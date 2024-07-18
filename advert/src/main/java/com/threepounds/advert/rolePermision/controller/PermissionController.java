@@ -34,9 +34,13 @@ public class PermissionController {
     }
 
     @PostMapping("")
-    public Permission createPermission(@RequestBody PermissionDto permissionDto){
+    public PermissionResource createPermission(@RequestBody PermissionDto permissionDto){
         Permission permission = permissionMapper.PermissionDtoToPermission(permissionDto);
-        return permissionService.save(permission);
+
+        Permission savedPermission = permissionService.save(permission);
+        PermissionResource permissionResource = permissionMapper.PermissionToPermissionResource(
+            savedPermission);
+        return permissionResource;
     }
 
     @PutMapping("/{id}")

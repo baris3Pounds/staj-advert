@@ -13,7 +13,6 @@ public interface PermissionMapper {
 
     Permission PermissionDtoToPermission(PermissionDto permissionDto);
 
-    @Mapping(source = "roles", target = "roles")
     PermissionResource PermissionToPermissionResource(Permission permission);
 
     List<PermissionResource> PermissionListToPermissionResourceList(List<Permission> permissions);

@@ -12,7 +12,6 @@ import java.util.UUID;
 public class RoleDto {
     private UUID id;
     private String name;
-    private UUID userId;
     private List<UUID> permissionIds;
 
 }
