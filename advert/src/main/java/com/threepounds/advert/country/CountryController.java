@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
-@RequestMapping("/countries")
+@RequestMapping("/api/v1/countries")
 @RestController
 
 public class CountryController {

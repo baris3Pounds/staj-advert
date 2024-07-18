@@ -21,7 +21,7 @@ public class Country {
 
 
   // cities one to many
-  @OneToMany(mappedBy = "country", fetch = FetchType.LAZY)
+  @OneToMany(mappedBy = "country", fetch = FetchType.EAGER)
   private List<City> cities = new ArrayList<>();
 
 }

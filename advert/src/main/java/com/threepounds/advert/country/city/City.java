@@ -20,8 +20,9 @@ import java.util.UUID;
 public class City {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-
   private UUID id;
+
+  @Column
   private String name;
 
   // MANY TO ONE

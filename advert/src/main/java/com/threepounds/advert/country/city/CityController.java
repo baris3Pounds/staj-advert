@@ -1,5 +1,8 @@
 package com.threepounds.advert.country.city;
 
+import com.threepounds.advert.country.Country;
+import com.threepounds.advert.country.CountryService;
+import java.util.Optional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,9 +17,13 @@ public class CityController {
    private final CityService cityService;
    private final CityMapper cityMapper;
 
-    public CityController(CityService cityService, CityMapper cityMapper) {
+   private final CountryService countryService;
+
+    public CityController(CityService cityService, CityMapper cityMapper,
+        CountryService countryService) {
        this.cityService = cityService;
        this.cityMapper = cityMapper;
+      this.countryService = countryService;
     }
 
     @GetMapping
@@ -36,7 +43,10 @@ public class CityController {
     @PostMapping("")
     public ResponseEntity<CityDto> createCity(@RequestBody CityDto cityDto) {
         City city = cityMapper.cityDtotoCity(cityDto);
-        City savedCity = cityService.save(city);
+    Country country =
+        countryService.getById(cityDto.getCountryId()).orElseThrow(() -> new RuntimeException("Country Not found"));
+    city.setCountry(country);
+    City savedCity = cityService.save(city);
         return ResponseEntity.ok(cityMapper.citytoCityDto(savedCity));
     }
 
