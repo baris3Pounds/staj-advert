@@ -11,57 +11,53 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/cities")
-
 public class CityController {
 
-   private final CityService cityService;
-   private final CityMapper cityMapper;
+    private final CityService cityService;
+    private final CityMapper cityMapper;
+    private final CountryService countryService;
 
-   private final CountryService countryService;
-
-    public CityController(CityService cityService, CityMapper cityMapper,
-        CountryService countryService) {
-       this.cityService = cityService;
-       this.cityMapper = cityMapper;
-      this.countryService = countryService;
+    public CityController(CityService cityService, CityMapper cityMapper, CountryService countryService) {
+        this.cityService = cityService;
+        this.cityMapper = cityMapper;
+        this.countryService = countryService;
     }
 
-    @GetMapping
-    public ResponseEntity<List<CityDto>>getAllCities() {
-    List<City>cities= cityService.findAll();
-    List<CityDto> cityDtoList =cityMapper.cityListtoCityDtoList(cities);
-    return ResponseEntity.ok(cityDtoList);
+    @GetMapping("")
+    public List<CityResource> getAllCities() {
+        List<City> cities = cityService.findAll();
+        return cityMapper.cityListToCityResourceList(cities);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CityDto> getCityById(@PathVariable UUID id) {
+    public CityResource getCityById(@PathVariable UUID id) {
         City city = cityService.findById(id);
-        CityDto cityDto = cityMapper.citytoCityDto(city);
-        return ResponseEntity.ok(cityDto);
+        return cityMapper.cityToCityResource(city);
     }
 
     @PostMapping("")
-    public ResponseEntity<CityDto> createCity(@RequestBody CityDto cityDto) {
-        City city = cityMapper.cityDtotoCity(cityDto);
-    Country country =
-        countryService.getById(cityDto.getCountryId()).orElseThrow(() -> new RuntimeException("Country Not found"));
-    city.setCountry(country);
-    City savedCity = cityService.save(city);
-        return ResponseEntity.ok(cityMapper.citytoCityDto(savedCity));
+    public CityResource createCity(@RequestBody CityResource cityResource) {
+        City city = cityMapper.cityResourceToCity(cityResource);
+        Country country = countryService.getById(cityResource.getCountryId())
+                .orElseThrow(() -> new RuntimeException("Country Not Found"));
+        city.setCountry(country);
+        City savedCity = cityService.save(city);
+        return cityMapper.cityToCityResource(savedCity);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CityDto> updateCity(@PathVariable UUID id, @RequestBody CityDto cityDto) {
-        City city = cityMapper.cityDtotoCity(cityDto);
+    public CityResource updateCity(@PathVariable UUID id, @RequestBody CityResource cityResource) {
+        City city = cityMapper.cityResourceToCity(cityResource);
         city.setId(id);
-        City savedCity = cityService.save(city);
-        return ResponseEntity.ok(cityMapper.citytoCityDto(savedCity));
+        City updatedCity = cityService.save(city);
+        return cityMapper.cityToCityResource(updatedCity);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<CityDto> deleteCity(@PathVariable UUID id) {
+    public CityResource deleteCity(@PathVariable UUID id) {
         City existingCity = cityService.findById(id);
-        cityService.deleteById(existingCity);
-        return ResponseEntity.ok(cityMapper.citytoCityDto(existingCity));
+        cityService.deleteById(id);
+        return cityMapper.cityToCityResource(existingCity);
     }
 }
+

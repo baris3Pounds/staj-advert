@@ -23,6 +23,6 @@ public class CityService {
         return cityRepository.save(city);
     }
 
-    public void deleteById(City existingCity) {
+    public void deleteById(UUID existingCity) {
     }
 }

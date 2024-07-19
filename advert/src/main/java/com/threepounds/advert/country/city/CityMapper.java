@@ -7,9 +7,8 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface CityMapper {
 
-    CityDto citytoCityDto(City city);
-    City cityDtotoCity(CityDto cityDto);
-    List<CityDto> cityListtoCityDtoList(List<City> cityList);
-    List<City> cityDtoListtoCityList(List<CityDto> cityDtoList);
+    City cityResourceToCity(CityResource cityResource);
+    CityResource cityToCityResource(City city);
+    List<CityResource> cityListToCityResourceList(List<City> cityList);
 
 }
