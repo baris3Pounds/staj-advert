@@ -2,8 +2,6 @@ package com.threepounds.advert.country.city;
 
 import com.threepounds.advert.country.Country;
 import com.threepounds.advert.country.CountryService;
-import java.util.Optional;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,9 +34,9 @@ public class CityController {
     }
 
     @PostMapping("")
-    public CityResource createCity(@RequestBody CityResource cityResource) {
-        City city = cityMapper.cityResourceToCity(cityResource);
-        Country country = countryService.getById(cityResource.getCountryId())
+    public CityResource createCity(@RequestBody CityDto cityDto) {
+        City city = cityMapper.cityDtoToCity(cityDto);
+        Country country = countryService.getById(cityDto.getCountryId())
                 .orElseThrow(() -> new RuntimeException("Country Not Found"));
         city.setCountry(country);
         City savedCity = cityService.save(city);
@@ -46,8 +44,8 @@ public class CityController {
     }
 
     @PutMapping("/{id}")
-    public CityResource updateCity(@PathVariable UUID id, @RequestBody CityResource cityResource) {
-        City city = cityMapper.cityResourceToCity(cityResource);
+    public CityResource updateCity(@PathVariable UUID id, @RequestBody CityDto cityDto) {
+        City city = cityMapper.cityDtoToCity(cityDto);
         city.setId(id);
         City updatedCity = cityService.save(city);
         return cityMapper.cityToCityResource(updatedCity);

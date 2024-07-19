@@ -15,7 +15,4 @@ public class CityResource {
     private UUID id;
     private String name;
 
-    public UUID getCountryId() {
-        return id;
-    }
 }
