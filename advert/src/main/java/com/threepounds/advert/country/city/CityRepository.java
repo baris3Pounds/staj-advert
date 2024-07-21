@@ -1,12 +1,13 @@
 package com.threepounds.advert.country.city;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface CityRepository extends JpaRepository<City, UUID> {
+public interface CityRepository extends PagingAndSortingRepository<City, UUID> {
     List<City> findAll();
 
     Optional<City> findById(UUID id);
