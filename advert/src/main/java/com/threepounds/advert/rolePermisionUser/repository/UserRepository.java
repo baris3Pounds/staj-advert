@@ -1,7 +1,9 @@
-package com.threepounds.advert.user;
+package com.threepounds.advert.rolePermisionUser.repository;
 
 import java.util.List;
 import java.util.UUID;
+
+import com.threepounds.advert.rolePermisionUser.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

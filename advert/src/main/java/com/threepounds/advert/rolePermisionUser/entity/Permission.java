@@ -1,6 +1,5 @@
-package com.threepounds.advert.rolePermision.entity;
+package com.threepounds.advert.rolePermisionUser.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 

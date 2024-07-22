@@ -1,10 +1,10 @@
-package com.threepounds.advert.rolePermision.controller;
+package com.threepounds.advert.rolePermisionUser.controller;
 
-import com.threepounds.advert.rolePermision.dto.PermissionDto;
-import com.threepounds.advert.rolePermision.entity.Permission;
-import com.threepounds.advert.rolePermision.resource.PermissionResource;
-import com.threepounds.advert.rolePermision.service.PermissionService;
-import com.threepounds.advert.rolePermision.utils.mapper.PermissionMapper;
+import com.threepounds.advert.rolePermisionUser.dto.PermissionDto;
+import com.threepounds.advert.rolePermisionUser.entity.Permission;
+import com.threepounds.advert.rolePermisionUser.resource.PermissionResource;
+import com.threepounds.advert.rolePermisionUser.service.PermissionService;
+import com.threepounds.advert.rolePermisionUser.utils.mapper.PermissionMapper;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

@@ -1,8 +1,11 @@
-package com.threepounds.advert.user;
+package com.threepounds.advert.rolePermisionUser.service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
+import com.threepounds.advert.rolePermisionUser.entity.User;
+import com.threepounds.advert.rolePermisionUser.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

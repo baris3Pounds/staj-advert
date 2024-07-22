@@ -1,12 +1,10 @@
-package com.threepounds.advert.rolePermision.resource;
+package com.threepounds.advert.rolePermisionUser.resource;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @NoArgsConstructor

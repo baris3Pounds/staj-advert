@@ -1,9 +1,9 @@
-package com.threepounds.advert.rolePermision.service;
+package com.threepounds.advert.rolePermisionUser.service;
 
-import com.threepounds.advert.rolePermision.entity.Permission;
-import com.threepounds.advert.rolePermision.entity.Role;
-import com.threepounds.advert.rolePermision.repository.RoleRepository;
-import com.threepounds.advert.rolePermision.repository.PermissionRepository;
+import com.threepounds.advert.rolePermisionUser.entity.Permission;
+import com.threepounds.advert.rolePermisionUser.entity.Role;
+import com.threepounds.advert.rolePermisionUser.repository.RoleRepository;
+import com.threepounds.advert.rolePermisionUser.repository.PermissionRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

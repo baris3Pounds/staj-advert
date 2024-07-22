@@ -1,10 +1,10 @@
-package com.threepounds.advert.rolePermision.utils.mapper;
+package com.threepounds.advert.rolePermisionUser.utils.mapper;
 
-import com.threepounds.advert.rolePermision.dto.RoleDto;
-import com.threepounds.advert.rolePermision.entity.Role;
-import com.threepounds.advert.rolePermision.entity.Permission;
-import com.threepounds.advert.rolePermision.resource.RoleResource;
-import com.threepounds.advert.rolePermision.resource.PermissionResource;
+import com.threepounds.advert.rolePermisionUser.dto.RoleDto;
+import com.threepounds.advert.rolePermisionUser.entity.Role;
+import com.threepounds.advert.rolePermisionUser.entity.Permission;
+import com.threepounds.advert.rolePermisionUser.resource.RoleResource;
+import com.threepounds.advert.rolePermisionUser.resource.PermissionResource;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

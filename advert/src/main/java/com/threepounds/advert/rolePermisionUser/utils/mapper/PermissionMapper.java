@@ -1,10 +1,9 @@
-package com.threepounds.advert.rolePermision.utils.mapper;
+package com.threepounds.advert.rolePermisionUser.utils.mapper;
 
-import com.threepounds.advert.rolePermision.dto.PermissionDto;
-import com.threepounds.advert.rolePermision.entity.Permission;
-import com.threepounds.advert.rolePermision.resource.PermissionResource;
+import com.threepounds.advert.rolePermisionUser.dto.PermissionDto;
+import com.threepounds.advert.rolePermisionUser.entity.Permission;
+import com.threepounds.advert.rolePermisionUser.resource.PermissionResource;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 import java.util.List;
 

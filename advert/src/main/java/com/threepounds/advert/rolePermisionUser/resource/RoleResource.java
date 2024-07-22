@@ -1,4 +1,4 @@
-package com.threepounds.advert.rolePermision.resource;
+package com.threepounds.advert.rolePermisionUser.resource;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

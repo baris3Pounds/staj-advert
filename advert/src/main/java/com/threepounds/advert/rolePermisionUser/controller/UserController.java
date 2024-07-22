@@ -1,7 +1,10 @@
-package com.threepounds.advert.user;
+package com.threepounds.advert.rolePermisionUser.controller;
 
 import java.util.List;
 import java.util.UUID;
+
+import com.threepounds.advert.rolePermisionUser.entity.User;
+import com.threepounds.advert.rolePermisionUser.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
