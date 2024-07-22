@@ -22,8 +22,7 @@ public class CategoryServiceImpl implements CategoryService{
     }
 
     @Override
-    public List<Category> findAll(int no , int size) {
-        PageRequest pageble = PageRequest.of(no, size);
+    public List<Category> findAll(PageRequest pageble) {
        Page<Category> page = categoryRepository.findAll(pageble);
         return page.toList();
     }
