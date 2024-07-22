@@ -2,6 +2,7 @@ package com.threepounds.advert.ad;
 
 import com.threepounds.advert.category.Category;
 import com.threepounds.advert.category.CategoryService;
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +30,7 @@ public class AdController {
   }
 
   @PostMapping
-  public ResponseEntity<AdDto> addAd(@RequestBody AdDto adDto) {
+  public ResponseEntity<AdDto> addAd(@Valid @RequestBody AdDto adDto) {
     Category category = categoryService.findById(adDto.getCategoryId());
     Ad ad = adMapper.adToAdDto(adDto);
     ad.setCategory(category);
