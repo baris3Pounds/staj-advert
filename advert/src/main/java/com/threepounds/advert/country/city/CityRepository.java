@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface CityRepository extends PagingAndSortingRepository<City, UUID> {
+public interface CityRepository extends JpaRepository<City, UUID> {
     List<City> findAll();
 
     Optional<City> findById(UUID id);

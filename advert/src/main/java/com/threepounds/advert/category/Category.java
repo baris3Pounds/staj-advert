@@ -1,5 +1,6 @@
 package com.threepounds.advert.category;
 
+import com.threepounds.advert.ad.Ad;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,4 +31,9 @@ public class Category {
     private boolean active;
 
     // new branch added
+
+    @ManyToOne(cascade = {CascadeType.DETACH , CascadeType.MERGE , CascadeType.PERSIST , CascadeType.REFRESH})
+    @JoinColumn(name = "ad_id")
+    private Ad ad;
+
 }

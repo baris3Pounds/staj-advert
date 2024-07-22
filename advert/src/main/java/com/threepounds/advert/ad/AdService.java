@@ -27,7 +27,7 @@ public class AdService {
 
   public List<Ad> list(int no , int size) {
 
-    PageRequest pageble = new PageRequest.of(no , size);
+    PageRequest pageble =  PageRequest.of(no , size);
     Page<Ad> myList = adRepository.findAll(pageble);
 
     return myList.toList();
@@ -46,8 +46,8 @@ public class AdService {
   }
 
 
-  public List<Ad> listByCategory(Category category) {
+/*  public List<Ad> listByCategory(Category category) {
     return adRepository.findByCategory(category);
   }
-
+*/
 }

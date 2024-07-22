@@ -23,16 +23,21 @@ public class AdController {
     this.categoryService = categoryService;
   }
 
-  @GetMapping
-  public List<Ad> getAds() {
-    return adService.list();
+  @GetMapping("/")
+  public List<Ad> getAds(@RequestParam int no , @RequestParam int size) {
+
+    return adService.list(no, size);
   }
 
   @PostMapping
   public ResponseEntity<AdDto> addAd(@RequestBody AdDto adDto) {
     Category category = categoryService.findById(adDto.getCategoryId());
     Ad ad = adMapper.adToAdDto(adDto);
-    ad.setCategory(category);
+
+    if(category != null){
+      ad.addCategory(category);
+    }
+
     Ad savedAd = adService.save(ad);
     AdDto resource = adMapper.adToAdDto(savedAd);
     return ResponseEntity.ok().body(resource);

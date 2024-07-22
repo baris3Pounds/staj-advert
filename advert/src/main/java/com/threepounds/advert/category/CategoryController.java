@@ -19,8 +19,8 @@ public class CategoryController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<CategoryDto>> getCategories(){
-        List<Category> categories = categoryService.findAll();
+    public ResponseEntity<List<CategoryDto>> getCategories(@RequestParam int no , @RequestParam int size){
+        List<Category> categories = categoryService.findAll(no, size);
         List<CategoryDto> categoryDtoList = categoryMapper.categoryToCategoryDTO(categories);
         return ResponseEntity.ok().body(categoryDtoList);
     }
