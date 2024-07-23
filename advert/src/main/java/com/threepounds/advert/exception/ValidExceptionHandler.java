@@ -16,7 +16,7 @@ public class ValidExceptionHandler {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String , String>> handleValidationsExceptions(MethodArgumentNotValidException ex){
+    public ResponseEntity<GeneralResponse<Object>> handleValidationsExceptions(MethodArgumentNotValidException ex){
         Map<String , String> errors = new HashMap<>();
 
         ex.getBindingResult().getAllErrors().forEach(
@@ -26,6 +26,10 @@ public class ValidExceptionHandler {
                     errors.put(fieldName, errorMessage);
                 }
         );
-        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+
+      GeneralResponse<Object> objectGeneralResponse = new GeneralResponse<>();
+      objectGeneralResponse.setErrors(errors);
+      objectGeneralResponse.setData(null);
+      return ResponseEntity.badRequest().body(objectGeneralResponse);
     }
 }

@@ -1,5 +1,6 @@
 package com.threepounds.advert.rolePermisionUser.controller;
 
+import com.threepounds.advert.exception.GeneralResponse;
 import com.threepounds.advert.rolePermisionUser.dto.RoleDto;
 import com.threepounds.advert.rolePermisionUser.entity.Permission;
 import com.threepounds.advert.rolePermisionUser.entity.Role;
@@ -7,6 +8,7 @@ import com.threepounds.advert.rolePermisionUser.resource.RoleResource;
 import com.threepounds.advert.rolePermisionUser.service.PermissionService;
 import com.threepounds.advert.rolePermisionUser.service.RoleService;
 import com.threepounds.advert.rolePermisionUser.utils.mapper.RoleMapper;
+import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,7 +57,7 @@ public class RoleController {
      */
 
     @PostMapping("")
-    public RoleResource createRole(@RequestBody RoleDto roleDto){
+    public ResponseEntity<GeneralResponse<RoleResource>> createRole(@RequestBody RoleDto roleDto){
 
         Role role = roleMapper.RoleDtoToRole(roleDto);
         if(!CollectionUtils.isEmpty(roleDto.getPermissionIds())){
@@ -64,7 +66,10 @@ public class RoleController {
         }
 
         roleService.save(role);
-      return roleMapper.RoleToRoleResource(role);
+        GeneralResponse<RoleResource> objectGeneralResponse = new GeneralResponse<>();
+        objectGeneralResponse.setErrors(null);
+        objectGeneralResponse.setData(roleMapper.RoleToRoleResource(role));
+        return ResponseEntity.ok().body(objectGeneralResponse);
     }
 
     @PutMapping("/{id}")

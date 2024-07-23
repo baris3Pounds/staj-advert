@@ -3,6 +3,7 @@ package com.threepounds.advert.ad;
 import com.threepounds.advert.category.Category;
 import com.threepounds.advert.category.CategoryService;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,10 +24,10 @@ public class AdController {
     this.categoryService = categoryService;
   }
 
-  @GetMapping("/")
-  public List<Ad> getAds(@RequestParam int no , @RequestParam int size) {
+  @GetMapping("")
+  public List<Ad> getAds(@RequestParam Optional<Integer> no , @RequestParam Optional<Integer> size) {
 
-    return adService.list(no, size);
+    return adService.list(no.orElse(0), size.orElse(10));
   }
 
   @PostMapping
