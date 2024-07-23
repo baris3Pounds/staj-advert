@@ -5,6 +5,7 @@ import com.threepounds.advert.category.CategoryService;
 import jakarta.validation.Valid;
 import java.util.List;
 import java.util.UUID;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,9 +31,9 @@ public class AdController {
   }
 
   @PostMapping
-  public ResponseEntity<AdDto> addAd(@Valid @RequestBody AdDto adDto) {
+  public ResponseEntity<AdDto> addAd(@RequestBody @Valid @NotNull AdDto adDto) {
     Category category = categoryService.findById(adDto.getCategoryId());
-    Ad ad = adMapper.adToAdDto(adDto);
+    Ad ad = adMapper.adDtoToAd(adDto);
     ad.setCategory(category);
     Ad savedAd = adService.save(ad);
     AdDto resource = adMapper.adToAdDto(savedAd);
@@ -60,7 +61,7 @@ public class AdController {
 
 
   @DeleteMapping("/{adId}")
-  public ResponseEntity delete(@PathVariable UUID adId) {
+  public ResponseEntity<AdDto> delete(@Valid @PathVariable UUID adId) {
     Ad existingAd =
         adService.getById(adId).orElseThrow(() -> new RuntimeException("User not found"));
     adService.deleteAd(existingAd);
