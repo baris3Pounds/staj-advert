@@ -5,31 +5,36 @@ import jakarta.persistence.*;
 
 import jakarta.validation.constraints.NotBlank;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-@Entity(name = "ads")
+@Entity
+@Table(name = "ads")
 public class Ad {
 
-  @Id @GeneratedValue private UUID id;
+  @Id
+  @GeneratedValue
+  private UUID id;
 
-  @Column private String title;
+  @Column(nullable = false, length = 100)
+  private String title;
 
-  // description
-  @Column private String description;
+  @Column(length = 500)
+  private String description;
 
-  // price  (BigDecimal)
-  @Column private BigDecimal price;
+  @Column(nullable = false)
+  private BigDecimal price;
 
-  // active (boolean)
-  @Column private boolean active = true;
+  @Column(nullable = false)
+  private boolean active = true;
 
-  @OneToOne(cascade = {CascadeType.DETACH , CascadeType.MERGE , CascadeType.PERSIST , CascadeType.REFRESH} , fetch = FetchType.EAGER)
-  @JoinColumn(name = "category_id")
-  private Category category;
+  @OneToMany(mappedBy = "ad", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+  private List<Category> categories = new ArrayList<>();
 
   public Ad() {}
 
@@ -37,5 +42,10 @@ public class Ad {
     this.title = title;
     this.description = description;
     this.price = price;
+  }
+
+  public void addCategory(Category category) {
+    categories.add(category);
+    category.setAd(this);
   }
 }

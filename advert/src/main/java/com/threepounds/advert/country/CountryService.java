@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -12,8 +14,10 @@ public class CountryService {
     @Autowired
     private CountryRepository countryRepository;
 
-    public List<Country> list(){
-            return countryRepository.findAll();
+    public List<Country> list(int no , int size){
+        PageRequest pageble = PageRequest.of(no, size);
+        Page<Country> page = countryRepository.findAll(pageble);
+        return page.toList();
         }
 
     public Country save(Country country){

@@ -26,9 +26,9 @@ public class CityController {
       this.countryService = countryService;
     }
 
-    @GetMapping
-    public ResponseEntity<List<CityDto>>getAllCities() {
-    List<City>cities= cityService.findAll();
+    @GetMapping("/")
+    public ResponseEntity<List<CityDto>>getAllCities(@RequestParam int no , @RequestParam int size) {
+    List<City>cities= cityService.findAll(no, size);
     List<CityDto> cityDtoList =cityMapper.cityListtoCityDtoList(cities);
     return ResponseEntity.ok(cityDtoList);
     }
