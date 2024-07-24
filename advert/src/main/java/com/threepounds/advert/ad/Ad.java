@@ -33,8 +33,8 @@ public class Ad {
   @Column(nullable = false)
   private boolean active = true;
 
-  @OneToMany(mappedBy = "ad", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-  private List<Category> categories = new ArrayList<>();
+  @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+  private Category category;
 
   public Ad() {}
 
@@ -44,8 +44,4 @@ public class Ad {
     this.price = price;
   }
 
-  public void addCategory(Category category) {
-    categories.add(category);
-    category.setAd(this);
-  }
 }

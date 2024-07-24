@@ -46,8 +46,5 @@ public class AdService {
   }
 
 
-  public List<Ad> listByCategory(Category category) {
-    return adRepository.findByCategory(category);
-  }
 
 }

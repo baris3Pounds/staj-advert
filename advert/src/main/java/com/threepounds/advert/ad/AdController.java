@@ -29,7 +29,9 @@ public class AdController {
 
   @LogExecutionTime
   @GetMapping
-  public List<Ad> getAds(@RequestParam Optional<Integer> no , @RequestParam Optional<Integer> size) {
+  public List<Ad> getAds(@RequestParam Optional<Integer> no , @RequestParam Optional<Integer> size)
+      throws InterruptedException {
+    Thread.sleep(500);
     return adService.list(no.orElse(0), size.orElse(10));
   }
 
@@ -37,9 +39,8 @@ public class AdController {
   public ResponseEntity<AdDto> addAd(@Valid @RequestBody AdDto adDto) {
     Category category = categoryService.findById(adDto.getCategoryId());
     Ad ad = adMapper.adToAdDto(adDto);
-
     if(category != null){
-      ad.addCategory(category);
+      ad.setCategory(category);
     }
 
     Ad savedAd = adService.save(ad);
