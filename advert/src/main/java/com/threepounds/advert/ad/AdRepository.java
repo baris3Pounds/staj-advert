@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface AdRepository extends PagingAndSortingRepository<Ad, UUID> {
+public interface AdRepository extends JpaRepository<Ad, UUID> {
   List<Ad> findByTitle(String title);
   List<Ad> findByCategory(Category category);
   List<Ad> findByTitleAndCategory(String title, Category category);

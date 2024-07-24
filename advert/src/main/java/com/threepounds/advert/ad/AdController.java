@@ -1,5 +1,6 @@
 package com.threepounds.advert.ad;
 
+import com.threepounds.advert.annotations.LogExecutionTime;
 import com.threepounds.advert.category.Category;
 import com.threepounds.advert.category.CategoryService;
 import jakarta.validation.Valid;
@@ -24,9 +25,10 @@ public class AdController {
     this.categoryService = categoryService;
   }
 
+  @LogExecutionTime
   @GetMapping
   public List<Ad> getAds() {
-    return adService.list();
+    return adService.list(0,10);
   }
 
   @PostMapping
