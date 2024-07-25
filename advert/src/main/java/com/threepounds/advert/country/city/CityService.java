@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static jdk.internal.jrtfs.JrtFileAttributeView.AttrID.size;
-
 @Service
 public class CityService {
     @Autowired

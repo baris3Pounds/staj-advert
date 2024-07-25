@@ -11,7 +11,6 @@ import com.threepounds.advert.country.city.CityService;
 import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Optional;
-import java.util.Optional;
 import java.util.UUID;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,12 +29,9 @@ public class AdController {
 
   private final RestTemplateService restTemplateService;
 
-
+  
   public AdController(AdService adService, AdMapper adMapper, CategoryService categoryService,
-                      CountryService countryService, CityService cityService) {
-
-  public AdController(AdService adService, AdMapper adMapper, CategoryService categoryService,
-      RestTemplateService restTemplateService) {
+      RestTemplateService restTemplateService,CountryService countryService, CityService cityService) {
     this.adService = adService;
     this.adMapper = adMapper;
     this.categoryService = categoryService;
