@@ -36,6 +36,7 @@ public class Ad {
   private boolean active = true;
 
   @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+  @JoinColumn(name = "category_id")
   private Category category;
 
   @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
@@ -45,6 +46,9 @@ public class Ad {
   @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
   @JoinColumn(name = "city_id")
   private City city;
+
+  @Column(nullable = false)
+  private int viewCount = 0;
 
   public Ad() {}
 

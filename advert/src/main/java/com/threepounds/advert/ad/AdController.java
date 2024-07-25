@@ -1,5 +1,6 @@
 package com.threepounds.advert.ad;
 
+import com.threepounds.advert.RestTemplateTrain.RestTemplateService;
 import com.threepounds.advert.annotations.LogExecutionTime;
 import com.threepounds.advert.category.Category;
 import com.threepounds.advert.category.CategoryService;
@@ -27,13 +28,20 @@ public class AdController {
   private final CountryService countryService;
   private final CityService cityService;
 
+  private final RestTemplateService restTemplateService;
+
+
   public AdController(AdService adService, AdMapper adMapper, CategoryService categoryService,
                       CountryService countryService, CityService cityService) {
+
+  public AdController(AdService adService, AdMapper adMapper, CategoryService categoryService,
+      RestTemplateService restTemplateService) {
     this.adService = adService;
     this.adMapper = adMapper;
     this.categoryService = categoryService;
     this.countryService = countryService;
     this.cityService = cityService;
+    this.restTemplateService = restTemplateService;
   }
 
   @LogExecutionTime
@@ -46,6 +54,9 @@ public class AdController {
 
   @PostMapping
   public ResponseEntity<AdDto> addAd(@Valid @RequestBody AdDto adDto) {
+
+    restTemplateService.getLocation("24.48.0.1");
+
     Category category = categoryService.findById(adDto.getCategoryId());
     Ad ad = adMapper.adToAdDto(adDto);
     if(category != null){
@@ -92,5 +103,14 @@ public class AdController {
     return ResponseEntity.ok().build();
   }
 
+  @PutMapping(path = "/{adId}/viewed")
+  public ResponseEntity<Ad> update(@PathVariable UUID adId) {
+    Ad existingAd =
+        adService.getById(adId).orElseThrow(() -> new RuntimeException("Ad not found"));
+    existingAd.setViewCount(existingAd.getViewCount()+1);
+    Ad updatedAd = adService.save(existingAd);
+
+    return ResponseEntity.ok().body(updatedAd);
+  }
 
 }
