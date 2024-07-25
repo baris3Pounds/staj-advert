@@ -3,6 +3,10 @@ package com.threepounds.advert.ad;
 import com.threepounds.advert.annotations.LogExecutionTime;
 import com.threepounds.advert.category.Category;
 import com.threepounds.advert.category.CategoryService;
+import com.threepounds.advert.country.Country;
+import com.threepounds.advert.country.CountryService;
+import com.threepounds.advert.country.city.City;
+import com.threepounds.advert.country.city.CityService;
 import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Optional;
@@ -20,11 +24,16 @@ public class AdController {
   private final AdMapper adMapper;
 
   private final CategoryService categoryService;
+  private final CountryService countryService;
+  private final CityService cityService;
 
-  public AdController(AdService adService, AdMapper adMapper, CategoryService categoryService) {
+  public AdController(AdService adService, AdMapper adMapper, CategoryService categoryService,
+                      CountryService countryService, CityService cityService) {
     this.adService = adService;
     this.adMapper = adMapper;
     this.categoryService = categoryService;
+    this.countryService = countryService;
+    this.cityService = cityService;
   }
 
   @LogExecutionTime
@@ -41,6 +50,12 @@ public class AdController {
     Ad ad = adMapper.adToAdDto(adDto);
     if(category != null){
       ad.setCategory(category);
+      Country country = countryService.getById(adDto.getCountryId())
+              .orElseThrow(() -> new RuntimeException("Country Not Found"));
+      ad.setCountry(country);
+      City city = cityService.getById(adDto.getCityId())
+              .orElseThrow(() -> new RuntimeException("Country Not Found"));
+      ad.setCity(city);
     }
 
     Ad savedAd = adService.save(ad);

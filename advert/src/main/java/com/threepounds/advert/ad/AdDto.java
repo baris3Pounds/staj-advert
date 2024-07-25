@@ -24,4 +24,8 @@ public class AdDto {
   private BigDecimal price;
 
   private UUID categoryId;
+
+  private UUID countryId;
+
+  private UUID cityId;
 }
