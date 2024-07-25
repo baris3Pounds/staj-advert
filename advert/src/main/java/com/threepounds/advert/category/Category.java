@@ -32,8 +32,4 @@ public class Category {
     private boolean active;
     // new branch added
 
-    @OneToMany(mappedBy = "category", cascade = {CascadeType.DETACH , CascadeType.MERGE , CascadeType.PERSIST , CascadeType.REFRESH})
-    @JoinColumn(name = "ad_id")
-    private List<Ad> ads;
-
 }

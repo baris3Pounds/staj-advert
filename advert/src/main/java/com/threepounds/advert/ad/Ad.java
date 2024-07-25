@@ -34,7 +34,11 @@ public class Ad {
   private boolean active = true;
 
   @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+  @JoinColumn(name = "category_id")
   private Category category;
+
+  @Column(nullable = false)
+  private int viewCount = 0;
 
   public Ad() {}
 
