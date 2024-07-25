@@ -11,7 +11,7 @@ import java.util.UUID;
 public interface CategoryService {
     public Category save(Category category);
 
-    public List<Category> findAll(PageRequest pageRequest);
+    public List<Category> findAll(PageRequest pageble);
 
     public Category findById(UUID id);
 

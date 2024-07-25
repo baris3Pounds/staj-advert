@@ -1,6 +1,8 @@
 package com.threepounds.advert.ad;
 
 import com.threepounds.advert.category.Category;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -25,9 +27,9 @@ public class AdService {
     return adRepository.save(ad);
   }
 
-  public List<Ad> list() {
-    Sort sort = Sort.by(Sort.Direction.ASC, "id");
-    PageRequest pageble = PageRequest.of(1, 10, sort);
+  public List<Ad> list(int no , int size) {
+
+    PageRequest pageble = PageRequest.of(no , size);
     Page<Ad> myList = adRepository.findAll(pageble);
 
     return myList.toList();

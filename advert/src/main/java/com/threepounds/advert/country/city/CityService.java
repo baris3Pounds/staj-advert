@@ -1,6 +1,8 @@
 package com.threepounds.advert.country.city;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,8 +13,10 @@ public class CityService {
     @Autowired
     private CityRepository cityRepository;
 
-    public List<City> findAll() {
-        return cityRepository.findAll();
+    public List<City> findAll(int no , int size) {
+        PageRequest pageble = PageRequest.of(no, size);
+        Page<City> page =  cityRepository.findAll(pageble);
+        return page.toList();
     }
 
     public City findById(UUID id) {
