@@ -52,7 +52,7 @@ public class AdController {
   @PostMapping
   public ResponseEntity<AdDto> addAd(@Valid @RequestBody AdDto adDto) {
     Category category = categoryService.findById(adDto.getCategoryId());
-    Ad ad = adMapper.adToAdDto(adDto);
+    Ad ad = adMapper.adDtoToAd(adDto);
     if(category != null){
       ad.setCategory(category);
       Country country = countryService.getById(adDto.getCountryId())
