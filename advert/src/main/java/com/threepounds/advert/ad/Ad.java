@@ -1,6 +1,8 @@
 package com.threepounds.advert.ad;
 
 import com.threepounds.advert.category.Category;
+import com.threepounds.advert.country.Country;
+import com.threepounds.advert.country.city.City;
 import jakarta.persistence.*;
 
 import jakarta.validation.constraints.NotBlank;
@@ -36,6 +38,14 @@ public class Ad {
   @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
   @JoinColumn(name = "category_id")
   private Category category;
+
+  @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+  @JoinColumn(name = "country_id")
+  private Country country;
+
+  @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+  @JoinColumn(name = "city_id")
+  private City city;
 
   @Column(nullable = false)
   private int viewCount = 0;

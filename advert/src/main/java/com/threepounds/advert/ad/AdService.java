@@ -47,9 +47,4 @@ public class AdService {
     adRepository.delete(ad);
   }
 
-
-  public List<Ad> listByCategory(Category category) {
-    return adRepository.findByCategory(category);
-  }
-
 }

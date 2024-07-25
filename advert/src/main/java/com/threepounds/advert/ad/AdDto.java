@@ -23,4 +23,8 @@ public class AdDto {
   @Min(value = 0,message = "cannot be less than 0")
   private BigDecimal price;
   private UUID categoryId;
+
+  private UUID countryId;
+
+  private UUID cityId;
 }
