@@ -21,10 +21,18 @@ public class CityController {
         this.countryService = countryService;
     }
 
+<<<<<<< HEAD
     @GetMapping("")
     public List<CityResource> getAllCities() {
         List<City> cities = cityService.findAll();
         return cityMapper.cityListToCityResourceList(cities);
+=======
+    @GetMapping("/")
+    public ResponseEntity<List<CityDto>>getAllCities(@RequestParam int no , @RequestParam int size) {
+    List<City>cities= cityService.findAll(no, size);
+    List<CityDto> cityDtoList =cityMapper.cityListtoCityDtoList(cities);
+    return ResponseEntity.ok(cityDtoList);
+>>>>>>> main
     }
 
     @GetMapping("/{id}")

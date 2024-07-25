@@ -1,8 +1,12 @@
 package com.threepounds.advert.ad;
 
+import com.threepounds.advert.annotations.LogExecutionTime;
 import com.threepounds.advert.category.Category;
 import com.threepounds.advert.category.CategoryService;
+import jakarta.validation.Valid;
 import java.util.List;
+import java.util.Optional;
+import java.util.Optional;
 import java.util.UUID;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,16 +27,22 @@ public class AdController {
     this.categoryService = categoryService;
   }
 
+  @LogExecutionTime
   @GetMapping
-  public List<Ad> getAds() {
-    return adService.list();
+  public List<Ad> getAds(@RequestParam Optional<Integer> no , @RequestParam Optional<Integer> size)
+      throws InterruptedException {
+    Thread.sleep(500);
+    return adService.list(no.orElse(0), size.orElse(10));
   }
 
   @PostMapping
-  public ResponseEntity<AdDto> addAd(@RequestBody AdDto adDto) {
+  public ResponseEntity<AdDto> addAd(@Valid @RequestBody AdDto adDto) {
     Category category = categoryService.findById(adDto.getCategoryId());
     Ad ad = adMapper.adToAdDto(adDto);
-    ad.setCategory(category);
+    if(category != null){
+      ad.setCategory(category);
+    }
+
     Ad savedAd = adService.save(ad);
     AdDto resource = adMapper.adToAdDto(savedAd);
     return ResponseEntity.ok().body(resource);

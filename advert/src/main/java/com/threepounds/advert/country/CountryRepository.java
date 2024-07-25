@@ -1,6 +1,5 @@
 package com.threepounds.advert.country;
 
-import com.threepounds.advert.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

@@ -2,6 +2,9 @@ package com.threepounds.advert.category;
 
 import java.util.List;
 import java.util.UUID;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,9 +21,12 @@ public class CategoryServiceImpl implements CategoryService{
         return categoryRepository.save(category);
     }
 
+
+
     @Override
-    public List<Category> findAll() {
-        return categoryRepository.findAll();
+    public List<Category> findAll(PageRequest pageble) {
+       Page<Category> page = categoryRepository.findAll(pageble);
+        return page.toList();
     }
 
     @Override

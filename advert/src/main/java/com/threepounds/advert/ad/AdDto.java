@@ -3,6 +3,7 @@ package com.threepounds.advert.ad;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 import java.util.UUID;
 import lombok.Data;
@@ -13,7 +14,7 @@ public class AdDto {
 
   private UUID id;
 
-  // title
+  @NotBlank(message = "title is mandatory")
   private String title;
 
   // description
