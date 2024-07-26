@@ -34,13 +34,6 @@ public class AdController {
 
     @LogExecutionTime
     @GetMapping
-    public List<Ad> getAds(@RequestParam Optional<Integer> no , @RequestParam Optional<Integer> size)
-            throws InterruptedException {
-        Thread.sleep(500);
-        return adService.list(no.orElse(0), size.orElse(10));
-    }
-
-    @GetMapping
     public List<AdResource> getAllAd(){
         List<Ad> ad = adService.findAll();
         if (ad == null || ad.isEmpty()) {
