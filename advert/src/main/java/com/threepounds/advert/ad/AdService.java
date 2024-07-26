@@ -47,4 +47,7 @@ public class AdService {
     adRepository.delete(ad);
   }
 
+  public List<Ad> findAll() {  return adRepository.findAll(); }
+
+
 }
