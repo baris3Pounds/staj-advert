@@ -1,6 +1,7 @@
 package com.threepounds.advert.category;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +21,9 @@ public class CategoryController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<CategoryDto>> getCategories(@RequestParam int no , @RequestParam int size){
+    public ResponseEntity<List<CategoryDto>> getCategories(@RequestParam Optional<Integer> no , @RequestParam Optional<Integer> size){
 
-        List<Category> categories = categoryService.findAll(PageRequest.of(no, size));
+        List<Category> categories = categoryService.findAll(PageRequest.of(no.orElse(0), size.orElse(10)));
         List<CategoryDto> categoryDtoList = categoryMapper.categoryToCategoryDTO(categories);
         return ResponseEntity.ok().body(categoryDtoList);
     }
