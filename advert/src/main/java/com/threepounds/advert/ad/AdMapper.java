@@ -2,6 +2,7 @@ package com.threepounds.advert.ad;
 
 
 import org.mapstruct.Mapper;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,6 +11,6 @@ import java.util.Optional;
 public interface AdMapper {
   AdDto adToAdDto(Ad ad);
   Ad adDtoToAd(AdDto adDto);
-  AdResource adListToAdResourceList(Ad ad);
+  AdResource adToAdResourceList(Ad ad);
   List<AdResource> adListToAdResourceList(List<Ad> ad);
 }

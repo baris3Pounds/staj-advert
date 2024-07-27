@@ -1,5 +1,4 @@
 package com.threepounds.advert.ad;
-
 import com.threepounds.advert.RestTemplateTrain.RestTemplateService;
 import com.threepounds.advert.annotations.LogExecutionTime;
 import com.threepounds.advert.category.Category;
@@ -11,7 +10,6 @@ import java.util.UUID;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 @RequestMapping(path = "/api/v1/ads")
 @RestController
@@ -22,25 +20,23 @@ public class AdController {
     private final CategoryService categoryService;
     private final RestTemplateService restTemplateService;
 
-
     public AdController(AdService adService, AdMapper adMapper, CategoryService categoryService,
                         RestTemplateService restTemplateService) {
         this.adService = adService;
         this.adMapper = adMapper;
         this.categoryService = categoryService;
         this.restTemplateService = restTemplateService;
-
     }
 
     @LogExecutionTime
     @GetMapping
-    public List<AdResource> getAllAd(){
+    public ResponseEntity<List<AdResource>> getAllAd(){
         List<Ad> ad = adService.findAll();
         if (ad == null || ad.isEmpty()) {
             return null;
         }
         List<AdResource> adResourcesList = adMapper.adListToAdResourceList(ad);
-        return adResourcesList;
+        return ResponseEntity.ok().body(adResourcesList);
     }
 
   /*@GetMapping(path = "/by-title")
@@ -49,11 +45,11 @@ public List<Ad> getAdsByTitle(@RequestParam String name) {
 }*/
 
     @GetMapping(path = "/by-title")
-    public List<AdResource> getAdsByTitle(@RequestParam String title) {
+    public ResponseEntity<List<AdResource>> getAdsByTitle(@RequestParam String title) {
         List<Ad> ad = adService.listByTitle(title);
         List<AdResource> adResourceList = adMapper.adListToAdResourceList(ad);
 
-        return adResourceList;
+        return ResponseEntity.ok().body(adResourceList);
     }
 
   /*@PostMapping
@@ -73,14 +69,19 @@ public List<Ad> getAdsByTitle(@RequestParam String name) {
   }*/
 
     @PostMapping
-    public AdResource createAd(@Valid @NotNull @RequestBody AdDto adDto) {
+    public ResponseEntity<AdResource> createAd(@Valid @RequestBody AdDto adDto) {
         restTemplateService.getLocation("24.48.0.1");
-        Category category = categoryService.findById(adDto.getCategoryId());
         Ad ad = adMapper.adDtoToAd(adDto);
-        Ad savedAd = adService.save(ad);
-        AdResource adResource = adMapper.adListToAdResourceList(savedAd);
 
-        return adResource;
+        Category category = categoryService.findById(adDto.getCategoryId());
+        if (category == null) {
+            return ResponseEntity.notFound().build();
+        }
+        ad.setCategory(category);
+        Ad savedAd = adService.save(ad);
+        AdResource adResource = adMapper.adToAdResourceList(savedAd);
+
+        return ResponseEntity.ok().body(adResource);
     }
 
     /*@PutMapping(path = "/{adId}")
@@ -95,25 +96,25 @@ public List<Ad> getAdsByTitle(@RequestParam String name) {
       return ResponseEntity.ok().body(updatedAd);
     }*/
     @PutMapping(path = "/{adId}")
-    public AdResource updateAd(@PathVariable @NotNull UUID adId, @Valid @NotNull @RequestBody AdDto adDto) {
+    public ResponseEntity<AdResource> updateAd(@PathVariable @NotNull UUID adId, @Valid @NotNull @RequestBody AdDto adDto) {
         Optional<Ad> ad = adService.getById(adId);
         ad.get().setTitle(adDto.getTitle());
         ad.get().setDescription(adDto.getDescription());
         ad.get().setPrice(adDto.getPrice());
-        AdResource adResource = adMapper.adListToAdResourceList(ad.get());
+        AdResource adResource = adMapper.adToAdResourceList(ad.get());
 
-        return adResource;
+        return ResponseEntity.ok().body(adResource);
     }
 
     @PutMapping(path = "/{adId}/viewed")
-    public AdResource update(@PathVariable UUID adId) {
+    public ResponseEntity<AdResource> update(@PathVariable UUID adId) {
         Ad existingAd =
                 adService.getById(adId).orElseThrow(() -> new RuntimeException("Ad not found"));
         existingAd.setViewCount(existingAd.getViewCount()+1);
         Ad updatedAd = adService.save(existingAd);
-        AdResource adResource = adMapper.adListToAdResourceList(updatedAd);
+        AdResource adResource = adMapper.adToAdResourceList(updatedAd);
 
-        return adResource;
+        return ResponseEntity.ok().body(adResource);
     }
     @DeleteMapping("/{adId}")
     public ResponseEntity<AdDto> delete(@Valid @PathVariable UUID adId) {
