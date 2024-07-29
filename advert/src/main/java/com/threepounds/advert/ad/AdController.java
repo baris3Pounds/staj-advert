@@ -1,11 +1,15 @@
 package com.threepounds.advert.ad;
 
+import com.threepounds.advert.RestTemplateTrain.RestTemplateService;
 import com.threepounds.advert.annotations.LogExecutionTime;
 import com.threepounds.advert.category.Category;
 import com.threepounds.advert.category.CategoryService;
+import com.threepounds.advert.country.Country;
+import com.threepounds.advert.country.CountryService;
+import com.threepounds.advert.country.city.City;
+import com.threepounds.advert.country.city.CityService;
 import jakarta.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.http.ResponseEntity;
@@ -20,11 +24,20 @@ public class AdController {
   private final AdMapper adMapper;
 
   private final CategoryService categoryService;
+  private final CountryService countryService;
+  private final CityService cityService;
 
-  public AdController(AdService adService, AdMapper adMapper, CategoryService categoryService) {
+  private final RestTemplateService restTemplateService;
+
+  
+  public AdController(AdService adService, AdMapper adMapper, CategoryService categoryService,
+      RestTemplateService restTemplateService,CountryService countryService, CityService cityService) {
     this.adService = adService;
     this.adMapper = adMapper;
     this.categoryService = categoryService;
+    this.countryService = countryService;
+    this.cityService = cityService;
+    this.restTemplateService = restTemplateService;
   }
 
   @LogExecutionTime
@@ -37,10 +50,19 @@ public class AdController {
 
   @PostMapping
   public ResponseEntity<AdDto> addAd(@Valid @RequestBody AdDto adDto) {
+
+    restTemplateService.getLocation("24.48.0.1");
+
     Category category = categoryService.findById(adDto.getCategoryId());
     Ad ad = adMapper.adToAdDto(adDto);
     if(category != null){
       ad.setCategory(category);
+      Country country = countryService.getById(adDto.getCountryId())
+              .orElseThrow(() -> new RuntimeException("Country Not Found"));
+      ad.setCountry(country);
+      City city = cityService.getById(adDto.getCityId())
+              .orElseThrow(() -> new RuntimeException("Country Not Found"));
+      ad.setCity(city);
     }
 
     Ad savedAd = adService.save(ad);
@@ -77,5 +99,14 @@ public class AdController {
     return ResponseEntity.ok().build();
   }
 
+  @PutMapping(path = "/{adId}/viewed")
+  public ResponseEntity<Ad> update(@PathVariable UUID adId) {
+    Ad existingAd =
+        adService.getById(adId).orElseThrow(() -> new RuntimeException("Ad not found"));
+    existingAd.setViewCount(existingAd.getViewCount()+1);
+    Ad updatedAd = adService.save(existingAd);
+
+    return ResponseEntity.ok().body(updatedAd);
+  }
 
 }
