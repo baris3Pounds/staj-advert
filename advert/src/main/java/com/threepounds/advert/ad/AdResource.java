@@ -19,7 +19,4 @@ public class AdResource {
     private BigDecimal price;
     private List<AdResource> adResourceList = new ArrayList<>();
 
-    private UUID categoryId;
-    private UUID countryId;
-    private UUID cityId;
 }
