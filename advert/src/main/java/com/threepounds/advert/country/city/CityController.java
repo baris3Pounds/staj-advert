@@ -9,6 +9,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/cities")
+
 public class CityController {
 
     private final CityService cityService;
@@ -22,9 +23,9 @@ public class CityController {
     }
 
     @GetMapping("")
-    public List<CityResource> getAllCities() {
-        List<City> cities = cityService.findAll();
-        return cityMapper.cityListToCityResourceList(cities);
+    public List<CityResource> getAllCities(@RequestParam Optional<Integer> no , @RequestParam Optional<Integer> size) {
+    List<City>cities= cityService.findAll(no.orElse(0), size.orElse(10));
+    return cityMapper.cityListToCityResourceList(cities);
     }
 
     @GetMapping("/{id}")
