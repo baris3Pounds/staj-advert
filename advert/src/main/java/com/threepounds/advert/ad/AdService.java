@@ -39,12 +39,13 @@ public class AdService {
     return adRepository.findByTitle(title);
   }
 
-  public Optional<Ad> getById(UUID adId) {
-    return adRepository.findById(adId);
+  public Ad getById(UUID adId) {
+    return adRepository.findById(adId).orElseThrow(() -> new RuntimeException("Ad not found."));
   }
 
   public void deleteAd(Ad ad) {
-    adRepository.delete(ad);
+    ad.setActive(false);
+    adRepository.save(ad);
   }
 
   public List<Ad> findAll() {  return adRepository.findAll(); }

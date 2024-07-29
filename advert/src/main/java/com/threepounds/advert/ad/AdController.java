@@ -3,6 +3,7 @@ import com.threepounds.advert.RestTemplateTrain.RestTemplateService;
 import com.threepounds.advert.annotations.LogExecutionTime;
 import com.threepounds.advert.category.Category;
 import com.threepounds.advert.category.CategoryService;
+import com.threepounds.advert.exception.GeneralResponse;
 import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Optional;
@@ -45,11 +46,13 @@ public List<Ad> getAdsByTitle(@RequestParam String name) {
 }*/
 
     @GetMapping(path = "/by-title")
-    public ResponseEntity<List<AdResource>> getAdsByTitle(@RequestParam String title) {
+    public ResponseEntity<GeneralResponse<Object>> getAdsByTitle(@RequestParam String title) {
         List<Ad> ad = adService.listByTitle(title);
         List<AdResource> adResourceList = adMapper.adListToAdResourceList(ad);
 
-        return ResponseEntity.ok().body(adResourceList);
+
+
+        return ResponseEntity.ok().body(GeneralResponse.builder().data(adResourceList).build());
     }
 
   /*@PostMapping
@@ -97,19 +100,20 @@ public List<Ad> getAdsByTitle(@RequestParam String name) {
     }*/
     @PutMapping(path = "/{adId}")
     public ResponseEntity<AdResource> updateAd(@PathVariable @NotNull UUID adId, @Valid @NotNull @RequestBody AdDto adDto) {
-        Optional<Ad> ad = adService.getById(adId);
-        ad.get().setTitle(adDto.getTitle());
-        ad.get().setDescription(adDto.getDescription());
-        ad.get().setPrice(adDto.getPrice());
-        AdResource adResource = adMapper.adToAdResourceList(ad.get());
+        adService.getById(adId);
 
+        Ad updatedAd = adMapper.adDtoToAd(adDto);
+        updatedAd.setId(adId);
+
+        Ad savedAd = adService.save(updatedAd);
+        AdResource adResource = adMapper.adToAdResourceList(savedAd);
         return ResponseEntity.ok().body(adResource);
     }
 
     @PutMapping(path = "/{adId}/viewed")
     public ResponseEntity<AdResource> update(@PathVariable UUID adId) {
         Ad existingAd =
-                adService.getById(adId).orElseThrow(() -> new RuntimeException("Ad not found"));
+                adService.getById(adId);
         existingAd.setViewCount(existingAd.getViewCount()+1);
         Ad updatedAd = adService.save(existingAd);
         AdResource adResource = adMapper.adToAdResourceList(updatedAd);
@@ -119,7 +123,7 @@ public List<Ad> getAdsByTitle(@RequestParam String name) {
     @DeleteMapping("/{adId}")
     public ResponseEntity<AdDto> delete(@Valid @PathVariable UUID adId) {
         Ad existingAd =
-                adService.getById(adId).orElseThrow(() -> new RuntimeException("User not found"));
+                adService.getById(adId);
         adService.deleteAd(existingAd);
 
         return ResponseEntity.ok().build();

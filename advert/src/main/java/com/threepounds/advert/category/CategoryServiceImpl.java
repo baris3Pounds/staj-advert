@@ -41,6 +41,7 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     public Category updateById(Category category, UUID id) {
+        category.setId(id);
         return categoryRepository.save(category);
     }
 }
