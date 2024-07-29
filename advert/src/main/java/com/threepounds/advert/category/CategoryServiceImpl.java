@@ -39,8 +39,4 @@ public class CategoryServiceImpl implements CategoryService{
         categoryRepository.delete(category);
     }
 
-    @Override
-    public Category updateById(Category category, UUID id) {
-        return categoryRepository.save(category);
-    }
 }

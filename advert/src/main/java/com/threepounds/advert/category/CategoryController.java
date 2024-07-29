@@ -2,6 +2,9 @@ package com.threepounds.advert.category;
 
 import java.util.List;
 import java.util.UUID;
+
+import com.threepounds.advert.country.Country;
+import com.threepounds.advert.country.CountryDTO;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -45,12 +48,13 @@ public class CategoryController {
     public ResponseEntity updateCategory(@RequestBody CategoryDto categoryDto , @PathVariable UUID id){
 
         Category category = categoryMapper.categoryDTOToCategory(categoryDto);
-        categoryService.updateById(category , id);
-        return ResponseEntity.ok().build();
+        category.setId(id);
+        Category savedCategory = categoryService.save(category);
+        return ResponseEntity.ok().body(savedCategory);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteCategory(UUID id){
+    public ResponseEntity deleteCategory(UUID id) {
         Category existingCategory = categoryService.findById(id);
         categoryService.deleteById(existingCategory);
         return ResponseEntity.ok().build();

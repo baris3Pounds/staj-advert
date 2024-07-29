@@ -61,7 +61,7 @@ public class AdController {
               .orElseThrow(() -> new RuntimeException("Country Not Found"));
       ad.setCountry(country);
       City city = cityService.getById(adDto.getCityId())
-              .orElseThrow(() -> new RuntimeException("Country Not Found"));
+              .orElseThrow(() -> new RuntimeException("City Not Found"));
       ad.setCity(city);
     }
 
