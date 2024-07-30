@@ -4,11 +4,7 @@ import com.threepounds.advert.category.Category;
 import com.threepounds.advert.country.Country;
 import com.threepounds.advert.country.city.City;
 import jakarta.persistence.*;
-
-import jakarta.validation.constraints.NotBlank;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
@@ -35,7 +31,7 @@ public class Ad {
   @Column(nullable = false)
   private boolean active = true;
 
-  @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+  @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH,CascadeType.ALL})
   @JoinColumn(name = "category_id")
   private Category category;
 

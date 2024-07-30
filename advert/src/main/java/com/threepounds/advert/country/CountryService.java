@@ -14,7 +14,7 @@ public class CountryService {
     @Autowired
     private CountryRepository countryRepository;
 
-    public List<Country> list(int no , int size){
+    public List<Country> findAll(int no , int size){
         PageRequest pageble = PageRequest.of(no, size);
         Page<Country> page = countryRepository.findAll(pageble);
         return page.toList();
@@ -42,9 +42,7 @@ public class CountryService {
         return countryRepository.findById(id).get();
     }
 
-    public List<Country> findAll() {
-        return countryRepository.findAll();
-    }
+
 
     public void deleteById(Country country){
          countryRepository.delete(country);

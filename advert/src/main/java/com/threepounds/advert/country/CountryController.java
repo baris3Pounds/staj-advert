@@ -6,6 +6,7 @@ import com.threepounds.advert.category.CategoryDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RequestMapping("/api/v1/countries")
@@ -22,8 +23,8 @@ public class CountryController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<CountryDTO>>getCountries(){
-            List<Country> countries = countryService.findAll();
+    public ResponseEntity<List<CountryDTO>>getCountries(@PathVariable Optional<Integer> no  , @PathVariable Optional<Integer> size){
+            List<Country> countries = countryService.findAll(no.orElse(0) , no.orElse(10));
             List<CountryDTO> countryDTOList = countryMapper.countryListToCountryDTOList(countries);
             return ResponseEntity.ok(countryDTOList);
 

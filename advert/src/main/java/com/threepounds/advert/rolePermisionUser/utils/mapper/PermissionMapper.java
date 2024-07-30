@@ -10,9 +10,9 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface PermissionMapper {
 
-    Permission PermissionDtoToPermission(PermissionDto permissionDto);
+    public  Permission PermissionDtoToPermission(PermissionDto permissionDto);
 
-    PermissionResource PermissionToPermissionResource(Permission permission);
+    public  PermissionResource PermissionToPermissionResource(Permission permission);
 
-    List<PermissionResource> PermissionListToPermissionResourceList(List<Permission> permissions);
+    public  List<PermissionResource> PermissionListToPermissionResourceList(List<Permission> permissions);
 }
