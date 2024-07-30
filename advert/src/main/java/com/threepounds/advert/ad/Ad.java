@@ -46,6 +46,10 @@ public class Ad {
   @Column(nullable = false)
   private int viewCount = 0;
 
+  // latitude
+  // longitude
+  // user one to many
+
   public Ad() {}
 
   public Ad(String title, String description, BigDecimal price) {
