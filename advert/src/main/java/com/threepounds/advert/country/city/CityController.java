@@ -2,6 +2,8 @@ package com.threepounds.advert.country.city;
 
 import com.threepounds.advert.country.Country;
 import com.threepounds.advert.country.CountryService;
+import com.threepounds.advert.exception.GeneralResponse;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,33 +25,39 @@ public class CityController {
     }
 
     @GetMapping("")
-    public List<CityResource> getAllCities(@RequestParam Optional<Integer> no , @RequestParam Optional<Integer> size) {
+    public ResponseEntity<GeneralResponse<Object>> getAllCities(@RequestParam Optional<Integer> no , @RequestParam Optional<Integer> size) {
     List<City>cities= cityService.findAll(no.orElse(0), size.orElse(10));
-    return cityMapper.cityListToCityResourceList(cities);
+    List<CityResource> citiesResources = cityMapper.cityListToCityResourceList(cities);
+    return ResponseEntity.ok().body(GeneralResponse.<Object>builder().data(citiesResources).build());
     }
 
     @GetMapping("/{id}")
-    public CityResource getCityById(@PathVariable UUID id) {
+    public ResponseEntity<GeneralResponse<CityResource>> getCityById(@PathVariable UUID id) {
         City city = cityService.findById(id);
-        return cityMapper.cityToCityResource(city);
+        CityResource cityResource = cityMapper.cityToCityResource(city);
+        return ResponseEntity.ok().body(GeneralResponse.<CityResource>builder().data(cityResource).build());
     }
 
     @PostMapping("")
-    public CityResource createCity(@RequestBody CityDto cityDto) {
+    public ResponseEntity<GeneralResponse<CityResource>> createCity(@RequestBody CityDto cityDto) {
         City city = cityMapper.cityDtoToCity(cityDto);
         Country country = countryService.getById(cityDto.getCountryId())
                 .orElseThrow(() -> new RuntimeException("Country Not Found"));
         city.setCountry(country);
         City savedCity = cityService.save(city);
-        return cityMapper.cityToCityResource(savedCity);
+        CityResource cityResource = cityMapper.cityToCityResource(savedCity);
+
+        return ResponseEntity.ok().body(GeneralResponse.<CityResource>builder().data(cityResource).build());
     }
 
     @PutMapping("/{id}")
-    public CityResource updateCity(@PathVariable UUID id, @RequestBody CityDto cityDto) {
+    public ResponseEntity<GeneralResponse<CityResource>> updateCity(@PathVariable UUID id, @RequestBody CityDto cityDto) {
         City city = cityMapper.cityDtoToCity(cityDto);
         city.setId(id);
         City updatedCity = cityService.save(city);
-        return cityMapper.cityToCityResource(updatedCity);
+        CityResource cityResource = cityMapper.cityToCityResource(updatedCity);
+
+        return ResponseEntity.ok().body(GeneralResponse.<CityResource>builder().data(cityResource).build());
     }
 
     @DeleteMapping("/{id}")

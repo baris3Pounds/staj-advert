@@ -1,8 +1,7 @@
 package com.threepounds.advert.country;
 
 
-import com.threepounds.advert.category.Category;
-import com.threepounds.advert.category.CategoryDto;
+import com.threepounds.advert.exception.GeneralResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -23,47 +22,51 @@ public class CountryController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<CountryDTO>>getCountries(@PathVariable Optional<Integer> no  , @PathVariable Optional<Integer> size){
+    public ResponseEntity<GeneralResponse<Object>>getCountries(@PathVariable Optional<Integer> no  , @PathVariable Optional<Integer> size){
             List<Country> countries = countryService.findAll(no.orElse(0) , no.orElse(10));
-            List<CountryDTO> countryDTOList = countryMapper.countryListToCountryDTOList(countries);
-            return ResponseEntity.ok(countryDTOList);
+            List<CountryResource> countryResourceList = countryMapper.countryListToCountryResourceList(countries);
+            return ResponseEntity.ok().body(GeneralResponse.<Object>builder().data(countryResourceList).build());
 
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CountryDTO> getCountryById(UUID id){
+    public ResponseEntity<GeneralResponse<Object>> getCountryById(UUID id){
         Country country = countryService.findById(id);
-        CountryDTO countryDTO = countryMapper.countryToCountryDTO(country);
-        return ResponseEntity.ok().body(countryDTO);
+        CountryResource countryResource = countryMapper.countryToCountryResource(country);
+        return ResponseEntity.ok().body(GeneralResponse.<Object>builder().data(countryResource).build());
     }
 
     @PostMapping("")
-    public ResponseEntity<CountryDTO> createCountry(@RequestBody CountryDTO countryDTO){
+    public ResponseEntity<GeneralResponse<Object>> createCountry(@RequestBody CountryDTO countryDTO){
             Country country = countryMapper.countryDTOToCountry(countryDTO);
             Country savedCountry = countryService.save(country);
-            return ResponseEntity.ok().body(countryMapper.countryToCountryDTO(savedCountry));
+            CountryResource countryResource = countryMapper.countryToCountryResource(savedCountry);
+            return ResponseEntity.ok().body(GeneralResponse.<Object>builder().data(countryResource).build());
 
     }
 
     @GetMapping("/by-name")
-    public List<CountryDTO> getCountriesByName(String name) {
+    public ResponseEntity<GeneralResponse<Object>> getCountriesByName(String name) {
       List<Country> countries = countryService.listByName(name);
-      return countryMapper.countryListToCountryDTOList(countries);
+      List<CountryResource> countryResourceList = countryMapper.countryListToCountryResourceList(countries);
+      return ResponseEntity.ok().body(GeneralResponse.<Object>builder().data(countryResourceList).build());
     }
 
    @PutMapping("/{id}")
-   public ResponseEntity<CountryDTO> updateCountry(@PathVariable UUID id, @RequestBody CountryDTO countryDTO){
+   public ResponseEntity<GeneralResponse<Object>> updateCountry(@PathVariable UUID id, @RequestBody CountryDTO countryDTO){
        Country country = countryMapper.countryDTOToCountry(countryDTO);
        country.setId(id);
        Country savedCountry = countryService.save(country);
-       return ResponseEntity.ok().body(countryMapper.countryToCountryDTO(savedCountry));
+       CountryResource countryResource = countryMapper.countryToCountryResource(savedCountry);
+       return ResponseEntity.ok().body(GeneralResponse.<Object>builder().data(countryResource).build());
    }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<CountryDTO> deleteCountry(@PathVariable UUID id){
+    public ResponseEntity<GeneralResponse<Object>> deleteCountry(@PathVariable UUID id){
         Country existingCountry = countryService.getById(id).orElseThrow(() -> new RuntimeException("Country not found"));
         countryService.deleteById(existingCountry);
-        return ResponseEntity.ok().body(countryMapper.countryToCountryDTO(existingCountry));
+        CountryResource countryResource = countryMapper.countryToCountryResource(existingCountry);
+        return ResponseEntity.ok().body(GeneralResponse.<Object>builder().data(countryResource).build());
     }
 
-    }
+}
