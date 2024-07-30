@@ -1,24 +1,34 @@
 package com.threepounds.advert.RestTemplateTrain;
 
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.Data;
 
-@Getter
-@Setter
+import java.util.UUID;
+
+@Data
+@Entity
+@Table(name = "location")
 public class Location {
+
+    @Id
+    @GeneratedValue
+    private UUID id;
+
     private String query;
     private String status;
     private String country;
     private String countryCode;
     private String region;
     private String city;
-    private String lat;
-    private String lon;
+    private Double lat;
+    private Double lon;
     private String timezone;
     private String isp;
     private String org;
-    private String as;
-
+    private String asDescription;
 
     @Override
     public String toString() {
@@ -34,7 +44,7 @@ public class Location {
                 ", timezone='" + timezone + '\'' +
                 ", isp='" + isp + '\'' +
                 ", org='" + org + '\'' +
-                ", as='" + as + '\'' +
+                ", asDescription='" + asDescription + '\'' +
                 '}';
     }
 }

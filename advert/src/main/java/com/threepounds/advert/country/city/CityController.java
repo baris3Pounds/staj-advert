@@ -10,7 +10,6 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/cities")
-
 public class CityController {
 
     private final CityService cityService;
