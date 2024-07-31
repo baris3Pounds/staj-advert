@@ -18,4 +18,6 @@ public interface CategoryService {
     public void deleteById(Category category);
 
     public Category updateById(Category category , UUID id);
+
+    public List<Category> search(CategorySearchModel categorySearchModel);
 }

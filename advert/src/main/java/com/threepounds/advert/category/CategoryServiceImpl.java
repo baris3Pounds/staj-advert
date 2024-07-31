@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -43,5 +44,14 @@ public class CategoryServiceImpl implements CategoryService{
     public Category updateById(Category category, UUID id) {
         category.setId(id);
         return categoryRepository.save(category);
+    }
+
+    @Override
+    public List<Category> search(CategorySearchModel categorySearchModel) {
+        Specification<Category> spec = Specification.where(CategorySpesifications
+                .hasName(categorySearchModel.name()))
+                .and(CategorySpesifications.isActive(categorySearchModel.isActive()));
+
+        return categoryRepository.findAll(spec);
     }
 }
