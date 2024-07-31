@@ -10,4 +10,8 @@ public interface CountryRepository extends JpaRepository<Country, UUID> {
   List<Country> findByIsoCode3(String isoCode3);
 
   List<Country> findByName(String name);
+
+    void delete(Country country);
+
+  List<Country> findAll();
 }

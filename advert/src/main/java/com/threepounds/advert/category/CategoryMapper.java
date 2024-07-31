@@ -1,6 +1,8 @@
 package com.threepounds.advert.category;
 
 import java.util.List;
+
+import com.threepounds.advert.ad.AdResource;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -17,4 +19,7 @@ public interface CategoryMapper {
 
     List<Category> categoryDTOToCategory(List<CategoryDto> categoryDto);
 
+    List<CategoryDto> categoryDtoToCategory(List<CategoryDto> categoryDto);
+
+    CategoryResource categoryToCategoryResource(Category category);
 }

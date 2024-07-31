@@ -15,8 +15,10 @@ public class CityService {
     @Autowired
     private CityRepository cityRepository;
 
-    public List<City> findAll() {
-        return cityRepository.findAll();
+    public List<City> findAll(int no , int size) {
+        PageRequest pageble = PageRequest.of(no, size);
+        Page<City> page = cityRepository.findAll(pageble);
+        return page.toList();
     }
 
     public City findById(UUID id) {

@@ -1,17 +1,13 @@
 package com.threepounds.advert.ad;
-
 import com.threepounds.advert.RestTemplateTrain.RestTemplateService;
 import com.threepounds.advert.annotations.LogExecutionTime;
 import com.threepounds.advert.category.Category;
 import com.threepounds.advert.category.CategoryService;
-import com.threepounds.advert.country.Country;
-import com.threepounds.advert.country.CountryService;
-import com.threepounds.advert.country.city.City;
-import com.threepounds.advert.country.city.CityService;
+import com.threepounds.advert.exception.GeneralResponse;
 import jakarta.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,94 +15,88 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class AdController {
 
-  private final AdService adService;
+    private final AdService adService;
+    private final AdMapper adMapper;
+    private final CategoryService categoryService;
+    private final RestTemplateService restTemplateService;
 
-  private final AdMapper adMapper;
-
-  private final CategoryService categoryService;
-  private final CountryService countryService;
-  private final CityService cityService;
-
-  private final RestTemplateService restTemplateService;
-
-  
-  public AdController(AdService adService, AdMapper adMapper, CategoryService categoryService,
-      RestTemplateService restTemplateService,CountryService countryService, CityService cityService) {
-    this.adService = adService;
-    this.adMapper = adMapper;
-    this.categoryService = categoryService;
-    this.countryService = countryService;
-    this.cityService = cityService;
-    this.restTemplateService = restTemplateService;
-  }
-
-  @LogExecutionTime
-  @GetMapping
-  public List<Ad> getAds(@RequestParam Optional<Integer> no , @RequestParam Optional<Integer> size)
-      throws InterruptedException {
-    Thread.sleep(500);
-    return adService.list(no.orElse(0), size.orElse(10));
-  }
-
-  @PostMapping
-  public ResponseEntity<AdDto> addAd(@Valid @RequestBody AdDto adDto) {
-
-    restTemplateService.getLocation("24.48.0.1");
-
-    Category category = categoryService.findById(adDto.getCategoryId());
-    Ad ad = adMapper.adToAdDto(adDto);
-    if(category != null){
-      ad.setCategory(category);
-      Country country = countryService.getById(adDto.getCountryId())
-              .orElseThrow(() -> new RuntimeException("Country Not Found"));
-      ad.setCountry(country);
-      City city = cityService.getById(adDto.getCityId())
-              .orElseThrow(() -> new RuntimeException("Country Not Found"));
-      ad.setCity(city);
+    public AdController(AdService adService, AdMapper adMapper, CategoryService categoryService,
+                        RestTemplateService restTemplateService) {
+        this.adService = adService;
+        this.adMapper = adMapper;
+        this.categoryService = categoryService;
+        this.restTemplateService = restTemplateService;
     }
 
-    Ad savedAd = adService.save(ad);
-    AdDto resource = adMapper.adToAdDto(savedAd);
-    return ResponseEntity.ok().body(resource);
-  }
+    @LogExecutionTime
+    @GetMapping
+    public ResponseEntity<GeneralResponse<Object>> getAllAd(){
+        List<Ad> ad = adService.findAll();
+        if (ad == null || ad.isEmpty()) {
+            return null;
+        }
+        List<AdResource> adResourcesList = adMapper.adListToAdResourceList(ad);
+        return ResponseEntity.ok().body(GeneralResponse.<Object>builder().data(adResourcesList).build());
+    }
+
+    @GetMapping(path = "/by-title")
+    public ResponseEntity<GeneralResponse<Object>> getAdsByTitle(@RequestParam String title) {
+        List<Ad> ad = adService.listByTitle(title);
+        List<AdResource> adResourceList = adMapper.adListToAdResourceList(ad);
 
 
-  @GetMapping(path = "/by-title")
-  public List<Ad> getAdsByTitle(@RequestParam String name) {
-    return adService.listByTitle(name);
-  }
 
+        return ResponseEntity.ok().body(GeneralResponse.builder().data(adResourceList).build());
+    }
 
-  @PutMapping(path = "/{adId}")
-  public ResponseEntity<Ad> update(@PathVariable UUID adId, @RequestBody Ad ad) {
-    Ad existingAd =
-        adService.getById(adId).orElseThrow(() -> new RuntimeException("User not found"));
-    existingAd.setTitle(ad.getTitle());
-    existingAd.setDescription(ad.getDescription());
-    existingAd.setPrice(ad.getPrice());
-    Ad updatedAd = adService.save(existingAd);
+    @PostMapping
+    public ResponseEntity<GeneralResponse<AdResource>> createAd(@Valid @RequestBody AdDto adDto) {
+        restTemplateService.getLocation("24.48.0.1");
+        Ad ad = adMapper.adDtoToAd(adDto);
 
-    return ResponseEntity.ok().body(updatedAd);
-  }
+        Category category = categoryService.findById(adDto.getCategoryId());
+        if (category == null) {
+            return ResponseEntity.notFound().build();
+        }
+        ad.setCategory(category);
+        Ad savedAd = adService.save(ad);
+        AdResource adResource = adMapper.adToAdResourceList(savedAd);
 
+        return ResponseEntity.ok().body(GeneralResponse.<AdResource>builder().data(adResource).build());
+    }
 
-  @DeleteMapping("/{adId}")
-  public ResponseEntity delete(@PathVariable UUID adId) {
-    Ad existingAd =
-        adService.getById(adId).orElseThrow(() -> new RuntimeException("User not found"));
-    adService.deleteAd(existingAd);
+    @PutMapping(path = "/{adId}")
+    public ResponseEntity<GeneralResponse<AdResource>> updateAd(@PathVariable @NotNull UUID adId, @Valid @NotNull @RequestBody AdDto adDto) {
+        adService.getById(adId);
 
-    return ResponseEntity.ok().build();
-  }
+        Ad updatedAd = adMapper.adDtoToAd(adDto);
+        updatedAd.setId(adId);
 
-  @PutMapping(path = "/{adId}/viewed")
-  public ResponseEntity<Ad> update(@PathVariable UUID adId) {
-    Ad existingAd =
-        adService.getById(adId).orElseThrow(() -> new RuntimeException("Ad not found"));
-    existingAd.setViewCount(existingAd.getViewCount()+1);
-    Ad updatedAd = adService.save(existingAd);
+        Ad savedAd = adService.save(updatedAd);
+        AdResource adResource = adMapper.adToAdResourceList(savedAd);
+        return ResponseEntity.ok().body(GeneralResponse.<AdResource>builder().data(adResource).build());
+    }
 
-    return ResponseEntity.ok().body(updatedAd);
-  }
+    @PutMapping(path = "/{adId}/viewed")
+    public ResponseEntity<GeneralResponse<AdResource>> update(@PathVariable UUID adId) {
+        Ad existingAd =
+                adService.getById(adId);
+        existingAd.setViewCount(existingAd.getViewCount()+1);
+        Ad updatedAd = adService.save(existingAd);
+        AdResource adResource = adMapper.adToAdResourceList(updatedAd);
 
+        return ResponseEntity.ok().body(GeneralResponse.<AdResource>builder().data(adResource).build());
+    }
+    @DeleteMapping("/{adId}")
+    public ResponseEntity<GeneralResponse<AdResource>> delete(@Valid @PathVariable UUID adId) {
+        Ad existingAd =
+                adService.getById(adId);
+        adService.deleteAd(existingAd);
+
+        return ResponseEntity.ok().body(GeneralResponse.<AdResource>builder().build());
+    }
 }
+
+
+
+

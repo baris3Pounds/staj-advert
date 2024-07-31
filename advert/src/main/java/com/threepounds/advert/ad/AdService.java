@@ -1,11 +1,15 @@
 package com.threepounds.advert.ad;
 
 import com.threepounds.advert.category.Category;
+import java.math.BigDecimal;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Optional;
@@ -37,14 +41,29 @@ public class AdService {
     return adRepository.findByTitle(title);
   }
 
-  public Optional<Ad> getById(UUID adId) {
-    return adRepository.findById(adId);
+  public Ad getById(UUID adId) {
+    return adRepository.findById(adId).orElseThrow(() -> new RuntimeException("Ad not found."));
   }
 
   public void deleteAd(Ad ad) {
-    adRepository.delete(ad);
+    ad.setActive(false);
+    adRepository.save(ad);
   }
 
+  public List<Ad> findAll() {  return adRepository.findAll(); }
+
+
+  public List<Ad> search(AdSearchModel searchModel) {
+    Specification<Ad> spec = Specification.where(AdSpecifications.isActive());
+
+    if(searchModel.getPrice()!=null){
+      spec.and(AdSpecifications.priceGreaterThan(new BigDecimal(
+          "100.00")));
+    }
+
+
+    return adRepository.findAll(Specification.where(spec));
+  }
 
 
 }

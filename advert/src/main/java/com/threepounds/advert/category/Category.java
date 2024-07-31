@@ -30,7 +30,6 @@ public class Category {
     // active
     @Column(name = "is_active")
     private boolean active;
-
     // new branch added
 
 }
