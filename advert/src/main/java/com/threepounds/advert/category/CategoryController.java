@@ -55,7 +55,7 @@ public class CategoryController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<GeneralResponse<Object>> deleteCategory(UUID id){
+    public ResponseEntity<GeneralResponse<Object>> deleteCategory(@PathVariable UUID id){
         Category existingCategory = categoryService.findById(id);
         categoryService.deleteById(existingCategory);
         return ResponseEntity.ok().build();

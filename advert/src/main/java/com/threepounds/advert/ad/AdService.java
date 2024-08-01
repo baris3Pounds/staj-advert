@@ -57,8 +57,7 @@ public class AdService {
     Specification<Ad> spec = Specification.where(AdSpecifications.isActive());
 
     if(searchModel.getPrice()!=null){
-      spec.and(AdSpecifications.priceGreaterThan(new BigDecimal(
-          "100.00")));
+      spec.and(AdSpecifications.priceGreaterThan(searchModel.getPrice()));
     }
 
 

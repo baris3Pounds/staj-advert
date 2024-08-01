@@ -9,7 +9,7 @@ public class AdSearchModel {
   private String title;
   private String desc;
   private BigDecimal price;
-  private int latitude;
-  private int longitude;
+  private double latitude;
+  private double longitude;
 
 }

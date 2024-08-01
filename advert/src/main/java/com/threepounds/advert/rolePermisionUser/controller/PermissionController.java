@@ -29,8 +29,9 @@ public class PermissionController {
     }
 
     @GetMapping("/{id}")
-    public Permission getPermission(@PathVariable UUID id){
-        return permissionService.findById(id);
+    public PermissionResource getPermission(@PathVariable UUID id){
+        Permission permission = permissionService.findById(id);
+        return permissionMapper.PermissionToPermissionResource(permission);
     }
 
     @PostMapping("")
@@ -44,9 +45,10 @@ public class PermissionController {
     }
 
     @PutMapping("/{id}")
-    public Permission updatePermission(@PathVariable UUID uuid,@RequestBody PermissionDto permissionDto){
-        Permission permission1 = permissionService.findById(uuid);
+    public PermissionResource updatePermission(@PathVariable UUID id,@RequestBody PermissionDto permissionDto){
+        Permission permission1 = permissionService.findById(id);
         permission1.setName(permissionDto.getName());
-       return permissionService.save(permission1);
+        Permission savedPermission = permissionService.save(permission1);
+        return permissionMapper.PermissionToPermissionResource(savedPermission);
     }
 }
