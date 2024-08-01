@@ -87,6 +87,7 @@ public class AdController {
 
         return ResponseEntity.ok().body(GeneralResponse.<AdResource>builder().data(adResource).build());
     }
+
     @DeleteMapping("/{adId}")
     public ResponseEntity<GeneralResponse<AdResource>> delete(@Valid @PathVariable UUID adId) {
         Ad existingAd =
@@ -94,6 +95,11 @@ public class AdController {
         adService.deleteAd(existingAd);
 
         return ResponseEntity.ok().body(GeneralResponse.<AdResource>builder().build());
+    }
+
+    @PostMapping("/search")
+    public ResponseEntity<List<Ad>> searchAd(AdSearchModel adSearchModel){
+        return ResponseEntity.ok( adService.search(adSearchModel));
     }
 }
 

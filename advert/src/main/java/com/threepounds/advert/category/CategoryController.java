@@ -61,4 +61,9 @@ public class CategoryController {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("/search")
+    public ResponseEntity<List<Category>> searchCategory(CategorySearchModel categorySearchModel){
+       return ResponseEntity.ok(categoryService.search(categorySearchModel));
+    }
+
 }
