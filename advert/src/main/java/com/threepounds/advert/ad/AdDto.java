@@ -27,4 +27,5 @@ public class AdDto {
   private UUID categoryId;
   private UUID countryId;
   private UUID cityId;
+  private UUID userId;
 }
