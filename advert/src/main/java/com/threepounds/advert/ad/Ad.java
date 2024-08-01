@@ -33,10 +33,10 @@ public class Ad {
   private boolean active = true;
 
   @Column(nullable = false)
-  private int latitude;
+  private double latitude;
 
   @Column(nullable = false)
-  private int longitude;
+  private double longitude;
 
   @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH,CascadeType.ALL})
   @JoinColumn(name = "category_id")
