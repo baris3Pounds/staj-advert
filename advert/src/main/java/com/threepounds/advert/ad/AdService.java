@@ -41,14 +41,9 @@ public class AdService {
     return adRepository.findByTitle(title);
   }
 
-  public Ad getById(UUID adId) {
-    return adRepository.findById(adId).orElseThrow(() -> new RuntimeException("Ad not found."));
-  }
+  public Ad getById(UUID adId) {return adRepository.findById(adId).orElseThrow(() -> new RuntimeException("Ad not found."));}
 
-  public void deleteAd(Ad ad) {
-    ad.setActive(false);
-    adRepository.save(ad);
-  }
+  public void deleteAd(Ad ad) { ad.setActive(false); adRepository.save(ad); }
 
   public List<Ad> findAll() {  return adRepository.findAll(); }
 
