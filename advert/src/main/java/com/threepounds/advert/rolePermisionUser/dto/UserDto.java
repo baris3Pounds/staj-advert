@@ -18,6 +18,9 @@ public class UserDto {
     @NotBlank(message = "Not blank")
     private String name;
 
+    @NotBlank(message = "Not blank")
+    private String username;
+
     @Positive(message = "Age should be positive")
     private int age;
 
@@ -26,5 +29,7 @@ public class UserDto {
 
     @NotNull
     private boolean active;
+
+    private String password;
 
 }
