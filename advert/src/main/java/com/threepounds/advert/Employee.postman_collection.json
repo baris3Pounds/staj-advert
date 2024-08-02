@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "ce1bc45b-f84a-4c7e-a556-c974e7a747c7",
+		"_postman_id": "d588a509-61e4-4c64-a1e9-231af76f6703",
 		"name": "Employee",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "36648337"
+		"_exporter_id": "34923631"
 	},
 	"item": [
 		{
@@ -949,6 +949,93 @@
 								"ads",
 								"d04ba6f5-1279-4217-addb-5a567b1a8e40",
 								"viewed"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Notification",
+			"item": [
+				{
+					"name": "Get All",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9000/api/v1/notification",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"api",
+								"v1",
+								"notification"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Notification",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\"   : \"title1\",\r\n    \"message\" : \"message1\",\r\n    \"toUser\"  : \"toUser1\",\r\n    \"isSent\"  : true,\r\n    \"notificationType\": \"notificationType1\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9000/api/v1/notification",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"api",
+								"v1",
+								"notification"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Notification",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\"   : \"title2\",\r\n    \"message\" : \"message3\",\r\n    \"toUser\"  : \"toUser4\",\r\n    \"isSent\"  : true,\r\n    \"notificationType\": \"notificationType3\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9000/api/v1/notification/1326d40e-2260-4055-bdb9-1500d2ab13d8",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"api",
+								"v1",
+								"notification",
+								"1326d40e-2260-4055-bdb9-1500d2ab13d8"
 							]
 						}
 					},
