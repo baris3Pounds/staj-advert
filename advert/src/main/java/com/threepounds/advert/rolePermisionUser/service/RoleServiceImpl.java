@@ -4,6 +4,7 @@ import com.threepounds.advert.rolePermisionUser.entity.Permission;
 import com.threepounds.advert.rolePermisionUser.entity.Role;
 import com.threepounds.advert.rolePermisionUser.repository.RoleRepository;
 import com.threepounds.advert.rolePermisionUser.repository.PermissionRepository;
+import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -46,5 +47,11 @@ public class RoleServiceImpl implements RoleService {
         role.getPermissions().add(permission);
         roleRepository.save(role);
         return role;
+    }
+
+
+    @Override
+    public Optional<Role> findByCode(String code) {
+        return roleRepository.findByCode(code);
     }
 }

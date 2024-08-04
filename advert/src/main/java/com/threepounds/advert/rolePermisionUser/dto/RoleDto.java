@@ -15,6 +15,9 @@ public class RoleDto {
     private UUID id;
     @NotBlank
     private String name;
+
+    @NotBlank
+    private String code;
     @NotBlank
     private List<UUID> permissionIds;
 

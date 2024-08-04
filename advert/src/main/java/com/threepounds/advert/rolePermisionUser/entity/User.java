@@ -29,6 +29,10 @@ public class User {
 
   @Column private String name;
 
+  @Column private String username;
+
+  @Column private String password;
+
   @Column private int age;
 
   @Column
