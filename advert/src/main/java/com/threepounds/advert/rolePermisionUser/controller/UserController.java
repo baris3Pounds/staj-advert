@@ -3,10 +3,13 @@ package com.threepounds.advert.rolePermisionUser.controller;
 import java.util.List;
 import java.util.UUID;
 
+import com.threepounds.advert.exception.GeneralResponse;
+import com.threepounds.advert.rolePermisionUser.dto.UserDto;
 import com.threepounds.advert.rolePermisionUser.entity.User;
+import com.threepounds.advert.rolePermisionUser.resource.UserResource;
 import com.threepounds.advert.rolePermisionUser.service.UserService;
+import com.threepounds.advert.rolePermisionUser.utils.mapper.UserMapper;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,9 +26,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
   private final UserService userService;
+  private final UserMapper userMapper;
 
-  public UserController(UserService userService) {
+  public UserController(UserService userService, UserMapper userMapper) {
     this.userService = userService;
+    this.userMapper = userMapper;
   }
 
   @GetMapping
@@ -34,13 +39,20 @@ public class UserController {
   }
 
   @PostMapping
-  public User save(@RequestBody User user) {
-    return userService.save(user);
+  public ResponseEntity<GeneralResponse<Object>> save(@RequestBody UserDto userDto) {
+    User user = userMapper.userDtoToUser(userDto);
+    userService.save(user);
+    UserResource userResource = userMapper.userToUserResource(user);
+
+    return ResponseEntity.ok().body(GeneralResponse.builder().data(userResource).build());
   }
 
   @GetMapping("/by-name")
-  public List<User> getUsersByName(@RequestParam String name) {
-    return userService.listByName(name);
+  public ResponseEntity<GeneralResponse<Object>> getUsersByName(@RequestParam String name) {
+    userService.listByName(name);
+    UserResource userResource = userMapper.findByName(name);
+
+    return ResponseEntity.ok().body(GeneralResponse.builder().data(userResource).build());
   }
 
 
@@ -48,14 +60,15 @@ public class UserController {
 
   // PutMapping
   @PutMapping("/{userId}")
-  public ResponseEntity<User> update(@PathVariable UUID userId, @RequestBody User user) {
-    User existingUser =
+  public ResponseEntity<GeneralResponse<Object>> update(@PathVariable UUID userId, @RequestBody UserDto userDto) {
+    User existingUser = userMapper.userDtoToUser(userDto);
         userService.getById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-    existingUser.setAge(user.getAge());
-    existingUser.setName(user.getName());
-    existingUser.setGender(user.getGender());
+    existingUser.setAge(userDto.getAge());
+    existingUser.setName(userDto.getName());
+    existingUser.setGender(userDto.getGender());
     User updateUser = userService.save(existingUser);
-    return ResponseEntity.ok().body(updateUser);
+    UserResource userResource = userMapper.userToUserResource(updateUser);
+    return ResponseEntity.ok().body(GeneralResponse.builder().data(updateUser).build());
   }
 
   // DeleteMapping
