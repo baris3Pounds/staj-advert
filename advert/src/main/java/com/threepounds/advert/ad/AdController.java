@@ -101,6 +101,7 @@ public class AdController {
 
         Ad savedAd = adService.save(updatedAd);
         AdResource adResource = adMapper.adToAdResourceList(savedAd);
+
         return ResponseEntity.ok().body(GeneralResponse.<AdResource>builder().data(adResource).build());
     }
 

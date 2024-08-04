@@ -25,6 +25,4 @@ public class AdSpecifications {
   public static Specification<Ad> hasLongitude(int longitude) {
     return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("longitude"), longitude);
   }
-
-
 }
