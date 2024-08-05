@@ -45,9 +45,9 @@ public class SecurityUserServiceImpl implements UserDetailsService{
 
     // add user's authorities
     for (Role userRole : userRoles) {
-      setAuths.add(new SimpleGrantedAuthority(userRole.getName()));
+      setAuths.add(new SimpleGrantedAuthority(userRole.getCode()));
       userRole.getPermissions().stream()
-          .map(p -> new SimpleGrantedAuthority(p.getName()))
+          .map(p -> new SimpleGrantedAuthority(p.getCode()))
           .forEach(setAuths::add);
     }
 

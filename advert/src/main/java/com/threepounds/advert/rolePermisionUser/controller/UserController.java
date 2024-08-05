@@ -28,6 +28,8 @@ public class UserController {
     this.userService = userService;
   }
 
+
+  @PreAuthorize("hasAuthority('VIEW_USERS')")
   @GetMapping
   public List<User> getUsers() {
     return userService.list();

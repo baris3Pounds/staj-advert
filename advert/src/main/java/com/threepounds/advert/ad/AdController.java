@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.UUID;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping(path = "/api/v1/ads")
@@ -41,6 +42,7 @@ public class AdController {
         this.userService = userService;
     }
 
+    @PreAuthorize("hasRole('USER')")
     @LogExecutionTime
     @GetMapping
     public ResponseEntity<GeneralResponse<Object>> getAllAd(){

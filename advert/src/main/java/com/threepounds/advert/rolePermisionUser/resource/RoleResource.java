@@ -18,4 +18,5 @@ public class RoleResource {
     private UUID id;
     private String name;
     private List<PermissionResource> permissions = new ArrayList<>();
+    private String code;
 }

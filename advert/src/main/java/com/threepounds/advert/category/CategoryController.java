@@ -7,6 +7,7 @@ import java.util.UUID;
 import com.threepounds.advert.exception.GeneralResponse;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,6 +23,8 @@ public class CategoryController {
         this.categoryMapper = categoryMapper;
     }
 
+
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("")
     public ResponseEntity<GeneralResponse<Object>> getCategories(@RequestParam Optional<Integer> no , @RequestParam Optional<Integer> size){
 
