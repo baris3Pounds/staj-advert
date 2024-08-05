@@ -93,7 +93,7 @@ public class AdController {
         ad.setUser(user);
 
         Ad savedAd = adService.save(ad);
-        AdResource adResource = adMapper.adToAdResourceList(savedAd);
+        AdResource adResource = adMapper.adToAdResource(savedAd);
 
         return ResponseEntity.ok().body(GeneralResponse.<AdResource>builder().data(adResource).build());
     }
@@ -106,7 +106,7 @@ public class AdController {
         updatedAd.setId(adId);
 
         Ad savedAd = adService.save(updatedAd);
-        AdResource adResource = adMapper.adToAdResourceList(savedAd);
+        AdResource adResource = adMapper.adToAdResource(savedAd);
 
         return ResponseEntity.ok().body(GeneralResponse.<AdResource>builder().data(adResource).build());
     }
@@ -117,7 +117,7 @@ public class AdController {
                 adService.getById(adId);
         existingAd.setViewCount(existingAd.getViewCount()+1);
         Ad updatedAd = adService.save(existingAd);
-        AdResource adResource = adMapper.adToAdResourceList(updatedAd);
+        AdResource adResource = adMapper.adToAdResource(updatedAd);
 
         return ResponseEntity.ok().body(GeneralResponse.<AdResource>builder().data(adResource).build());
     }
