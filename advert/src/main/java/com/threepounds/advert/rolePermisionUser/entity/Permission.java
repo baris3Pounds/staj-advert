@@ -19,7 +19,11 @@ public class Permission {
     @GeneratedValue
     private UUID id;
 
+    @Column
     private String name;
+
+    @Column
+    private String code;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "role_permissions" ,joinColumns = @JoinColumn(name = "permission_id") , inverseJoinColumns = @JoinColumn(name = "role_id"))

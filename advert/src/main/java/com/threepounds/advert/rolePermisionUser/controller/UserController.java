@@ -33,6 +33,8 @@ public class UserController {
     this.userMapper = userMapper;
   }
 
+
+  @PreAuthorize("hasAuthority('VIEW_USERS')")
   @GetMapping
   public List<User> getUsers() {
     return userService.list();
@@ -56,9 +58,7 @@ public class UserController {
   }
 
 
-  // CREATE USER USERDTO kulllanılacak içerisinde List<UUID> roleIds
-
-  // PutMapping
+  @PreAuthorize("hasAuthority('EDIT_USERS')")
   @PutMapping("/{userId}")
   public ResponseEntity<GeneralResponse<Object>> update(@PathVariable UUID userId, @RequestBody UserDto userDto) {
     User existingUser = userMapper.userDtoToUser(userDto);

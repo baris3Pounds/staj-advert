@@ -5,10 +5,14 @@ import java.util.Optional;
 import java.util.UUID;
 
 import com.threepounds.advert.exception.GeneralResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/categories")
 public class CategoryController {
@@ -22,6 +26,8 @@ public class CategoryController {
         this.categoryMapper = categoryMapper;
     }
 
+
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("")
     public ResponseEntity<GeneralResponse<Object>> getCategories(@RequestParam Optional<Integer> no , @RequestParam Optional<Integer> size){
 
@@ -38,7 +44,8 @@ public class CategoryController {
     }
 
     @PostMapping("")
-    public ResponseEntity<GeneralResponse<Object>> createCategory(@RequestBody CategoryDto categoryDto){
+    public ResponseEntity<GeneralResponse<Object>> createCategory(Authentication authentication, @RequestBody CategoryDto categoryDto){
+        System.out.println("Principal ->" + authentication.getPrincipal());
         Category category = categoryMapper.categoryDTOToCategory(categoryDto);
         Category savedCategory = categoryService.save(category);
         CategoryResource categoryResource = categoryMapper.categoryToCategoryResource(savedCategory);
@@ -56,6 +63,7 @@ public class CategoryController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<GeneralResponse<Object>> deleteCategory(@PathVariable UUID id){
+        log.info("");
         Category existingCategory = categoryService.findById(id);
         categoryService.deleteById(existingCategory);
         return ResponseEntity.ok().build();
