@@ -32,4 +32,15 @@ public class ValidExceptionHandler {
       objectGeneralResponse.setData(null);
       return ResponseEntity.badRequest().body(objectGeneralResponse);
     }
+
+
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ExceptionHandler(BadRequestException.class)
+  public ResponseEntity<GeneralResponse<Object>> handleBadRequestExceptions(BadRequestException ex){
+
+    GeneralResponse<Object> objectGeneralResponse = new GeneralResponse<>();
+    objectGeneralResponse.setMessage(ex.getMessage());
+    objectGeneralResponse.setData(null);
+    return ResponseEntity.badRequest().body(objectGeneralResponse);
+  }
 }

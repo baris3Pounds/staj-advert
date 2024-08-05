@@ -46,9 +46,7 @@ public class UserController {
   }
 
 
-  // CREATE USER USERDTO kulllanılacak içerisinde List<UUID> roleIds
-
-  // PutMapping
+  @PreAuthorize("hasAuthority('EDIT_USERS')")
   @PutMapping("/{userId}")
   public ResponseEntity<User> update(@PathVariable UUID userId, @RequestBody User user) {
     User existingUser =

@@ -1,6 +1,7 @@
 package com.threepounds.advert.security;
 
 
+import com.threepounds.advert.exception.BadRequestException;
 import com.threepounds.advert.rolePermisionUser.dto.UserDto;
 import com.threepounds.advert.rolePermisionUser.entity.Role;
 import com.threepounds.advert.rolePermisionUser.entity.User;
@@ -27,7 +28,6 @@ public class AuthenticationService {
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
   private final JwtService jwtService;
-  private final AuthenticationManager authenticationManager;
 
   private final UserMapper userMapper;
   private final RoleService roleService;
@@ -43,7 +43,7 @@ public class AuthenticationService {
     user.setRoles(roles);
     Optional<User> emailEntry = userRepository.findByUsername(user.getUsername());
     if (emailEntry.isPresent()) {
-      throw new RuntimeException("This email is already exist");
+      throw new BadRequestException("This email is already exist");
     }
     userRepository.save(user);
 
