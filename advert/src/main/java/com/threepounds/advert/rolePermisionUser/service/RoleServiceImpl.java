@@ -49,7 +49,6 @@ public class RoleServiceImpl implements RoleService {
         return role;
     }
 
-
     @Override
     public Optional<Role> findByCode(String code) {
         return roleRepository.findByCode(code);

@@ -1,7 +1,5 @@
 package com.threepounds.advert.rolePermisionUser.service;
-
 import com.threepounds.advert.rolePermisionUser.entity.Role;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
