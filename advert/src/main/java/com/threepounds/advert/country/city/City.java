@@ -33,5 +33,6 @@ public class City {
   @JoinColumn(name = "country_id")
   private Country country;
 
-
+  @OneToMany(mappedBy = "city", fetch = FetchType.EAGER)
+  private List<Ad> ads = new ArrayList<>();
 }

@@ -3,6 +3,7 @@ package com.threepounds.advert.ad;
 import com.threepounds.advert.category.Category;
 import com.threepounds.advert.country.Country;
 import com.threepounds.advert.country.city.City;
+import com.threepounds.advert.rolePermisionUser.entity.User;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -31,6 +32,12 @@ public class Ad {
   @Column(nullable = false)
   private boolean active = true;
 
+  @Column(nullable = false)
+  private double latitude;
+
+  @Column(nullable = false)
+  private double longitude;
+
   @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH,CascadeType.ALL})
   @JoinColumn(name = "category_id")
   private Category category;
@@ -43,19 +50,26 @@ public class Ad {
   @JoinColumn(name = "city_id")
   private City city;
 
+  @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+  @JoinColumn(name = "user_id")
+  private User user;
+
   @Column(nullable = false)
   private int viewCount = 0;
 
-  // latitude
-  // longitude
-  // user one to many
-
   public Ad() {}
 
-  public Ad(String title, String description, BigDecimal price) {
+  public Ad(String title, String description, BigDecimal price, int latitude, int longitude, Category category, Country country, City city, User user) {
     this.title = title;
     this.description = description;
     this.price = price;
+    this.latitude = latitude;
+    this.longitude = longitude;
+    this.category = category;
+    this.country = country;
+    this.city = city;
+    this.user = user;
+    this.viewCount = 0;
   }
 
 }

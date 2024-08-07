@@ -1,5 +1,6 @@
 package com.threepounds.advert.country;
 
+import com.threepounds.advert.ad.Ad;
 import com.threepounds.advert.country.city.City;
 import jakarta.persistence.*;
 
@@ -23,5 +24,8 @@ public class Country {
   // cities one to many
   @OneToMany(mappedBy = "country", fetch = FetchType.EAGER)
   private List<City> cities = new ArrayList<>();
+
+  @OneToMany(mappedBy = "country", fetch = FetchType.EAGER)
+  private List<Ad> ads = new ArrayList<>();
 
 }

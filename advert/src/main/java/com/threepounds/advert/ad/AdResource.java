@@ -17,6 +17,8 @@ public class AdResource {
     private String title;
     private String description;
     private BigDecimal price;
+    private int latitude;
+    private int longitude;
     private List<AdResource> adResourceList = new ArrayList<>();
 
 }

@@ -14,4 +14,6 @@ import java.util.UUID;
 public class PermissionResource {
     private UUID id;
     private String name;
+
+    private String code;
 }

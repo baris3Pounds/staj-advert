@@ -13,6 +13,7 @@ public class GeneralResponse<T> {
 
   private Map<String,String> errors;
   private T data;
+  private String message;
 
   public GeneralResponse() {
   }

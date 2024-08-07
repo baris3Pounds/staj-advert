@@ -6,6 +6,7 @@ import java.util.UUID;
 import com.threepounds.advert.rolePermisionUser.entity.User;
 import com.threepounds.advert.rolePermisionUser.service.UserService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 
 @RequestMapping("/users")
 @RestController
@@ -26,6 +28,8 @@ public class UserController {
     this.userService = userService;
   }
 
+
+  @PreAuthorize("hasAuthority('VIEW_USERS')")
   @GetMapping
   public List<User> getUsers() {
     return userService.list();
@@ -42,9 +46,7 @@ public class UserController {
   }
 
 
-  // CREATE USER USERDTO kulllanılacak içerisinde List<UUID> roleIds
-
-  // PutMapping
+  @PreAuthorize("hasAuthority('EDIT_USERS')")
   @PutMapping("/{userId}")
   public ResponseEntity<User> update(@PathVariable UUID userId, @RequestBody User user) {
     User existingUser =

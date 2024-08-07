@@ -19,7 +19,11 @@ public class Role {
     @GeneratedValue
     private UUID id;
 
+    @Column
     private String name;
+
+    @Column
+    private String code;
 
     @ManyToMany(mappedBy = "roles" , fetch = FetchType.LAZY)
     private List<User> users = new ArrayList<>();

@@ -2,6 +2,7 @@ package com.threepounds.advert.country;
 
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 @Getter
 @Setter
 public class CountryResource {
+    private UUID id;
     private String name;
     private int phoneCode;
     private String isoCode3;

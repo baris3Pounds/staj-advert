@@ -18,7 +18,13 @@ public class AdSpecifications {
     return ((root, query, criteriaBuilder) -> criteriaBuilder.greaterThan(root.get("price") , price));
   }
 
+  public static Specification<Ad> hasLatitude(int latitude) {
+    return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("latitude"), latitude);
+  }
 
+  public static Specification<Ad> hasLongitude(int longitude) {
+    return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("longitude"), longitude);
+  }
 
 
 }

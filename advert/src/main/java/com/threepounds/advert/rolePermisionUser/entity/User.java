@@ -1,5 +1,7 @@
 package com.threepounds.advert.rolePermisionUser.entity;
 
+import com.threepounds.advert.ad.Ad;
+import com.threepounds.advert.country.city.City;
 import com.threepounds.advert.rolePermisionUser.utils.enums.Gender;
 import jakarta.persistence.*;
 
@@ -27,6 +29,10 @@ public class User {
 
   @Column private String name;
 
+  @Column private String username;
+
+  @Column private String password;
+
   @Column private int age;
 
   @Column
@@ -39,6 +45,9 @@ public class User {
   @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(name = "user_roles" , joinColumns = @JoinColumn(name = "user_id") , inverseJoinColumns = @JoinColumn(name = "role_id"))
   private List<Role> roles = new ArrayList<>();
+
+  @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+  private List<Ad> ads = new ArrayList<>();
 
   public User(String name, int age, Gender gender) {
     this.name = name;
