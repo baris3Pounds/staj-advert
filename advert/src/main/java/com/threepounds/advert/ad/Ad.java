@@ -3,9 +3,12 @@ package com.threepounds.advert.ad;
 import com.threepounds.advert.category.Category;
 import com.threepounds.advert.country.Country;
 import com.threepounds.advert.country.city.City;
+import com.threepounds.advert.rolePermisionUser.entity.Role;
 import com.threepounds.advert.rolePermisionUser.entity.User;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
@@ -53,6 +56,10 @@ public class Ad {
   @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
   @JoinColumn(name = "user_id")
   private User user;
+
+  @ManyToMany(fetch = FetchType.LAZY)
+  @JoinTable(name = "user_ad" ,joinColumns = @JoinColumn(name = "ad_id") , inverseJoinColumns = @JoinColumn(name = "user_id"))
+  private List<User> users = new ArrayList<>();
 
   @Column(nullable = false)
   private int viewCount = 0;

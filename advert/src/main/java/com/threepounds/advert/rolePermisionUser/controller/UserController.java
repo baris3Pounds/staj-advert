@@ -3,6 +3,10 @@ package com.threepounds.advert.rolePermisionUser.controller;
 import java.util.List;
 import java.util.UUID;
 
+import com.threepounds.advert.ad.Ad;
+import com.threepounds.advert.ad.AdMapper;
+import com.threepounds.advert.ad.AdResource;
+import com.threepounds.advert.exception.GeneralResponse;
 import com.threepounds.advert.rolePermisionUser.entity.User;
 import com.threepounds.advert.rolePermisionUser.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -23,9 +27,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
   private final UserService userService;
+  private final AdMapper adMapper;
 
-  public UserController(UserService userService) {
+  public UserController(UserService userService, AdMapper adMapper) {
     this.userService = userService;
+    this.adMapper = adMapper;
   }
 
 
@@ -56,6 +62,15 @@ public class UserController {
     existingUser.setGender(user.getGender());
     User updateUser = userService.save(existingUser);
     return ResponseEntity.ok().body(updateUser);
+  }
+
+  @GetMapping("/{userId}/favorites")
+  public ResponseEntity<GeneralResponse<List<AdResource>>> getUserFavorites(@PathVariable UUID userId){
+    User user = userService.getById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+    List<Ad> favoriteAds = user.getFavoriteAds();
+    List<AdResource> adResources = adMapper.adListToAdResourceList(favoriteAds);
+
+    return ResponseEntity.ok().body(GeneralResponse.<List<AdResource>>builder().data(adResources).build());
   }
 
   // DeleteMapping

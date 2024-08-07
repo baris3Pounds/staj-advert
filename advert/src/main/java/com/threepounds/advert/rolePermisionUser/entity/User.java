@@ -43,8 +43,8 @@ public class User {
   private boolean active;
 
   @ManyToMany(fetch = FetchType.LAZY)
-  @JoinTable(name = "user_roles" , joinColumns = @JoinColumn(name = "user_id") , inverseJoinColumns = @JoinColumn(name = "role_id"))
-  private List<Role> roles = new ArrayList<>();
+  @JoinTable(name = "user_roles" , joinColumns = @JoinColumn(name = "user_id") , inverseJoinColumns = @JoinColumn(name = "ad_id"))
+  private List<Ad> favoriteAds= new ArrayList<>();
 
   @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
   private List<Ad> ads = new ArrayList<>();

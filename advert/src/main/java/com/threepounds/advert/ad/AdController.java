@@ -9,8 +9,12 @@ import com.threepounds.advert.country.city.City;
 import com.threepounds.advert.country.city.CityService;
 import com.threepounds.advert.exception.GeneralResponse;
 import com.threepounds.advert.rolePermisionUser.entity.User;
+import com.threepounds.advert.rolePermisionUser.resource.UserResource;
 import com.threepounds.advert.rolePermisionUser.service.UserService;
+import com.threepounds.advert.rolePermisionUser.utils.mapper.UserMapper;
 import jakarta.validation.Valid;
+
+import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 import jakarta.validation.constraints.NotNull;
@@ -67,9 +71,7 @@ public class AdController {
 
 
     @PostMapping
-    public ResponseEntity<GeneralResponse<AdResource>> createAd(Authentication authentication, @Valid @RequestBody AdDto adDto) {
-
-        authentication.getPrincipal();
+    public ResponseEntity<GeneralResponse<AdResource>> createAd(Principal principal, Authentication authentication, @Valid @RequestBody AdDto adDto) {
 
         restTemplateService.getLocation("24.48.0.1");
         Ad ad = adMapper.adDtoToAd(adDto);
@@ -92,7 +94,14 @@ public class AdController {
                 .orElseThrow(() -> new RuntimeException("User Not Found"));
         ad.setUser(user);
 
+        User user1 = (User) authentication.getPrincipal();
+        ad.setUser(user1);
+
         Ad savedAd = adService.save(ad);
+
+        user1.getFavoriteAds().add(savedAd);
+        userService.save(user1);
+
         AdResource adResource = adMapper.adToAdResourceList(savedAd);
 
         return ResponseEntity.ok().body(GeneralResponse.<AdResource>builder().data(adResource).build());
@@ -120,6 +129,33 @@ public class AdController {
 
         return ResponseEntity.ok().body(GeneralResponse.<AdResource>builder().data(adResource).build());
     }
+
+    @PutMapping(path ="/{adId}/favorite")
+            public ResponseEntity<GeneralResponse<AdResource>> updateFavoriteAds(@PathVariable UUID adId, Authentication authentication) {
+        User user1 = (User) authentication.getPrincipal();
+        Ad ad = adService.getById(adId);
+
+        if (!user1.getFavoriteAds().contains(ad)) {
+            user1.getFavoriteAds().add(ad);
+            userService.save(user1);
+        }
+        Ad updatedAd = adService.save(ad);
+        AdResource adResource = adMapper.adToAdResourceList(ad);
+        return ResponseEntity.ok().body(GeneralResponse.<AdResource>builder().data(adResource).build());
+    }
+
+
+    @DeleteMapping("/{adId}/favorite")
+    public ResponseEntity<GeneralResponse<AdResource>> favoriteAds(@PathVariable UUID adId, Authentication authentication) {
+        User user1 = (User) authentication.getPrincipal();
+        Ad ad = adService.getById(adId);
+
+        user1.getFavoriteAds().remove(ad);
+        userService.save(user1);
+
+        return ResponseEntity.ok().body(GeneralResponse.<AdResource>builder().build());
+    }
+
     @DeleteMapping("/{adId}")
     public ResponseEntity<GeneralResponse<AdResource>> delete(@Valid @PathVariable UUID adId) {
         Ad existingAd =
