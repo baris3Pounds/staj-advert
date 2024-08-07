@@ -8,15 +8,12 @@ import com.threepounds.advert.rolePermisionUser.entity.User;
 import com.threepounds.advert.rolePermisionUser.repository.UserRepository;
 import com.threepounds.advert.rolePermisionUser.service.RoleService;
 import com.threepounds.advert.rolePermisionUser.utils.mapper.UserMapper;
-import java.util.Random;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Component;
 
 
 import java.util.*;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 
@@ -48,6 +45,22 @@ public class AuthenticationService {
     userRepository.save(user);
 
     return jwtService.generateToken(user.getUsername());
+  }
+
+  public User signIn(UserDto userDto) {
+    Optional<User> emailEntry = userRepository.findByUsername(userDto.getUsername());
+    if (emailEntry.isPresent()) {
+      User user = emailEntry.get();
+      if (user.getPassword().matches(passwordEncoder.encode(userDto.getPassword()))) {
+        return user;
+      }
+      else {
+        throw new BadRequestException("Invalid password");
+      }
+    }
+    else {
+      throw new BadRequestException("Invalid username or password");
+    }
   }
 
 
