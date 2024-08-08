@@ -84,7 +84,7 @@ public class UserController {
   @GetMapping("/{userId}/favorites")
   public ResponseEntity<GeneralResponse<List<AdResource>>> getUserFavorites(@PathVariable UUID userId){
     User user = userService.getById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-    List<Ad> favoriteAds = user.getFavoriteAds();
+    List<Ad> favoriteAds = user.getFavouriteAds();
     List<AdResource> adResources = adMapper.adListToAdResourceList(favoriteAds);
 
     return ResponseEntity.ok().body(GeneralResponse.<List<AdResource>>builder().data(adResources).build());

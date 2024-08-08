@@ -6,6 +6,7 @@ import com.threepounds.advert.rolePermisionUser.dto.UserDto;
 import com.threepounds.advert.rolePermisionUser.dto.UserResponseDto;
 import com.threepounds.advert.rolePermisionUser.entity.User;
 import io.jsonwebtoken.Jwt;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,7 +31,8 @@ public class AuthenticationController {
     return ResponseEntity.ok().body(response);
   }
 
-  public ResponseEntity<GeneralResponse> signIn(@RequestBody UserDto userDto) {
+  @PostMapping("/signin")
+  public ResponseEntity<GeneralResponse> signIn(@Valid @RequestBody UserDto userDto) {
     User user = authenticationService.signIn(userDto);
     String token = jwtService.generateToken(user.getUsername());
     UserResponseDto dto = UserResponseDto

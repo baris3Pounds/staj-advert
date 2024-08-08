@@ -90,17 +90,12 @@ public class AdController {
                 .orElseThrow(() -> new RuntimeException("City Not Found"));
         ad.setCity(city);
 
-        User user = userService.getById(adDto.getUserId())
-                .orElseThrow(() -> new RuntimeException("User Not Found"));
+        User user = userService.getByUsername(principal.getName())
+            .orElseThrow(() -> new RuntimeException("User Not Found"));
         ad.setUser(user);
 
         Ad savedAd = adService.save(ad);
         AdResource adResource = adMapper.adToAdResource(savedAd);
-
-        user1.getFavoriteAds().add(savedAd);
-        userService.save(user1);
-
-        AdResource adResource = adMapper.adToAdResourceList(savedAd);
 
         return ResponseEntity.ok().body(GeneralResponse.<AdResource>builder().data(adResource).build());
     }
@@ -124,33 +119,30 @@ public class AdController {
                 adService.getById(adId);
         existingAd.setViewCount(existingAd.getViewCount()+1);
         Ad updatedAd = adService.save(existingAd);
-        AdResource adResource = adMapper.adToAdResourceList(updatedAd);
+        AdResource adResource = adMapper.adToAdResource(updatedAd);
 
         return ResponseEntity.ok().body(GeneralResponse.<AdResource>builder().data(adResource).build());
     }
 
     @PutMapping(path ="/{adId}/favorite")
-            public ResponseEntity<GeneralResponse<AdResource>> updateFavoriteAds(@PathVariable UUID adId, Authentication authentication) {
-        User user1 = (User) authentication.getPrincipal();
+            public ResponseEntity<GeneralResponse<Boolean>> updateFavoriteAds(@PathVariable UUID adId, Principal principal) {
+        User user = userService.getByUsername(principal.getName()) .orElseThrow(() -> new RuntimeException("User Not Found"));;
         Ad ad = adService.getById(adId);
 
-        if (!user1.getFavoriteAds().contains(ad)) {
-            user1.getFavoriteAds().add(ad);
-            userService.save(user1);
+        if (!user.getFavouriteAds().contains(ad)) {
+            user.getFavouriteAds().add(ad);
+            userService.save(user);
         }
-        Ad updatedAd = adService.save(ad);
-        AdResource adResource = adMapper.adToAdResourceList(ad);
-        return ResponseEntity.ok().body(GeneralResponse.<AdResource>builder().data(adResource).build());
+        return ResponseEntity.ok().body(GeneralResponse.<Boolean>builder().data(Boolean.TRUE).build());
     }
 
 
     @DeleteMapping("/{adId}/favorite")
-    public ResponseEntity<GeneralResponse<AdResource>> favoriteAds(@PathVariable UUID adId, Authentication authentication) {
-        User user1 = (User) authentication.getPrincipal();
+    public ResponseEntity<GeneralResponse<AdResource>> favoriteAds(@PathVariable UUID adId, Principal principal) {
+        User user = userService.getByUsername(principal.getName()) .orElseThrow(() -> new RuntimeException("User Not Found"));;
         Ad ad = adService.getById(adId);
-
-        user1.getFavoriteAds().remove(ad);
-        userService.save(user1);
+        user.getFavouriteAds().remove(ad);
+        userService.save(user);
 
         return ResponseEntity.ok().body(GeneralResponse.<AdResource>builder().build());
     }

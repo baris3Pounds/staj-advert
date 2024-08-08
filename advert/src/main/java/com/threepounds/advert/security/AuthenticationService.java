@@ -48,20 +48,14 @@ public class AuthenticationService {
   }
 
   public User signIn(UserDto userDto) {
-    Optional<User> emailEntry = userRepository.findByUsername(userDto.getUsername());
-    if (emailEntry.isPresent()) {
-      User user = emailEntry.get();
-      if (user.getPassword().matches(passwordEncoder.encode(userDto.getPassword()))) {
-        return user;
-      }
-      else {
-        throw new BadRequestException("Invalid password");
-      }
-    }
-    else {
-      throw new BadRequestException("Invalid username or password");
+    User user =
+        userRepository
+            .findByUsername(userDto.getUsername())
+            .orElseThrow(() -> new BadRequestException("Invalid username or password"));
+    if (user.getPassword().matches(passwordEncoder.encode(userDto.getPassword()))) {
+      return user;
+    } else {
+      throw new BadRequestException("Invalid password");
     }
   }
-
-
 }

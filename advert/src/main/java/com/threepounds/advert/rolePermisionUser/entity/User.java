@@ -45,6 +45,10 @@ public class User {
   @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
   private List<Ad> ads = new ArrayList<>();
 
+  @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @JoinTable(name = "user_favourites" , joinColumns = @JoinColumn(name = "user_id") , inverseJoinColumns = @JoinColumn(name = "ad_id"))
+  private List<Ad> favouriteAds = new ArrayList<>();
+
   public User(String name, int age, Gender gender) {
     this.name = name;
     this.age = age;
