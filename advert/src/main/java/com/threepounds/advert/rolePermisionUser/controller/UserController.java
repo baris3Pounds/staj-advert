@@ -2,10 +2,13 @@ package com.threepounds.advert.rolePermisionUser.controller;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import com.threepounds.advert.exception.GeneralResponse;
 import com.threepounds.advert.rolePermisionUser.dto.UserDto;
+import com.threepounds.advert.ad.Ad;
+import com.threepounds.advert.ad.AdMapper;
+import com.threepounds.advert.ad.AdResource;
+import com.threepounds.advert.exception.GeneralResponse;
 import com.threepounds.advert.rolePermisionUser.entity.User;
 import com.threepounds.advert.rolePermisionUser.resource.UserResource;
 import com.threepounds.advert.rolePermisionUser.service.UserService;
@@ -30,10 +33,12 @@ public class UserController {
 
   private final UserService userService;
   private final UserMapper userMapper;
+  private final AdMapper adMapper;
 
-  public UserController(UserService userService, UserMapper userMapper) {
+  public UserController(UserService userService, UserMapper userMapper,AdMapper adMapper) {
     this.userService = userService;
     this.userMapper = userMapper;
+    this.adMapper = adMapper;
   }
 
 
@@ -74,6 +79,15 @@ public class UserController {
     User updateUser = userService.save(existingUser);
     UserResource userResource = userMapper.userToUserResource(updateUser);
     return ResponseEntity.ok().body(GeneralResponse.builder().data(updateUser).build());
+  }
+
+  @GetMapping("/{userId}/favorites")
+  public ResponseEntity<GeneralResponse<List<AdResource>>> getUserFavorites(@PathVariable UUID userId){
+    User user = userService.getById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+    List<Ad> favoriteAds = user.getFavoriteAds();
+    List<AdResource> adResources = adMapper.adListToAdResourceList(favoriteAds);
+
+    return ResponseEntity.ok().body(GeneralResponse.<List<AdResource>>builder().data(adResources).build());
   }
 
   // DeleteMapping
