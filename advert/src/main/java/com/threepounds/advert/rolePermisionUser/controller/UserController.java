@@ -1,5 +1,7 @@
 package com.threepounds.advert.rolePermisionUser.controller;
 
+import com.threepounds.advert.rolePermisionUser.entity.Role;
+import com.threepounds.advert.rolePermisionUser.service.RoleService;
 import java.util.List;
 import java.util.UUID;
 
@@ -8,13 +10,13 @@ import com.threepounds.advert.rolePermisionUser.dto.UserDto;
 import com.threepounds.advert.ad.Ad;
 import com.threepounds.advert.ad.AdMapper;
 import com.threepounds.advert.ad.AdResource;
-import com.threepounds.advert.exception.GeneralResponse;
 import com.threepounds.advert.rolePermisionUser.entity.User;
 import com.threepounds.advert.rolePermisionUser.resource.UserResource;
 import com.threepounds.advert.rolePermisionUser.service.UserService;
 import com.threepounds.advert.rolePermisionUser.utils.mapper.UserMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,7 +26,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.function.EntityResponse;
 
 
 @RequestMapping("/users")
@@ -35,10 +36,14 @@ public class UserController {
   private final UserMapper userMapper;
   private final AdMapper adMapper;
 
-  public UserController(UserService userService, UserMapper userMapper,AdMapper adMapper) {
+  private final RoleService roleService;
+
+  public UserController(UserService userService, UserMapper userMapper,AdMapper adMapper,
+      RoleService roleService) {
     this.userService = userService;
     this.userMapper = userMapper;
     this.adMapper = adMapper;
+    this.roleService = roleService;
   }
 
 
@@ -53,6 +58,11 @@ public class UserController {
   @PostMapping
   public ResponseEntity<GeneralResponse<Object>> save(@RequestBody UserDto userDto) {
     User user = userMapper.userDtoToUser(userDto);
+    if (!CollectionUtils.isEmpty(userDto.getRoles())) {
+      List<Role> roles = roleService.findByIdList(userDto.getRoles());
+      user.setRoles(roles);
+    }
+
     userService.save(user);
     UserResource userResource = userMapper.userToUserResource(user);
 

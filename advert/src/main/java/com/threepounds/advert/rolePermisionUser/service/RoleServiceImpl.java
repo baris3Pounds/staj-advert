@@ -53,4 +53,9 @@ public class RoleServiceImpl implements RoleService {
     public Optional<Role> findByCode(String code) {
         return roleRepository.findByCode(code);
     }
+
+    @Override
+    public List<Role> findByIdList(List<UUID> ids) {
+        return roleRepository.findAllById(ids);
+    }
 }

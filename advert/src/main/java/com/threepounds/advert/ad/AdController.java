@@ -9,9 +9,7 @@ import com.threepounds.advert.country.city.City;
 import com.threepounds.advert.country.city.CityService;
 import com.threepounds.advert.exception.GeneralResponse;
 import com.threepounds.advert.rolePermisionUser.entity.User;
-import com.threepounds.advert.rolePermisionUser.resource.UserResource;
 import com.threepounds.advert.rolePermisionUser.service.UserService;
-import com.threepounds.advert.rolePermisionUser.utils.mapper.UserMapper;
 import jakarta.validation.Valid;
 
 import java.security.Principal;
@@ -126,7 +124,7 @@ public class AdController {
 
     @PutMapping(path ="/{adId}/favorite")
             public ResponseEntity<GeneralResponse<Boolean>> updateFavoriteAds(@PathVariable UUID adId, Principal principal) {
-        User user = userService.getByUsername(principal.getName()) .orElseThrow(() -> new RuntimeException("User Not Found"));;
+        User user = userService.getByUsername(principal.getName()) .orElseThrow(() -> new RuntimeException("User Not Found"));
         Ad ad = adService.getById(adId);
 
         if (!user.getFavouriteAds().contains(ad)) {

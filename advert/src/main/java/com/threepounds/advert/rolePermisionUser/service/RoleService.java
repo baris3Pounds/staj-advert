@@ -12,4 +12,6 @@ public interface RoleService {
     Role addPermissionToRole(UUID id, UUID id2);
 
     Optional<Role> findByCode(String code);
+
+    public List<Role> findByIdList(List<UUID> ids);
 }

@@ -2,6 +2,7 @@ package com.threepounds.advert.ad;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.UUID;
 
@@ -17,6 +18,7 @@ public class AdDto {
 
   private UUID id;
 
+  @NotNull
   @NotBlank(message = " name cannot be empty")
   private String title;
   @NotBlank(message = "description is mandatory")
@@ -25,8 +27,11 @@ public class AdDto {
   private BigDecimal price;
 
   private UUID categoryId;
-  private UUID countryId;
-  private UUID cityId;
+
+  @NotNull  private UUID countryId;
+
+  @NotNull  private UUID cityId;
+
   private double latitude;
   private double longitude;
 }

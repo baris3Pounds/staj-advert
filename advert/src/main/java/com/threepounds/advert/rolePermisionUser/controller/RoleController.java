@@ -44,17 +44,6 @@ public class RoleController {
         return roleMapper.RoleToRoleResource(role);
     }
 
-    /*
-
-    @PostMapping("")
-    public Role createRole(@RequestBody RoleDto roleDto){
-        List<Permission> permissions = permissionService.findByIdList(roleDto.getPermissionIds());
-        Role role = roleMapper.RoleDtoToRole(roleDto);
-        role.setPermissions(permissions);
-        return roleService.save(role);
-    }
-
-     */
 
     @PostMapping("")
     public ResponseEntity<GeneralResponse<RoleResource>> createRole(@RequestBody RoleDto roleDto){
@@ -83,16 +72,6 @@ public class RoleController {
         RoleResource roleResource = roleMapper.RoleToRoleResource(role1);
         return roleResource;
     }
-
-
-
-//    @PostMapping("/{id}/permissions/{id2}")
-//    public Role addPermissionToRole(@PathVariable UUID id , @PathVariable UUID id2){
-//        return roleService.addPermissionToRole(id, id2);
-//
-//    }
-
-
 
 
     @DeleteMapping("/{id}")
