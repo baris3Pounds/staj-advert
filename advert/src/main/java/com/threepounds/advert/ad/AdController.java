@@ -158,6 +158,12 @@ public class AdController {
     public ResponseEntity<List<Ad>> searchAd(AdSearchModel adSearchModel){
         return ResponseEntity.ok( adService.search(adSearchModel));
     }
+
+    @GetMapping("/nearest")
+    public ResponseEntity<List<AdResource>> nearestAd(AdDistanceDto adDistanceDto){
+       var liste = adMapper.adListToAdResourceList(adService.nearestLocations(adDistanceDto));
+       return ResponseEntity.ok().body(liste);
+    }
 }
 
 

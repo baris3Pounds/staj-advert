@@ -1,8 +1,11 @@
 package com.threepounds.advert.ad;
+import com.threepounds.advert.config.DistanceAd;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -10,9 +13,11 @@ import java.util.UUID;
 public class AdService {
 
   private AdRepository adRepository;
+  private final DistanceAd distanceAd;
 
-  public AdService(AdRepository adRepository) {
+  public AdService(AdRepository adRepository, DistanceAd distanceAd) {
     this.adRepository = adRepository;
+      this.distanceAd = distanceAd;
   }
 
   public Ad save(Ad ad) {
@@ -48,6 +53,18 @@ public class AdService {
 
 
     return adRepository.findAll(Specification.where(spec));
+  }
+
+  public List<Ad> nearestLocations(AdDistanceDto adDistanceDto) {
+    List<Ad> allAds = adRepository.findAll();
+    List<Ad> nearestAds = new ArrayList<>();
+    for (Ad ad : allAds) {
+      double mesafe = distanceAd.calculateDistance(adDistanceDto.getEnlem() , adDistanceDto.getBoylam(), ad.getLatitude() , ad.getLongitude());
+      if(mesafe <= adDistanceDto.getRadius()){
+        nearestAds.add(ad);
+      }
+    }
+    return nearestAds;
   }
 
 
