@@ -6,9 +6,9 @@ import org.springframework.stereotype.Component;
 public class DistanceAd {
     //Haversine Formula
 
-    private static final int EARTH_RADIUS_KM = 6371;
+    private  final int EARTH_RADIUS_KM = 6371;
 
-    public static double calculateDistance(double enlem_baslangic, double boylam_baslangic , double enlem_bitis , long boylam_bitis){
+    public  double calculateDistance(double enlem_baslangic, double boylam_baslangic , double enlem_bitis , double boylam_bitis){
         double d_enlem = Math.toRadians(enlem_bitis-enlem_baslangic);
         double d_boylam = Math.toRadians(boylam_bitis - boylam_baslangic);
 
@@ -17,6 +17,8 @@ public class DistanceAd {
                 * Math.sin(d_boylam / 2) *  Math.sin(d_boylam / 2);
         // Merkez açi
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+
         return  EARTH_RADIUS_KM * c;
     }
 }
