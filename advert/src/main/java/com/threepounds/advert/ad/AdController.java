@@ -55,7 +55,9 @@ public class AdController {
         if (ad == null || ad.isEmpty()) {
             return null;
         }
+
         List<AdResource> adResourcesList = adMapper.adListToAdResourceList(ad);
+
         return ResponseEntity.ok().body(GeneralResponse.<Object>builder().data(adResourcesList).build());
     }
 
@@ -64,9 +66,23 @@ public class AdController {
         List<Ad> ad = adService.listByTitle(title);
         List<AdResource> adResourceList = adMapper.adListToAdResourceList(ad);
 
-
-
         return ResponseEntity.ok().body(GeneralResponse.builder().data(adResourceList).build());
+    }
+    //Test edilmedi Postmanden 403Forbidden hattası alıyorum!
+    @GetMapping(path = "/by-id")
+    public ResponseEntity<GeneralResponse<Object>> getById(@RequestParam UUID uuid, Principal principal) {
+        User user = userService.getByUsername(principal.getName())
+                .orElseThrow(() -> new RuntimeException("User Not Found"));
+        Ad ad = adService.getById(uuid);
+        AdResource adResource = adMapper.adToAdResource(ad);
+
+        if (user.getFavouriteAds() != null && user.getFavouriteAds().contains(ad)) {
+            adResource.setFavorite(true);
+        } else {
+            adResource.setFavorite(false);
+        }
+
+        return ResponseEntity.ok().body(GeneralResponse.builder().data(adResource).build());
     }
 
 

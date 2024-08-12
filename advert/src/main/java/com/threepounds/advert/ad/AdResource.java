@@ -7,7 +7,6 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,6 +18,7 @@ public class AdResource {
     private BigDecimal price;
     private int latitude;
     private int longitude;
+    private boolean isFavorite;
     private List<AdResource> adResourceList = new ArrayList<>();
 
 }
