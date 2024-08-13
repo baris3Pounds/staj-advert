@@ -11,7 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "notification")
+@Table(name = "notifications")
 public class Notification {
 
   @Id
