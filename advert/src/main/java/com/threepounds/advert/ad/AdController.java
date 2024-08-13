@@ -157,9 +157,9 @@ public class AdController {
     }
 
     @GetMapping("/nearest")
-    public ResponseEntity<List<AdResource>> nearestAd(AdDistanceDto adDistanceDto){
-       var liste = adMapper.adListToAdResourceList(adService.nearestLocations(adDistanceDto));
-       return ResponseEntity.ok().body(liste);
+    public ResponseEntity<GeneralResponse<List<AdResource>>> nearestAd(AdDistanceDto adDistanceDto){
+       var adList = adMapper.adListToAdResourceList(adService.nearestLocations(adDistanceDto));
+       return ResponseEntity.ok().body(GeneralResponse.<List<AdResource>>builder().data(adList).build());
     }
 }
 
