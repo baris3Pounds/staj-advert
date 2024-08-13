@@ -58,7 +58,6 @@ public class SecurityConfiguration {
 
             //This line is optional in .authenticated() case as .anyRequest().authenticated()
             //would be applied for H2 path anyway
-//            .requestMatchers(PathRequest.toH2Console()).permitAll()
             .anyRequest().authenticated()
 
     ).authenticationProvider(authenticationProvider()).addFilterBefore(
