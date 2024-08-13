@@ -57,14 +57,11 @@ public class AdController {
         return ResponseEntity.ok().body(GeneralResponse.<Object>builder().data(adResourcesList).build());
     }
 
-    @GetMapping(path = "/by-title")
-    public ResponseEntity<GeneralResponse<Object>> getAdsByTitle(@RequestParam String title) {
-        List<Ad> ad = adService.listByTitle(title);
-        List<AdResource> adResourceList = adMapper.adListToAdResourceList(ad);
-
-
-
-        return ResponseEntity.ok().body(GeneralResponse.builder().data(adResourceList).build());
+    @GetMapping(path = "/{adId}")
+    public ResponseEntity<GeneralResponse<Object>> getAdsByTitle(@RequestParam UUID adId) {
+        Ad ad = adService.getById(adId);
+        AdResource adResource = adMapper.adToAdResource(ad);
+        return ResponseEntity.ok().body(GeneralResponse.builder().data(adResource).build());
     }
 
 
