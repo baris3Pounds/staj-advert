@@ -1,0 +1,2 @@
+INSERT INTO ads(id , title , description , price , active ,latitude , longitude , category_id , country_id , city_id , user_id  ,view_count)
+VALUES ('05e7e1bf-5d77-4166-8474-644e8eb4b46b' , 'car_ad' , 'expansive car' , 123 , true,123123.32 , 1231231,'d1e53d39-6f2f-40a7-9abb-dd8bf741a8ab','e37035a3-64ab-470b-a44f-3cd1d4b695ec','e657d2f3-9698-4dd8-8e4b-02c982edb100','1eabd2f2-b41d-490b-9190-bac6ab4ce0b9',23)
