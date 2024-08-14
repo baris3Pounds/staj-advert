@@ -52,7 +52,7 @@ public class AuthenticationService {
         userRepository
             .findByUsername(userDto.getUsername())
             .orElseThrow(() -> new BadRequestException("Invalid username or password"));
-    if (user.getPassword().matches(passwordEncoder.encode(userDto.getPassword()))) {
+    if (passwordEncoder.matches(userDto.getPassword(),user.getPassword())) {
       return user;
     } else {
       throw new BadRequestException("Invalid password");

@@ -38,8 +38,7 @@ public class SecurityConfiguration {
     MvcRequestMatcher.Builder mvcMatcherBuilder = new MvcRequestMatcher.Builder(introspector);
 
     http.csrf(csrfConfigurer ->
-        csrfConfigurer.ignoringRequestMatchers(mvcMatcherBuilder.pattern("/api/v1/**"),
-            PathRequest.toH2Console()));
+        csrfConfigurer.ignoringRequestMatchers(mvcMatcherBuilder.pattern("/api/v1/**")));
 
     http.headers(headersConfigurer ->
         headersConfigurer.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
@@ -59,7 +58,6 @@ public class SecurityConfiguration {
 
             //This line is optional in .authenticated() case as .anyRequest().authenticated()
             //would be applied for H2 path anyway
-            .requestMatchers(PathRequest.toH2Console()).permitAll()
             .anyRequest().authenticated()
 
     ).authenticationProvider(authenticationProvider()).addFilterBefore(

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.web.client.HttpServerErrorException.InternalServerError;
 
 @ControllerAdvice
 public class ValidExceptionHandler {
@@ -42,5 +43,15 @@ public class ValidExceptionHandler {
     objectGeneralResponse.setMessage(ex.getMessage());
     objectGeneralResponse.setData(null);
     return ResponseEntity.badRequest().body(objectGeneralResponse);
+  }
+
+  @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+  @ExceptionHandler(Exception.class)
+  public ResponseEntity<GeneralResponse<Object>> handleBadRequestExceptions(Exception ex){
+
+    GeneralResponse<Object> objectGeneralResponse = new GeneralResponse<>();
+    objectGeneralResponse.setMessage("Internal Server Error");
+    objectGeneralResponse.setData(null);
+    return ResponseEntity.internalServerError().body(objectGeneralResponse);
   }
 }

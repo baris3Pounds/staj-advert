@@ -9,9 +9,7 @@ import com.threepounds.advert.country.city.City;
 import com.threepounds.advert.country.city.CityService;
 import com.threepounds.advert.exception.GeneralResponse;
 import com.threepounds.advert.rolePermisionUser.entity.User;
-import com.threepounds.advert.rolePermisionUser.resource.UserResource;
 import com.threepounds.advert.rolePermisionUser.service.UserService;
-import com.threepounds.advert.rolePermisionUser.utils.mapper.UserMapper;
 import jakarta.validation.Valid;
 
 import java.security.Principal;
@@ -55,21 +53,18 @@ public class AdController {
         if (ad == null || ad.isEmpty()) {
             return null;
         }
-
         List<AdResource> adResourcesList = adMapper.adListToAdResourceList(ad);
-
         return ResponseEntity.ok().body(GeneralResponse.<Object>builder().data(adResourcesList).build());
     }
 
-    @GetMapping(path = "/by-title")
-    public ResponseEntity<GeneralResponse<Object>> getAdsByTitle(@RequestParam String title) {
-        List<Ad> ad = adService.listByTitle(title);
-        List<AdResource> adResourceList = adMapper.adListToAdResourceList(ad);
-
-        return ResponseEntity.ok().body(GeneralResponse.builder().data(adResourceList).build());
+    @GetMapping(path = "/{adId}")
+    public ResponseEntity<GeneralResponse<Object>> getAdsByTitle(@RequestParam UUID adId) {
+        Ad ad = adService.getById(adId);
+        AdResource adResource = adMapper.adToAdResource(ad);
+        return ResponseEntity.ok().body(GeneralResponse.builder().data(adResource).build());
     }
     //Test edilmedi Postmanden 403Forbidden hattası alıyorum!
-    @GetMapping(path = "/by-id")
+    @GetMapping(path = "/{uuid}")
     public ResponseEntity<GeneralResponse<Object>> getById(@RequestParam UUID uuid, Principal principal) {
         User user = userService.getByUsername(principal.getName())
                 .orElseThrow(() -> new RuntimeException("User Not Found"));
@@ -142,7 +137,7 @@ public class AdController {
 
     @PutMapping(path ="/{adId}/favorite")
             public ResponseEntity<GeneralResponse<Boolean>> updateFavoriteAds(@PathVariable UUID adId, Principal principal) {
-        User user = userService.getByUsername(principal.getName()) .orElseThrow(() -> new RuntimeException("User Not Found"));;
+        User user = userService.getByUsername(principal.getName()) .orElseThrow(() -> new RuntimeException("User Not Found"));
         Ad ad = adService.getById(adId);
 
         if (!user.getFavouriteAds().contains(ad)) {
@@ -175,6 +170,12 @@ public class AdController {
     @PostMapping("/search")
     public ResponseEntity<List<Ad>> searchAd(AdSearchModel adSearchModel){
         return ResponseEntity.ok( adService.search(adSearchModel));
+    }
+
+    @GetMapping("/nearest")
+    public ResponseEntity<GeneralResponse<List<AdResource>>> nearestAd(AdDistanceDto adDistanceDto){
+       var adList = adMapper.adListToAdResourceList(adService.nearestLocations(adDistanceDto));
+       return ResponseEntity.ok().body(GeneralResponse.<List<AdResource>>builder().data(adList).build());
     }
 }
 

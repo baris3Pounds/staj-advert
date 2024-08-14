@@ -32,14 +32,5 @@ public class Role {
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "role_permissions" ,joinColumns = @JoinColumn(name = "role_id") , inverseJoinColumns = @JoinColumn(name = "permission_id"))
     private List<Permission> permissions =  new  ArrayList<>();
-
-    @PrePersist
-    private void prePersist() {
-        if (name == null || name.isEmpty()) {
-            name = "Default";
-        }
-        if (code == null || code.isEmpty()) {
-            code = "DEFAULT_CODE";
-        }
-    }
+    
 }

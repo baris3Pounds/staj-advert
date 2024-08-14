@@ -1,0 +1,13 @@
+version: '3.0'
+
+services:
+  postgres:
+    image: postgres:latest
+    ports:
+      - 5432:5432
+    volumes:
+      - ~/apps/postgres/new:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=threepounds
+      - POSTGRES_USER=threepounds
+      - POSTGRES_DB=threepounds_db
