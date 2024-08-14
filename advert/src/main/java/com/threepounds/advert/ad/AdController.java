@@ -50,9 +50,6 @@ public class AdController {
     @GetMapping
     public ResponseEntity<GeneralResponse<Object>> getAllAd(){
         List<Ad> ad = adService.findAll();
-        if (ad == null || ad.isEmpty()) {
-            return null;
-        }
         List<AdResource> adResourcesList = adMapper.adListToAdResourceList(ad);
         return ResponseEntity.ok().body(GeneralResponse.<Object>builder().data(adResourcesList).build());
     }
