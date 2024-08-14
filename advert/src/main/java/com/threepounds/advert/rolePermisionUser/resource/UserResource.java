@@ -9,6 +9,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -18,4 +21,5 @@ public class UserResource {
     private int age;
     private Gender gender;
     private boolean active;
+    private List<UserResource> userResources = new ArrayList<>();
 }

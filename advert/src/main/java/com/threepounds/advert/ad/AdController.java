@@ -63,6 +63,22 @@ public class AdController {
         AdResource adResource = adMapper.adToAdResource(ad);
         return ResponseEntity.ok().body(GeneralResponse.builder().data(adResource).build());
     }
+    //Test edilmedi Postmanden 403Forbidden hattası alıyorum!
+    @GetMapping(path = "/by-id")
+    public ResponseEntity<GeneralResponse<Object>> getById(@RequestParam UUID uuid, Principal principal) {
+        User user = userService.getByUsername(principal.getName())
+                .orElseThrow(() -> new RuntimeException("User Not Found"));
+        Ad ad = adService.getById(uuid);
+        AdResource adResource = adMapper.adToAdResource(ad);
+
+        if (user.getFavouriteAds() != null && user.getFavouriteAds().contains(ad)) {
+            adResource.setFavorite(true);
+        } else {
+            adResource.setFavorite(false);
+        }
+
+        return ResponseEntity.ok().body(GeneralResponse.builder().data(adResource).build());
+    }
 
 
     @PostMapping
@@ -121,7 +137,7 @@ public class AdController {
 
     @PutMapping(path ="/{adId}/favorite")
             public ResponseEntity<GeneralResponse<Boolean>> updateFavoriteAds(@PathVariable UUID adId, Principal principal) {
-        User user = userService.getByUsername(principal.getName()) .orElseThrow(() -> new RuntimeException("User Not Found"));
+        User user = userService.getByUsername(principal.getName()) .orElseThrow(() -> new RuntimeException("User Not Found"));;
         Ad ad = adService.getById(adId);
 
         if (!user.getFavouriteAds().contains(ad)) {

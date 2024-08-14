@@ -24,7 +24,7 @@ public class AuthenticationController {
 
 
   @PostMapping("/signup")
-  public ResponseEntity<GeneralResponse> signup(@RequestBody UserDto userDto) {
+  public ResponseEntity<GeneralResponse<Object>> signup(@RequestBody UserDto userDto) {
 
     GeneralResponse<Object> response = GeneralResponse.builder()
         .data(authenticationService.signup(userDto)).build();
