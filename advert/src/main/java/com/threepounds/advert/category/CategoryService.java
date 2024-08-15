@@ -13,7 +13,7 @@ public interface CategoryService {
 
     public List<Category> findAll(PageRequest pageble);
 
-    public Category findById(UUID id);
+    public Category findById(UUID id) throws InterruptedException;
 
     public void deleteById(Category category);
 

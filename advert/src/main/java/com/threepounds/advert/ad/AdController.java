@@ -50,9 +50,6 @@ public class AdController {
     @GetMapping
     public ResponseEntity<GeneralResponse<Object>> getAllAd(){
         List<Ad> ad = adService.findAll();
-        if (ad == null || ad.isEmpty()) {
-            return null;
-        }
         List<AdResource> adResourcesList = adMapper.adListToAdResourceList(ad);
         return ResponseEntity.ok().body(GeneralResponse.<Object>builder().data(adResourcesList).build());
     }
@@ -64,7 +61,7 @@ public class AdController {
         return ResponseEntity.ok().body(GeneralResponse.builder().data(adResource).build());
     }
     //Test edilmedi Postmanden 403Forbidden hattası alıyorum!
-    @GetMapping(path = "/{uuid}")
+    @GetMapping(path = "/by-id")
     public ResponseEntity<GeneralResponse<Object>> getById(@RequestParam UUID uuid, Principal principal) {
         User user = userService.getByUsername(principal.getName())
                 .orElseThrow(() -> new RuntimeException("User Not Found"));
@@ -82,7 +79,8 @@ public class AdController {
 
 
     @PostMapping
-    public ResponseEntity<GeneralResponse<AdResource>> createAd(Principal principal, Authentication authentication, @Valid @RequestBody AdDto adDto) {
+    public ResponseEntity<GeneralResponse<AdResource>> createAd(Principal principal, Authentication authentication, @Valid @RequestBody AdDto adDto)
+        throws InterruptedException {
 
         restTemplateService.getLocation("24.48.0.1");
         Ad ad = adMapper.adDtoToAd(adDto);

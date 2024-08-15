@@ -48,7 +48,7 @@ public class ValidExceptionHandler {
   @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
   @ExceptionHandler(Exception.class)
   public ResponseEntity<GeneralResponse<Object>> handleBadRequestExceptions(Exception ex){
-
+    System.out.println(ex.getMessage());
     GeneralResponse<Object> objectGeneralResponse = new GeneralResponse<>();
     objectGeneralResponse.setMessage("Internal Server Error");
     objectGeneralResponse.setData(null);
