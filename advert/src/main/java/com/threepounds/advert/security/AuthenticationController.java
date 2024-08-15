@@ -32,8 +32,8 @@ public class AuthenticationController {
   }
 
   @PostMapping("/signin")
-  public ResponseEntity<GeneralResponse> signIn(@Valid @RequestBody UserDto userDto) {
-    User user = authenticationService.signIn(userDto);
+  public ResponseEntity<GeneralResponse<Object>> signIn(@Valid @RequestBody SignInDto signInDto) {
+    User user = authenticationService.signIn(signInDto);
     String token = jwtService.generateToken(user.getUsername());
     UserResponseDto dto = UserResponseDto
             .builder()

@@ -22,7 +22,6 @@ public class User {
 
   @Id @GeneratedValue private UUID id;
 
-
   @Column private String name;
 
   @Column private String username;
