@@ -11,3 +11,20 @@ services:
       - POSTGRES_PASSWORD=threepounds
       - POSTGRES_USER=threepounds
       - POSTGRES_DB=threepounds_db
+
+  redis-3pounds:
+    image: redis:alpine
+    container_name: redis-3pounds
+    ports:
+      - 6379:6379
+
+  redis-commander:
+    container_name: redis-commander-3pounds
+    hostname: redis-commander
+    image: rediscommander/redis-commander:latest
+    environment:
+      - REDIS_HOSTS=local:redis-3pounds:6379
+    ports:
+      - 5002:8081
+    depends_on:
+      - redis-3pounds

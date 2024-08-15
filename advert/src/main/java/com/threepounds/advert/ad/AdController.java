@@ -79,7 +79,8 @@ public class AdController {
 
 
     @PostMapping
-    public ResponseEntity<GeneralResponse<AdResource>> createAd(Principal principal, Authentication authentication, @Valid @RequestBody AdDto adDto) {
+    public ResponseEntity<GeneralResponse<AdResource>> createAd(Principal principal, Authentication authentication, @Valid @RequestBody AdDto adDto)
+        throws InterruptedException {
 
         restTemplateService.getLocation("24.48.0.1");
         Ad ad = adMapper.adDtoToAd(adDto);
