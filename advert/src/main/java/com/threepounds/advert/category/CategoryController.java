@@ -6,6 +6,9 @@ import java.util.UUID;
 
 import com.threepounds.advert.exception.GeneralResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -36,8 +39,10 @@ public class CategoryController {
         return ResponseEntity.ok().body(GeneralResponse.<Object>builder().data(adResourceList).build());
     }
 
+
     @GetMapping("/{id}")
-    public ResponseEntity<GeneralResponse<Object>> getCategoryById(UUID id){
+    public ResponseEntity<GeneralResponse<Object>> getCategoryById(@PathVariable UUID id)
+        throws InterruptedException {
         Category category = categoryService.findById(id);
         CategoryResource categoryResource = categoryMapper.categoryToCategoryResource(category);
         return ResponseEntity.ok().body(GeneralResponse.<Object>builder().data(categoryResource).build());
@@ -52,6 +57,7 @@ public class CategoryController {
         return ResponseEntity.ok().body(GeneralResponse.<Object>builder().data(categoryResource).build());
     }
 
+
     @PutMapping("/{id}")
     public ResponseEntity<GeneralResponse<Object>> updateCategory(@RequestBody CategoryDto categoryDto , @PathVariable UUID id){
 
@@ -61,8 +67,10 @@ public class CategoryController {
         return ResponseEntity.ok().build();
     }
 
+    @CacheEvict(value = "category",key = "#id")
     @DeleteMapping("/{id}")
-    public ResponseEntity<GeneralResponse<Object>> deleteCategory(@PathVariable UUID id){
+    public ResponseEntity<GeneralResponse<Object>> deleteCategory(@PathVariable UUID id)
+        throws InterruptedException {
         log.info("");
         Category existingCategory = categoryService.findById(id);
         categoryService.deleteById(existingCategory);

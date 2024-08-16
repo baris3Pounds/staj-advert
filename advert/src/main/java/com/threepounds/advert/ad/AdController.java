@@ -50,9 +50,6 @@ public class AdController {
     @GetMapping
     public ResponseEntity<GeneralResponse<Object>> getAllAd(){
         List<Ad> ad = adService.findAll();
-        if (ad == null || ad.isEmpty()) {
-            return null;
-        }
         List<AdResource> adResourcesList = adMapper.adListToAdResourceList(ad);
         return ResponseEntity.ok().body(GeneralResponse.<Object>builder().data(adResourcesList).build());
     }
@@ -63,10 +60,27 @@ public class AdController {
         AdResource adResource = adMapper.adToAdResource(ad);
         return ResponseEntity.ok().body(GeneralResponse.builder().data(adResource).build());
     }
+    //Test edilmedi Postmanden 403Forbidden hattası alıyorum!
+    @GetMapping(path = "/by-id")
+    public ResponseEntity<GeneralResponse<Object>> getById(@RequestParam UUID uuid, Principal principal) {
+        User user = userService.getByUsername(principal.getName())
+                .orElseThrow(() -> new RuntimeException("User Not Found"));
+        Ad ad = adService.getById(uuid);
+        AdResource adResource = adMapper.adToAdResource(ad);
+
+        if (user.getFavouriteAds() != null && user.getFavouriteAds().contains(ad)) {
+            adResource.setFavorite(true);
+        } else {
+            adResource.setFavorite(false);
+        }
+
+        return ResponseEntity.ok().body(GeneralResponse.builder().data(adResource).build());
+    }
 
 
     @PostMapping
-    public ResponseEntity<GeneralResponse<AdResource>> createAd(Principal principal, Authentication authentication, @Valid @RequestBody AdDto adDto) {
+    public ResponseEntity<GeneralResponse<AdResource>> createAd(Principal principal, Authentication authentication, @Valid @RequestBody AdDto adDto)
+        throws InterruptedException {
 
         restTemplateService.getLocation("24.48.0.1");
         Ad ad = adMapper.adDtoToAd(adDto);
@@ -121,7 +135,7 @@ public class AdController {
 
     @PutMapping(path ="/{adId}/favorite")
             public ResponseEntity<GeneralResponse<Boolean>> updateFavoriteAds(@PathVariable UUID adId, Principal principal) {
-        User user = userService.getByUsername(principal.getName()) .orElseThrow(() -> new RuntimeException("User Not Found"));
+        User user = userService.getByUsername(principal.getName()) .orElseThrow(() -> new RuntimeException("User Not Found"));;
         Ad ad = adService.getById(adId);
 
         if (!user.getFavouriteAds().contains(ad)) {
@@ -157,9 +171,9 @@ public class AdController {
     }
 
     @GetMapping("/nearest")
-    public ResponseEntity<List<AdResource>> nearestAd(AdDistanceDto adDistanceDto){
-       var liste = adMapper.adListToAdResourceList(adService.nearestLocations(adDistanceDto));
-       return ResponseEntity.ok().body(liste);
+    public ResponseEntity<GeneralResponse<List<AdResource>>> nearestAd(AdDistanceDto adDistanceDto){
+       var adList = adMapper.adListToAdResourceList(adService.nearestLocations(adDistanceDto));
+       return ResponseEntity.ok().body(GeneralResponse.<List<AdResource>>builder().data(adList).build());
     }
 }
 
