@@ -52,11 +52,10 @@ public class AuthenticationService {
         userRepository
             .findByUsername(signInDto.getUsername())
             .orElseThrow(() -> new BadRequestException("Invalid username or password"));
-   /* if (passwordEncoder.matches(signInDto.getPassword(),user.getPassword())) {
+    if (passwordEncoder.matches(signInDto.getPassword(),user.getPassword())) {
       return user;
     } else {
       throw new BadRequestException("Invalid password");
-    }*/
-    return user;
+    }
   }
 }
