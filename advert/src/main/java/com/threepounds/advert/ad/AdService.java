@@ -1,5 +1,8 @@
 package com.threepounds.advert.ad;
 import com.threepounds.advert.config.DistanceAd;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
@@ -25,6 +28,13 @@ public class AdService {
     return adRepository.save(ad);
   }
 
+
+  @CachePut(value = "ads", key = "#id")
+  public Ad update(Ad ad, UUID id) {
+    ad.setId(id);
+    return adRepository.save(ad);
+  }
+
   public List<Ad> list(int no , int size) {
 
     PageRequest pageble = PageRequest.of(no , size);
@@ -37,6 +47,7 @@ public class AdService {
     return adRepository.findByTitle(title);
   }
 
+  @Cacheable(value = "ads",key = "#adId")
   public Ad getById(UUID adId) {return adRepository.findById(adId).orElseThrow(() -> new RuntimeException("Ad not found."));}
 
   public void deleteAd(Ad ad) { ad.setActive(false); adRepository.save(ad); }

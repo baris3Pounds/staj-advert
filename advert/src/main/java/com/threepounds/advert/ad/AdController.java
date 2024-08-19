@@ -108,7 +108,7 @@ public class AdController {
 
         return ResponseEntity.ok().body(GeneralResponse.<AdResource>builder().data(adResource).build());
     }
-    @CacheEvict(value = "Ads", key = "#adId")
+
     @PutMapping(path = "/{adId}")
     public ResponseEntity<GeneralResponse<AdResource>> updateAd(@PathVariable @NotNull UUID adId, @Valid @NotNull @RequestBody AdDto adDto) {
         adService.getById(adId);
@@ -116,12 +116,11 @@ public class AdController {
         Ad updatedAd = adMapper.adDtoToAd(adDto);
         updatedAd.setId(adId);
 
-        Ad savedAd = adService.save(updatedAd);
+        Ad savedAd = adService.update(updatedAd, adId);
         AdResource adResource = adMapper.adToAdResource(savedAd);
 
         return ResponseEntity.ok().body(GeneralResponse.<AdResource>builder().data(adResource).build());
     }
-    @CacheEvict(value = "Ads", key = "#adId")
     @PutMapping(path = "/{adId}/viewed")
     public ResponseEntity<GeneralResponse<AdResource>> update(@PathVariable UUID adId) {
         Ad existingAd =
@@ -132,7 +131,6 @@ public class AdController {
 
         return ResponseEntity.ok().body(GeneralResponse.<AdResource>builder().data(adResource).build());
     }
-    @CacheEvict(value = "Ads", key = "#adId")
     @PutMapping(path ="/{adId}/favorite")
             public ResponseEntity<GeneralResponse<Boolean>> updateFavoriteAds(@PathVariable UUID adId, Principal principal) {
         User user = userService.getByUsername(principal.getName()) .orElseThrow(() -> new RuntimeException("User Not Found"));
@@ -144,7 +142,6 @@ public class AdController {
         }
         return ResponseEntity.ok().body(GeneralResponse.<Boolean>builder().data(Boolean.TRUE).build());
     }
-    @CacheEvict(value = "Ads", key = "#adId")
     @DeleteMapping("/{adId}/favorite")
     public ResponseEntity<GeneralResponse<AdResource>> favoriteAds(@PathVariable UUID adId, Principal principal) {
         User user = userService.getByUsername(principal.getName()) .orElseThrow(() -> new RuntimeException("User Not Found"));;
@@ -154,7 +151,7 @@ public class AdController {
 
         return ResponseEntity.ok().body(GeneralResponse.<AdResource>builder().build());
     }
-    @CacheEvict(value = "Ads", key = "#adId")
+    @CacheEvict(value = "ads", key = "#adId")
     @DeleteMapping("/{adId}")
     public ResponseEntity<GeneralResponse<AdResource>> delete(@Valid @PathVariable UUID adId) {
         Ad existingAd =
