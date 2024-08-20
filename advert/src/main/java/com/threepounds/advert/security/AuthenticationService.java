@@ -1,6 +1,7 @@
 package com.threepounds.advert.security;
 
 
+import com.threepounds.advert.config.RabbitMQConfig;
 import com.threepounds.advert.exception.BadRequestException;
 import com.threepounds.advert.rolePermisionUser.dto.UserDto;
 import com.threepounds.advert.rolePermisionUser.entity.Role;
@@ -8,6 +9,8 @@ import com.threepounds.advert.rolePermisionUser.entity.User;
 import com.threepounds.advert.rolePermisionUser.repository.UserRepository;
 import com.threepounds.advert.rolePermisionUser.service.RoleService;
 import com.threepounds.advert.rolePermisionUser.utils.mapper.UserMapper;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 
@@ -19,8 +22,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @RequiredArgsConstructor
 @Component
-
 public class AuthenticationService {
+
+  private final RabbitTemplate rabbitTemplate;
 
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
@@ -42,9 +46,12 @@ public class AuthenticationService {
     if (emailEntry.isPresent()) {
       throw new BadRequestException("This email is already exist");
     }
-    userRepository.save(user);
+    User savedUser = userRepository.save(user);
 
-    return jwtService.generateToken(user.getUsername());
+    rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_NAME, RabbitMQConfig.ROUTING_KEY,savedUser.getUsername());
+    System.out.println("Message sent for user id : " + savedUser.getId());
+
+    return jwtService.generateToken(savedUser.getUsername());
   }
 
   public User signIn(SignInDto signInDto) {
