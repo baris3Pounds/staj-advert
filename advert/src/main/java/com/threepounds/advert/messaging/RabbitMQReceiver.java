@@ -15,4 +15,9 @@ public class RabbitMQReceiver {
     // Process the message here
   }
 
+  @RabbitListener(queues = RabbitMQConfig.ADVERT_DELETED_QUEUE)
+  public void receiveDeletedAdvertMessage(UUID adId) {
+    System.out.println("Deleted advert ID: " + adId);
+  }
+
 }

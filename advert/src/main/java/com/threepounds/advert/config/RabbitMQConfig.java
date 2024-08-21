@@ -16,7 +16,7 @@ public class RabbitMQConfig {
   public static final String QUEUE_NAME = "q-user-registration";
   public static final String EXCHANGE_NAME = "user-registration-exchange";
   public static final String ROUTING_KEY = "example-routing-key";
-
+  public static final String ADVERT_DELETE_ROUTING_KEY = "example-advert-delete-routing-key";
   public static final String ADVERT_CREATED_QUEUE = "q-advert-created";
   public static final String ADVERT_DELETED_QUEUE = "q-advert-deleted";
 
@@ -53,7 +53,7 @@ public class RabbitMQConfig {
 
   @Bean
   public Binding bindingAdvertDeleted(@Qualifier("queueAdvertDeleted") Queue queue, DirectExchange exchange) {
-    return BindingBuilder.bind(queue).to(exchange).with(ROUTING_KEY);
+    return BindingBuilder.bind(queue).to(exchange).with(ADVERT_DELETE_ROUTING_KEY);
   }
 
   @Bean
