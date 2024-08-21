@@ -1,5 +1,7 @@
 package com.threepounds.advert.ad;
 import com.threepounds.advert.config.DistanceAd;
+import com.threepounds.advert.config.RabbitMQConfig;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -17,10 +19,13 @@ public class AdService {
 
   private AdRepository adRepository;
   private final DistanceAd distanceAd;
+  private final RabbitTemplate rabbitTemplate;
 
-  public AdService(AdRepository adRepository, DistanceAd distanceAd) {
+  public AdService(AdRepository adRepository, DistanceAd distanceAd , RabbitTemplate rabbitTemplate) {
     this.adRepository = adRepository;
       this.distanceAd = distanceAd;
+      this.rabbitTemplate = rabbitTemplate;
+
   }
 
   public Ad save(Ad ad) {
@@ -50,7 +55,11 @@ public class AdService {
   @Cacheable(value = "ads",key = "#adId")
   public Ad getById(UUID adId) {return adRepository.findById(adId).orElseThrow(() -> new RuntimeException("Ad not found."));}
 
-  public void deleteAd(Ad ad) { ad.setActive(false); adRepository.save(ad); }
+  public void deleteAd(Ad ad) {
+    ad.setActive(false);
+    adRepository.save(ad);
+    rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_NAME, RabbitMQConfig.ADVERT_DELETE_ROUTING_KEY, ad.getId());
+    System.out.println("Message sent for advert id: " + ad.getId());}
 
   public List<Ad> findAll() {  return adRepository.findAll(); }
 
