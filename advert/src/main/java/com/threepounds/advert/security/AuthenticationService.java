@@ -3,6 +3,9 @@ package com.threepounds.advert.security;
 
 import com.threepounds.advert.config.RabbitMQConfig;
 import com.threepounds.advert.exception.BadRequestException;
+import com.threepounds.advert.messaging.AdMessageModel;
+import com.threepounds.advert.messaging.RabbitMQSender;
+import com.threepounds.advert.messaging.UserMessageModel;
 import com.threepounds.advert.rolePermisionUser.dto.UserDto;
 import com.threepounds.advert.rolePermisionUser.entity.Role;
 import com.threepounds.advert.rolePermisionUser.entity.User;
@@ -33,6 +36,8 @@ public class AuthenticationService {
   private final UserMapper userMapper;
   private final RoleService roleService;
 
+  private final RabbitMQSender<UserMessageModel> rabbitMQSender;
+
   public String signup(UserDto userDto) {
     User user = userMapper.userDtoToEntity(userDto);
     user.setActive(true);
@@ -48,7 +53,7 @@ public class AuthenticationService {
     }
     User savedUser = userRepository.save(user);
 
-    rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_NAME, RabbitMQConfig.ROUTING_KEY,savedUser.getUsername());
+    rabbitMQSender.send(new UserMessageModel(savedUser.getId(),savedUser.getUsername()));
     System.out.println("Message sent for user id : " + savedUser.getId());
 
     return jwtService.generateToken(savedUser.getUsername());

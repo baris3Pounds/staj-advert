@@ -7,10 +7,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class RabbitMQSender {
+public class RabbitMQSender<T> {
     private final RabbitTemplate rabbitTemplate;
 
-    public void send(String username){
-        rabbitTemplate.convertAndSend(RabbitMQConfig.QUEUE_NAME , username);
-    }
+  public void send(T t) {
+    rabbitTemplate.convertAndSend(RabbitMQConfig.QUEUE_NAME, t);
+  }
 }

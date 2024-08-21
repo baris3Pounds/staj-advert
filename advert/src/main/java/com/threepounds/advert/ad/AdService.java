@@ -1,8 +1,9 @@
 package com.threepounds.advert.ad;
 import com.threepounds.advert.config.DistanceAd;
 import com.threepounds.advert.config.RabbitMQConfig;
+import com.threepounds.advert.messaging.AdMessageModel;
+import com.threepounds.advert.messaging.RabbitMQSender;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
@@ -21,16 +22,22 @@ public class AdService {
   private final DistanceAd distanceAd;
   private final RabbitTemplate rabbitTemplate;
 
-  public AdService(AdRepository adRepository, DistanceAd distanceAd , RabbitTemplate rabbitTemplate) {
+  private final RabbitMQSender<AdMessageModel> rabbitMQSender;
+
+  public AdService(AdRepository adRepository, DistanceAd distanceAd , RabbitTemplate rabbitTemplate,
+      RabbitMQSender<AdMessageModel> rabbitMQSender) {
     this.adRepository = adRepository;
       this.distanceAd = distanceAd;
       this.rabbitTemplate = rabbitTemplate;
 
+    this.rabbitMQSender = rabbitMQSender;
   }
 
   public Ad save(Ad ad) {
     ad.setActive(true);
-    return adRepository.save(ad);
+    Ad saved =  adRepository.save(ad);
+    rabbitMQSender.send(new AdMessageModel(saved.getId(),saved.getTitle(),saved.isActive()));
+    return saved;
   }
 
 
